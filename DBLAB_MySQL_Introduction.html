@@ -1,0 +1,2924 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>راهنمای جامع آزمایشگاه پایگاه داده</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: "Vazirmatn", sans-serif;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f5f9;
+    color: #334155;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.flex-container { display: flex; flex: 1; }
+
+#main-content {
+    flex: 1;
+    margin-right: 300px;
+    padding: 30px 45px;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+/* استایل برای نمایش/عدم نمایش بخش‌های محتوا */
+.content-section {
+    display: none;
+}
+.content-section.active {
+    display: block;
+}
+
+.content-section h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #93c5fd;
+}
+.content-section h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1d4ed8;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.code-block-container {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #0f172a;
+    direction: ltr;
+}
+.code-block-container pre {
+    color: #e2e8f0;
+    padding: 1.5rem;
+    padding-top: 3.5rem;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    font-size: 1rem;
+}
+.copy-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background-color: #2563eb;
+    color: white;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.note { background-color: #fefce8; border-right: 5px solid #facc15; padding: 15px 20px; margin: 1.5em 0; border-radius: 4px; }
+.important { font-weight: bold; color: #dc2626; }
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+.styled-table th, .styled-table td {
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+    text-align: right;
+}
+.styled-table th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+}
+.styled-table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.assignment-box {
+    background-color: #f0fdf4; /* green-50 */
+    border-right: 5px solid #22c55e; /* green-500 */
+    padding: 20px;
+    margin-top: 2rem;
+    border-radius: 4px;
+}
+
+.data-tree {
+    list-style-type: none;
+    padding-right: 0;
+}
+.data-tree ul {
+    padding-right: 20px;
+    border-right: 1px solid #cbd5e1;
+}
+.data-tree li {
+    position: relative;
+    padding-right: 20px;
+    margin-bottom: 5px;
+}
+.data-tree li::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 0;
+    width: 15px;
+    height: 1px;
+    background-color: #cbd5e1;
+}
+
+/* ---------- NEW SIDEBAR STYLE FROM V5 ---------- */
+#sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    overflow-y: auto; /* این خط حالا به درستی کار خواهد کرد */
+    transition: width .3s;
+    z-index: 40;
+}
+
+#sidebar header {
+    padding: 1.25rem 1rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border-bottom: 1px solid #334155;
+    background: #0f172a;
+    color: #e2e8f0; /* Added for consistency */
+}
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: .75rem 1rem;
+    font-weight: 600;
+    transition: background .2s;
+    color: #e2e8f0; /* Added for consistency */
+}
+.nav-header:hover {
+    background: #334155;
+}
+.nav-header::after {
+    content: '▾';
+    transition: transform .2s;
+}
+.nav-header.collapsed::after {
+    transform: rotate(-90deg);
+}
+.sub-menu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s ease-in-out; /* A slightly smoother transition */
+}
+
+.sub-menu.open {
+    max-height: 800px; /* Adjust if a menu is taller */
+}
+.nav-link {
+    display: block;
+    padding: .5rem 1.75rem; /* Adjusted padding for better alignment */
+    font-size: .9rem;
+    color: #94a3b8;
+    transition: background .2s, color .2s;
+    text-decoration: none; /* Added for safety */
+    border-radius: 0; /* Reset from v2 */
+    margin-bottom: 0; /* Reset from v2 */
+}
+.nav-link.active,
+.nav-link:hover {
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 0 20px 20px 0;
+    margin-right: .25rem;
+    font-weight: normal; /* Reset from v2 */
+}
+		</style>
+		
+		
+		
+		
+		<style>
+		
+		.styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: right;
+        }
+        .styled-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+        }
+        .styled-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+               
+        .assignment-box {
+            background-color: #f0fdf4; /* green-50 */
+            border-right: 5px solid #22c55e; /* green-500 */
+            padding: 20px;
+            margin-top: 2rem;
+            border-radius: 4px;
+        }
+        
+        	
+		.data-tree {
+            list-style-type: none;
+            padding-right: 0;
+        }
+        .data-tree ul {
+            padding-right: 20px;
+            border-right: 1px solid #cbd5e1;
+        }
+        .data-tree li {
+            position: relative;
+            padding-right: 20px;
+            margin-bottom: 5px;
+        }
+        .data-tree li::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 0;
+            width: 15px;
+            height: 1px;
+            background-color: #cbd5e1;
+        }
+    </style>
+	
+	
+	
+</head>
+<body>
+    <div class="flex-container">
+        <main id="main-content">
+		
+		<section id="intro" class="content-section">
+                <h2>مقدمه و مفاهیم پایه</h2>
+                <h3>معماری سیستم پایگاه داده</h3>
+                <p>در هر سیستم اطلاعاتی، سه جزء اساسی وجود دارد: <strong>اپلیکیشن (Application)</strong>، <strong>سیستم مدیریت پایگاه داده (DBMS)</strong> و خود <strong>پایگاه داده (Database)</strong>. اپلیکیشن از طریق یک زبان واسط استاندارد به نام <strong>SQL</strong> با DBMS ارتباط برقرار می‌کند تا داده‌ها را در پایگاه داده ذخیره، بازیابی یا مدیریت کند.</p>
+                <ul>
+                    <li><strong>DDL (Data Definition Language):</strong> برای تعریف و مدیریت ساختار پایگاه داده.</li>
+                    <li><strong>DML (Data Manipulation Language):</strong> برای کار با داده‌های درون جداول.</li>
+                    <li><strong>DCL (Data Control Language):</strong> برای مدیریت سطوح دسترسی کاربران.</li>
+                </ul>
+                <div class="bg-white p-6 rounded-lg shadow-lg my-8">
+                  <h3 class="!mt-0 text-2xl font-bold text-sky-600">نحوه اتصال نرم‌افزار به DBMS با Connection String</h3>
+                  <p class="mt-3">
+                    نرم‌افزارها برای دسترسی به داده‌ها باید از طریق یک واسط مشخص به DBMS متصل شوند. این واسط معمولاً به صورت یک رشته متنی به نام <strong>Connection String</strong> تعریف می‌شود که شامل اطلاعاتی مثل آدرس سرور، نام پایگاه داده، نام کاربری و رمز عبور است.
+                  </p>
+                  <div class="mt-6 bg-gray-100 p-4 rounded shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" width="600" height="200" viewBox="0 0 600 200">
+                      <rect x="20" y="60" width="150" height="80" fill="#38bdf8" rx="10"/><text x="95" y="105" font-size="14" text-anchor="middle" fill="white" font-family="Vazirmatn">اپلیکیشن (App)</text>
+                      <rect x="220" y="60" width="160" height="80" fill="#6366f1" rx="10"/><text x="300" y="105" font-size="14" text-anchor="middle" fill="white" font-family="Vazirmatn">DBMS (MySQL)</text>
+                      <rect x="420" y="60" width="160" height="80" fill="#f59e0b" rx="10"/><text x="500" y="105" font-size="14" text-anchor="middle" fill="white" font-family="Vazirmatn">پایگاه داده (DB)</text>
+                      <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#333" /></marker></defs>
+                      <line x1="170" y1="100" x2="220" y2="100" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/><text x="195" y="90" font-size="12" text-anchor="middle" fill="#333" font-family="Vazirmatn">SQL</text>
+                      <line x1="380" y1="100" x2="420" y2="100" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                    </svg>
+                  </div>
+                </div>
+            </section>
+
+            <section id="design" class="content-section" style="display: none;">
+                <h2>طراحی پایگاه داده</h2>
+                <h3>نمودار ER (Entity-Relationship)</h3>
+                <p>نمودار ER نقشه مفهومی پایگاه داده ما است که موجودیت‌ها و ارتباطات بین آن‌ها را به صورت بصری نمایش می‌دهد.</p>
+                <div class="p-4 bg-gray-100 rounded text-center my-4">
+                     <img src="images/erd.png" alt="نمودار ER سیستم" class="max-w-full h-auto mx-auto shadow-md rounded-lg">
+                </div>
+                <h3>مدل رابطه‌ای (Relational Model)</h3>
+                <p>مدل رابطه‌ای، ترجمه نمودار ER به ساختار جداول است که آماده پیاده‌سازی در MySQL می‌باشد.</p>
+                <div dir="ltr">
+                    <div class="bg-slate-100 p-4 rounded my-2 font-mono"><strong>City</strong>(<u>CityID</u>, CityName)</div>
+                    <div class="bg-slate-100 p-4 rounded my-2 font-mono"><strong>Customer</strong>(<u>CustomerID</u>, CustomerName, CustomerTel, CustomerAddress, Status, <i>CityID</i>)</div>
+                    <div class="bg-slate-100 p-4 rounded my-2 font-mono"><strong>Order</strong>(<u>OrderID</u>, OrderDate, PayType, TotalSum, Discount, PaymentPrice, <i>CustomerID</i>)</div>
+                    <div class="bg-slate-100 p-4 rounded my-2 font-mono"><strong>ProductGroup</strong>(<u>ProductGroupID (PGID)</u>, ProductGroupName, <i>ParentProductGroupID</i>)</div>
+                    <div class="bg-slate-100 p-4 rounded my-2 font-mono"><strong>Product</strong>(<u>ProductID</u>, ProductName, ProductColor, ProductWeight, MinimumPrice, <i>ProductGroupID(PGID)</i>)</div>
+                    <div class="bg-slate-100 p-4 rounded my-2 font-mono"><strong>OrderDetail</strong>(<i><u>ProductID</u></i>, <i><u>OrderID</u></i>, Qty, Fee)</div>
+                </div>
+                 <p class="note">در طرح فوق، صفات زیرخط‌دار کلید اصلی (Primary Key) و صفات مورب (Italic) کلید خارجی (Foreign Key) هستند.</p>
+            </section>
+            
+            <section id="installation" class="content-section" style="display: none;">
+                <h2>نصب و راه‌اندازی MySQL</h2>
+    <h3 id="install-steps">مراحل نصب و پیکربندی</h3>
+    <p>برای شروع کار با MySQL، نرم‌افزار MySQL Installer for Windows را از <a href="https://dev.mysql.com/downloads/mysql/">وب‌سایت رسمی MySQL</a> دانلود کنید. تا آگوست 2025، نسخه 9.4 به‌عنوان آخرین نسخه در دسترس است، اما برای محیط‌های آموزشی، نسخه 8.4 LTS (با پشتیبانی تا 2032) توصیه می‌شود، مگر اینکه نیاز به ویژگی‌های جدید 9.4 داشته باشید. حتماً نسخه Community Edition را انتخاب کنید (نسخه Enterprise پولی است).</p>
+    <ol>
+        <li>دانلود فایل MSI از بخش MySQL Community Server.</li>
+        <li>در نصب، گزینه <code>Custom</code> را انتخاب کنید تا کنترل کاملی بر اجزای نصب‌شده داشته باشید.</li>
+        <li>اطمینان حاصل کنید که <code>MySQL Server</code> انتخاب شده است.</li>
+        <li>در بخش پیکربندی (Configuration):
+            <ul>
+                <li>نوع ماشین را <code>Development Machine</code> انتخاب کنید تا منابع کمتری مصرف شود.</li>
+                <li>گزینه <code>TCP/IP Networking</code> را فعال نگه دارید و پورت پیش‌فرض را 3306 تنظیم کنید.</li>
+                <li>برای کاربر اصلی (<code>root</code>)، یک رمز عبور قوی (حداقل 12 کاراکتر، شامل حروف، اعداد و نمادها) تعریف کنید.</li>
+                <li>کاربر غیر-root برای اپلیکیشن‌ها ایجاد کنید (مثال: <code>CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'strong_pass123';</code>).</li>
+            </ul>
+        </li>
+        <li>MySQL را به‌عنوان Windows Service نصب کنید تا با بوت ویندوز اجرا شود.</li>
+    </ol>
+    <div class="warning">
+        <p><strong>هشدار امنیتی:</strong> از ذخیره رمز عبور root در فایل‌های متنی یا استفاده در محیط‌های ناامن خودداری کنید. برای اپلیکیشن‌ها، کاربران با دسترسی محدود بسازید.</p>
+    </div>
+    <h3 id="path-config">تنظیمات PATH</h3>
+    <p>برای اجرای دستورات MySQL (مثل <code>mysql</code>) از خط فرمان، مسیر پوشه <code>bin</code> (مثلاً <code>C:\Program Files\MySQL\MySQL Server 9.4\bin</code>) را به متغیر محیطی <code>Path</code> اضافه کنید:</p>
+    <ol>
+        <li>به This PC > Properties > Advanced System Settings > Environment Variables بروید.</li>
+        <li>در System Variables، گزینه <code>Path</code> را ویرایش کرده و مسیر <code>bin</code> را اضافه کنید.</li>
+    </ol>
+    <div class="summary">
+        <p><strong>خلاصه:</strong> MySQL 9.4 یا 8.4 LTS را نصب کنید، کاربر غیر-root بسازید، و PATH را برای دسترسی خط فرمان تنظیم کنید.</p>
+    </div>
+            </section>
+            
+            <section id="cli" class="content-section" style="display: none;">
+                <h2>کار با خط فرمان MySQL</h2>
+                <h3>اتصال به سرور</h3>
+                <p>پس از نصب، یک CMD جدید باز کرده و دستور زیر را برای اتصال به سرور وارد کنید.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>mysql -u root -p</code></pre></div>
+                <p>پس از وارد کردن این دستور، از شما رمز عبور کاربر root پرسیده می‌شود. با وارد کردن رمز صحیح، به محیط MySQL وارد می‌شوید. گزینه‌های مختلفی برای این دستور وجود دارد:</p>
+                <ul>
+                    <li><code>-u username</code> یا <code>--user=username</code>: برای مشخص کردن نام کاربری.</li>
+                    <li><code>-p</code>: اعلام می‌کند که می‌خواهید رمز عبور را وارد کنید. با زدن Enter پس از این گزینه، رمز عبور در خط بعد و به صورت مخفی پرسیده می‌شود که <strong class="important">امن‌ترین روش</strong> است.</li>
+                    <li><code>-pPASSWORD</code> یا <code>--password=PASSWORD</code>: رمز عبور را مستقیماً در دستور وارد می‌کند. این روش امن نیست زیرا رمز شما در تاریخچه دستورات باقی می‌ماند.</li>
+                    <li><code>dbname</code>: می‌توان نام پایگاه داده مورد نظر را در انتهای دستور نوشت تا پس از ورود، آن پایگاه داده به صورت پیش‌فرض انتخاب شود.</li>
+                </ul>
+                <p>برای خروج از محیط MySQL، از دستور `exit` یا `quit` استفاده کنید.</p>
+            </section>
+            
+            <section id="db_ddl" class="content-section" style="display: none;">
+                <h2>دستورات DDL: پایگاه داده</h2>
+                <h3>دستور CREATE DATABASE</h3>
+                <p>برای ساختن یک پایگاه داده جدید استفاده می‌شود.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE DATABASE [IF NOT EXISTS] db_name
+[DEFAULT CHARACTER SET charset_name]
+[DEFAULT COLLATE collation_name];</code></pre></div>
+                <h3>دستور ALTER DATABASE</h3>
+                <p>برای تغییر مشخصات یک پایگاه داده موجود به کار می‌رود.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER DATABASE db_name
+[DEFAULT CHARACTER SET charset_name];</code></pre></div>
+                <h3>دستور DROP DATABASE</h3>
+                <p>این دستور یک پایگاه داده و <strong class="important">تمام محتویات آن</strong> را برای همیشه حذف می‌کند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DROP DATABASE [IF EXISTS] db_name;</code></pre></div>
+            </section>
+            
+            <section id="table_ddl" class="content-section" style="display: none;">
+                <h2>دستورات DDL: جداول (CREATE)</h2>
+                <h3>دستور CREATE TABLE</h3>
+                <p>این دستور برای ساختن یک جدول جدید با ستون‌ها، انواع داده و قیدهای مشخص به کار می‌رود.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE [TEMPORARY] TABLE [IF NOT EXISTS] table_name (
+    column_definition_1,
+    column_definition_2,
+    ...
+    [table_constraints]
+) [table_options];</code></pre></div>
+                
+                <h3>گزینه‌های جدول (Table Options)</h3>
+                <p>این گزینه‌ها در انتهای دستور `CREATE TABLE` قرار می‌گیرند و رفتار کلی جدول را مشخص می‌کنند:</p>
+                <ul>
+                    <li><strong>`ENGINE = engine_name`</strong>: موتور ذخیره‌سازی جدول را تعیین می‌کند. `InnoDB` (پیش‌فرض و استاندارد امروزی) از تراکنش‌ها و کلیدهای خارجی پشتیبانی می‌کند، در حالی که `MyISAM` (موتور قدیمی‌تر) این قابلیت‌ها را ندارد.</li>
+                    <li><strong>`DEFAULT CHARACTER SET = charset_name`</strong>: مجموعه کاراکتر پیش‌فرض را برای تمام ستون‌های متنی جدول تعیین می‌کند. اگر برای ستونی به صورت مجزا `CHARSET` تعریف نشود، از این مقدار استفاده خواهد شد.</li>
+                    <li><strong>`AUTO_INCREMENT = value`</strong>: مقدار اولیه‌ای که شمارنده خودکار از آن شروع می‌شود را تعیین می‌کند. برای مثال `AUTO_INCREMENT = 1001` باعث می‌شود اولین ID از 1001 شروع شود.</li>
+                </ul>
+				<h3>تعريف ستون‌هاي جدول</h3>
+                <p>هر ستون جدول به شكل ذيل تعريف مي گردد:</p>
+                 <div class="code-block-container"><pre><code>column_name DATATYPE [column_options] </code></pre></div>
+				 <p>که در دستور فوق به جای column_name اسم ستون جدول قرار می‌گيرد. </p>
+                <h3>گزینه‌های ستون (Column Options)</h3>
+                <p>این گزینه‌ها که بلافاصله پس از نوع داده یک ستون می‌آیند، رفتار آن ستون را به صورت مجزا کنترل می‌کنند:</p>
+				<div class="code-block-container"><pre><code>[null | not null] [primary key] [charset=charset_name] [collate=coll_name] [AUTO_INCREMENT] [default value] [zerofill] [unsigned] [UNIQUE KEY] </code></pre></div>
+                <ul>
+                    <li><strong>`NULL | NOT NULL`</strong>: مشخص می‌کند آیا ستون می‌تواند خالی باشد یا خیر (پیش‌فرض `NULL` است).</li>
+                    <li><strong>`DEFAULT value`</strong>: یک مقدار پیش‌فرض برای ستون تعیین می‌کند.</li>
+                    <li><strong>`AUTO_INCREMENT`</strong>: برای ستون‌های کلید اصلی عددی، یک شمارنده خودکار ایجاد می‌کند.</li>
+                    <li><strong>`UNIQUE KEY`</strong>: تضمین می‌کند که مقدار این ستون در کل جدول تکراری نباشد.</li>
+                    <li><strong>`PRIMARY KEY`</strong>: ستون را به عنوان کلید اصلی (شناسه یکتا) تعریف می‌کند.</li>
+                    <li><strong>`UNSIGNED`</strong>: برای انواع داده عددی، بازه مقادیر را به اعداد مثبت محدود می‌کند (و در نتیجه بازه مثبت را دو برابر می‌کند).</li>
+                    <li><strong>`ZEROFILL`</strong>: برای انواع داده عددی، اگر عدد وارد شده از طول مشخص شده کوتاه‌تر باشد، سمت چپ آن را با صفر پر می‌کند. مثلاً اگر ستون `INT(5) ZEROFILL` باشد و عدد `123` وارد شود، به صورت `00123` ذخیره و نمایش داده می‌شود.</li>
+                </ul>
+            </section>
+
+<section id="data_types" class="content-section">
+                <h2>انواع داده در MySQL (Data Types)</h2>
+                <p>انتخاب نوع داده صحیح برای هر ستون، یکی از مهم‌ترین تصمیمات در طراحی پایگاه داده است. این انتخاب بر صحت داده‌ها، کارایی (Performance) و میزان فضای مصرفی تأثیر مستقیم دارد. داده‌ها در MySQL به سه دسته اصلی تقسیم می‌شوند.</p>
+                
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <h4>نمودار درختی انواع داده</h4>
+                    <ul class="data-tree">
+                        <li><strong>داده‌های ساخت‌یافته (Structured)</strong>
+                            <ul>
+                                <li><strong>عددی (Numeric)</strong>
+                                    <ul>
+                                        <li>صحیح: TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT</li>
+                                        <li>اعشاری: DECIMAL, FLOAT, DOUBLE</li>
+                                    </ul>
+                                </li>
+                                <li><strong>رشته‌ای (String)</strong>
+                                    <ul>
+                                        <li>کاراکتری: CHAR, VARCHAR</li>
+                                        <li>متنی: TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT</li>
+                                    </ul>
+                                </li>
+                                <li><strong>تاریخ و زمان (Date/Time)</strong>
+                                    <ul><li>DATE, DATETIME, TIMESTAMP, TIME, YEAR</li></ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>داده‌های نیمه‌ساخت‌یافته (Semi-Structured)</strong>
+                             <ul><li>JSON, ENUM, SET</li></ul>
+                        </li>
+                        <li><strong>داده‌های ساخت‌نیافته (Unstructured)</strong>
+                             <ul><li>باینری: BINARY, VARBINARY, TINYBLOB, BLOB, MEDIUMBLOB, LONGBLOB</li></ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>۱. انواع داده ساخت‌یافته (Structured)</h3>
+                <p>این نوع داده‌ها دارای یک مدل از پیش تعریف‌شده و بسیار منظم هستند و به راحتی در جداول با سطرها و ستون‌های مشخص قرار می‌گیرند.</p>
+
+                <h4>- اعداد صحیح (Integer Types)</h4>
+                <p>برای ذخیره اعداد کامل و بدون بخش اعشاری استفاده می‌شوند. با استفاده از گزینه <strong>UNSIGNED</strong> می‌توان بازه آن‌ها را به اعداد مثبت محدود کرده و ظرفیت مثبت را دو برابر کرد.</p>
+                <ul>
+                    <li><strong>TINYINT</strong>
+                        <ul>
+                            <li><strong>حجم:</strong> 1 بایت</li>
+                            <li><strong>بازه (با علامت):</strong> از -128 تا 127</li>
+                            <li><strong>بازه (بدون علامت):</strong> از 0 تا 255</li>
+                        </ul>
+                    </li>
+                    <li><strong>SMALLINT</strong>
+                        <ul>
+                            <li><strong>حجم:</strong> 2 بایت</li>
+                            <li><strong>بازه (با علامت):</strong> از -32,768 تا 32,767</li>
+                            <li><strong>بازه (بدون علامت):</strong> از 0 تا 65,535</li>
+                        </ul>
+                    </li>
+                    <li><strong>MEDIUMINT</strong>
+                        <ul>
+                            <li><strong>حجم:</strong> 3 بایت </li>
+                            <li><strong>بازه (با علامت):</strong> از -8,388,608 تا 8,388,607</li>
+                            <li><strong>بازه (بدون علامت):</strong> از 0 تا 16,777,215</li>
+                        </ul>
+                    </li>
+                    <li><strong>INT (یا INTEGER)</strong>
+                        <ul>
+                            <li><strong>حجم:</strong> 4 بایت </li>
+                            <li><strong>بازه (با علامت):</strong> از -2,147,483,648 تا 2,147,483,647</li>
+                            <li><strong>بازه (بدون علامت):</strong> از 0 تا 4,294,967,295</li>
+                        </ul>
+                    </li>
+                     <li><strong>BIGINT</strong>
+                        <ul>
+                            <li><strong>حجم:</strong> 8 بایت </li>
+                            <li><strong>بازه (با علامت):</strong> بسیار بزرگ (حدود 9- کوئینتیلیون تا 9+ کوئینتیلیون)</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4>- اعداد اعشاری (Decimal Types)</h4>
+                 <ul>
+                    <li><strong>DECIMAL(M, D) (یا NUMERIC)</strong>
+                        <ul>
+                            <li><strong>نوع:</strong> ممیز ثابت (Fixed-Point) </li>
+                            <li><strong>توضیح:</strong> بهترین انتخاب برای مقادیر مالی که دقت در آن‌ها حیاتی است.  `M` تعداد کل ارقام و `D` تعداد ارقام بعد از ممیز است.</li>
+                        </ul>
+                    </li>
+                    <li><strong>FLOAT</strong>
+                         <ul>
+                            <li><strong>حجم:</strong> 4 بایت </li>
+                            <li><strong>نوع:</strong> ممیز شناور (Floating-Point) </li>
+                            <li><strong>توضیح:</strong> برای مقادیر علمی که بازه بزرگی دارند اما دقت مطلق در اولویت نیست.</li>
+                        </ul>
+                    </li>
+                    <li><strong>DOUBLE</strong>
+                         <ul>
+                            <li><strong>حجم:</strong> 8 بایت </li>
+                            <li><strong>نوع:</strong> ممیز شناور (Floating-Point) </li>
+                             <li><strong>توضیح:</strong> مشابه `FLOAT` اما با دقت دو برابر.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>- رشته‌ها (String Types)</h4>
+                 <ul>
+                    <li><strong>CHAR(N)</strong>
+                        <ul>
+                            <li><strong>نوع:</strong> کاراکتری با طول ثابت </li>
+                            <li><strong>حداکثر طول:</strong> 255 کاراکتر </li>
+                            <li><strong>توضیح:</strong> همیشه به اندازه `N` کاراکتر فضا اشغال می‌کند، حتی اگر متن شما کوتاه‌تر باشد. </li>
+                        </ul>
+                    </li>
+                    <li><strong>VARCHAR(N)</strong>
+                        <ul>
+                            <li><strong>نوع:</strong> کاراکتری با طول متغیر </li>
+                            <li><strong>حداکثر طول:</strong> تا 65,535 کاراکتر </li>
+                             <li><strong>توضیح:</strong> فقط به اندازه طول واقعی متن فضا اشغال می‌کند.  این نوع داده رایج‌ترین انتخاب برای متن است.</li>
+                        </ul>
+                    </li>
+                </ul>
+                 
+                <h4>- انواع داده متنی بزرگ (Text Types)</h4>
+                <p>برای ذخیره متون بسیار طولانی که در `VARCHAR` جا نمی‌شوند.</p>
+                <ul>
+                    <li><strong>TINYTEXT</strong>: حداکثر 255 (1 - 2<sup>8</sup>) کاراکتر </li>
+                    <li><strong>TEXT</strong>: حداکثر 65,535 (1 - 2<sup>16</sup>) کاراکتر (حدود 64 کیلوبایت) </li>
+                    <li><strong>MEDIUMTEXT</strong>: حداکثر 16,777,215 (1 - 2<sup>24</sup>) کاراکتر (حدود 16 مگابایت) </li>
+                    <li><strong>LONGTEXT</strong>: حداکثر 4,294,967,295 (1 - 2<sup>32</sup>) کاراکتر (حدود 4 گیگابایت) </li>
+                </ul>
+                
+                <h4>- تاریخ و زمان (Date and Time Types)</h4>
+                 <ul>
+                    <li><strong>DATE</strong>: برای ذخیره تاریخ. بازه: از `'1000-01-01'` تا `'9999-12-31'` </li>
+                    <li><strong>DATETIME</strong>: برای ذخیره تاریخ و زمان با هم. بازه: از `'1000-01-01 00:00:00'` تا `'9999-12-31 23:59:59'` </li>
+                    <li><strong>TIMESTAMP</strong>: شبیه `DATETIME` اما وابسته به منطقه زمانی (Timezone). بازه آن محدودتر است: از `'1970-01-01 00:00:01'` تا `'2038-01-19 03:14:07'` </li>
+                    <li><strong>TIME</strong>: برای ذخیره زمان یا فاصله زمانی. بازه: از `'-838:59:59'` تا `'838:59:59'` </li>
+                    <li><strong>YEAR</strong>: برای ذخیره سال.</li>
+                </ul>
+                 <div class="note"><strong>نحوه ذخیره تاریخ شمسی:</strong> بهترین راه، تبدیل تاریخ شمسی به میلادی در لایه اپلیکیشن و ذخیره آن در ستون `DATE` یا `DATETIME` است.  این کار به شما اجازه می‌دهد از تمام توابع قدرتمند تاریخ در SQL استفاده کنید. ذخیره تاریخ شمسی به صورت رشته (مانند `VARCHAR`) این قابلیت‌ها را از شما می‌گیرد. </div>
+
+                <h3>۲. انواع داده نیمه‌ساخت‌یافته (Semi-Structured)</h3>
+                <p>این داده‌ها ساختار ثابتی ندارند، اما حاوی برچسب‌هایی هستند که به آن‌ها ساختار می‌بخشد.</p>
+                <ul>
+                    <li><strong>`JSON`</strong>: برای ذخیره داده‌های با فرمت JSON.  MySQL توابع خاصی برای جستجو و کار با این نوع داده فراهم می‌کند.</li>
+                    <li><strong>`ENUM`</strong>: برای ستون‌هایی که مقدار آن‌ها باید از یک لیست از پیش تعریف‌شده انتخاب شود (مثلاً `ENUM('Pending', 'Completed', 'Cancelled')`).  این کار باعث صرفه‌جویی در فضا و تضمین صحت داده می‌شود.</li>
+                    <li><strong>`SET`</strong>: مشابه `ENUM` است، با این تفاوت که یک ستون می‌تواند صفر، یک یا چند مقدار از لیست را به صورت همزمان داشته باشد. </li>
+                </ul>
+
+                <h3>۳. انواع داده ساخت‌نیافته (Unstructured)</h3>
+                <p>این داده‌ها فاقد مدل داده‌ای مشخص هستند و معمولاً به صورت باینری ذخیره می‌شوند. </p>
+                
+                <h4>- انواع داده باینری بزرگ (BLOB - Binary Large Object)</h4>
+                <p>برای ذخیره داده‌های باینری مانند تصاویر، فایل‌های صوتی، PDF یا هر فایل دیگری استفاده می‌شوند. </p>
+                 <ul>
+                    <li><strong>TINYBLOB</strong>: حداکثر 255 (1 - 2<sup>8</sup>) بایت </li>
+                    <li><strong>BLOB</strong>: حداکثر 65,535 (1 - 2<sup>16</sup>) بایت (حدود 64 کیلوبایت) </li>
+                    <li><strong>MEDIUMBLOB</strong>: حداکثر 16,777,215 (1 - 2<sup>24</sup>) بایت (حدود 16 مگابایت) </li>
+                    <li><strong>LONGBLOB</strong>: حداکثر 4,294,967,295 (1 - 2<sup>32</sup>) بایت (حدود 4 گیگابایت) </li>
+                </ul>
+            </section>
+            <section id="alter_table" class="content-section" style="display: none;">
+                <h2>دستور جامع ALTER TABLE</h2>
+                <p>این دستور بسیار قدرتمند برای انواع تغییرات روی ساختار یک جدول موجود پس از ایجاد آن استفاده می‌شود.</p>
+
+                <h3>۱. افزودن ستون (ADD COLUMN)</h3>
+                <p>برای اضافه کردن یک ستون جدید به جدول.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE table_name
+ADD COLUMN column_name data_type [column_options] [FIRST | AFTER another_column];</code></pre></div>
+                <p>با `FIRST` می‌توانید ستون را در ابتدا و با `AFTER` بعد از ستون دیگری اضافه کنید. اگر هیچ‌کدام مشخص نشود، ستون به انتهای جدول اضافه می‌شود.</p>
+
+                <h3>۲. ویرایش ستون (MODIFY COLUMN)</h3>
+                <p>برای تغییر نوع داده یا قیدهای یک ستون موجود. <strong class="important">باید تمام مشخصات جدید ستون (نوع داده و تمام قیدها) را دوباره بنویسید، در غیر این صورت قیدهای قبلی حذف می‌شوند.</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE Products
+MODIFY COLUMN Pprice DECIMAL(10, 2) NOT NULL;</code></pre></div>
+                
+                <h3>۳. تغییر نام و مشخصات ستون (CHANGE COLUMN)</h3>
+                <p>این دستور هم نام ستون و هم تمام مشخصات آن را تغییر می‌دهد. این دستور نیز نیازمند بازنویسی تمام مشخصات ستون است.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE table_name
+CHANGE COLUMN old_column_name new_column_name new_data_type [new_column_options];</code></pre></div>
+
+                <h3>۴. حذف ستون (DROP COLUMN)</h3>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE Tbl_F DROP COLUMN customer;</code></pre></div>
+                
+                <h3>۵. تغییر نام جدول (RENAME TABLE)</h3>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE moshtari RENAME TO Customer;</code></pre></div>
+            </section>
+            
+            <section id="assignment" class="content-section" style="display: none;">
+                <h2>تکلیف جلسه</h2>
+                <div class="assignment-box">
+                    <h3 class="!mt-0">تکلیف دانشجو</h3>
+                    <p>دانشجویان باید در این بخش از گزارش‌کار، SCRIPT کامل ایجاد جداول مربوط به محیط انتخابی خودشان را (بر اساس مدل رابطه‌ای طراحی شده) قرار دهند.</p>
+                </div>
+            </section>
+            
+            <section id="key_constraints" class="content-section">
+                <h2>قیدهای کلیدی و رابطه‌ای</h2>
+                
+                <h3>کلید اصلی (Primary Key)</h3>
+                <p>کلید اصلی (PK) شناسه‌ای منحصربه‌فرد برای هر سطر در یک جدول است. این قید به صورت خودکار دو قانون را اعمال می‌کند: مقدار آن ستون هرگز نمی‌تواند <strong>NULL</strong> باشد و باید در کل جدول <strong>یکتا</strong> باشد. هر جدول تنها می‌تواند یک کلید اصلی داشته باشد. وقتی ستونی به عنوان کلید اصلی تعریف می‌شود، DBMS به صورت خودکار برای آن یک ایندکس ایجاد می‌کند تا جستجو بر اساس آن با سرعت بسیار بالایی (جستجوی باینری به جای جستجوی خطی) انجام شود.</p>
+                
+                <h4>تعریف کلید اصلی در زمان ساخت جدول (`CREATE TABLE`)</h4>
+                <ul>
+                    <li><strong>روش اول (ستونی):</strong> برای کلیدهای اصلی که فقط از یک ستون تشکیل شده‌اند، می‌توان قید را مستقیماً بعد از تعریف ستون نوشت.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE TABLE Customer (
+    CID INT PRIMARY KEY,
+    CName VARCHAR(50) NOT NULL
+);</code></pre></div>
+                <ul>
+                    <li><strong>روش دوم (جدولی):</strong> این روش برای تعریف کلیدهای اصلی ساده و به‌خصوص ترکیبی (Composite) استفاده می‌شود. این روش انعطاف بیشتری دارد و اجازه می‌دهد جهت مرتب‌سازی ایندکس را نیز مشخص کنید.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE TABLE OrderDetail (
+    OID INT,
+    PID INT,
+    Qty INT NOT NULL,
+    PRIMARY KEY (OID, PID DESC)
+);</code></pre></div>
+                <div class="note"><strong>اهمیت ترتیب در کلید اصلی ترکیبی:</strong> ترتیب ستون‌ها در تعریف کلید اصلی ترکیبی، بر نحوه مرتب‌سازی فیزیکی ایندکس تأثیر می‌گذارد. در مثال بالا، داده‌ها ابتدا بر اساس `OID` و سپس برای `OID`های یکسان، بر اساس `PID` به صورت نزولی (DESC) مرتب می‌شوند. این ترتیب در کوئری‌هایی که نیاز به مرتب‌سازی دارند، بسیار مؤثر است.</div>
+                
+                <h4>افزودن و حذف کلید اصلی با `ALTER TABLE`</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- افزودن کلید اصلی به جدول موجود
+ALTER TABLE Customer ADD PRIMARY KEY (CID);
+
+-- حذف کلید اصلی از جدول
+ALTER TABLE Customer DROP PRIMARY KEY;</code></pre></div>
+                <p class="important">دستور افزودن کلید اصلی تنها در صورتی موفقیت‌آمیز خواهد بود که ستون مورد نظر، هیچ مقدار NULL یا تکراری نداشته باشد.</p>
+
+                <h3>قیدهای جامعیت</h3>
+    <h4>کلید خارجی (Foreign Key)</h4>
+    <p>کلید خارجی (FK) ارتباط بین جداول را از طریق ارجاع به کلید اصلی جدول دیگر برقرار می‌کند. فقط در موتور <code>InnoDB</code> پشتیبانی می‌شود.</p>
+    
+	<div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE Orders
+ADD CONSTRAINT FK_Orders_Customer FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT;</code></pre>
+    </div>
+    <p><strong>اقدامات ارجاعی:</strong></p>
+    <ul>
+        <li><code>RESTRICT/NO ACTION:</code> جلوگیری از حذف/تغییر سطر والد اگر ارجاعی در جدول فرزند باشد.</li>
+        <li><code>CASCADE:</code> حذف/تغییر والد، فرزند را هم تغییر می‌دهد (برای DELETE با احتیاط!).</li>
+        <li><code>SET NULL:</code> مقدار فرزند به NULL تغییر می‌کند (اگر NULL مجاز باشد).</li>
+        <li><code>SET DEFAULT:</code> پشتیبانی نمی‌شود در InnoDB.</li>
+    </ul>
+    <div class="warning">
+        <p><strong>هشدار:</strong> استفاده از <code>ON DELETE CASCADE</code> می‌تواند داده‌های زیادی را حذف کند (مثل حذف مشتری که تمام سفارشاتش حذف شود). قبل از استفاده، تأثیرات را بررسی کنید.</p>
+    </div>
+    <div class="summary">
+        <p><strong>خلاصه:</strong> کلید خارجی جامعیت ارجاعی را تضمین می‌کند و فقط در InnoDB کار می‌کند.</p>
+    </div>
+                
+                <h4>تعریف و حذف کلید خارجی</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- افزودن کلید خارجی با ALTER TABLE
+ALTER TABLE Orders
+ADD CONSTRAINT FK_Orders_Customer FOREIGN KEY (CID) REFERENCES Customer(CID)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT;
+
+-- حذف کلید خارجی
+ALTER TABLE Orders DROP FOREIGN KEY FK_Orders_Customer;</code></pre></div>
+
+ <h3>قید `UNIQUE` (یکتا)</h3>
+                <p>این قید تضمین می‌کند که تمام مقادیر در یک ستون (یا ترکیبی از چند ستون) منحصربه‌فرد و غیرتکراری باشند. این قید برای ستون‌هایی که شناسه اصلی جدول نیستند اما باید یکتا باشند، مانند ایمیل یا کد ملی، استفاده می‌شود.</p>
+                <h4>تفاوت `UNIQUE` و `PRIMARY KEY`</h4>
+                <ul>
+                    <li>یک جدول فقط می‌تواند <strong>یک</strong> `PRIMARY KEY` داشته باشد، اما می‌تواند <strong>چندین</strong> قید `UNIQUE` داشته باشد.</li>
+                    <li>ستون `PRIMARY KEY` هرگز نمی‌تواند مقدار `NULL` داشته باشد. ستون `UNIQUE` می‌تواند یک (و فقط یک) مقدار `NULL` را بپذیرد.</li>
+                </ul>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- تعریف به عنوان قید ستونی
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    Email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- تعریف به عنوان قید جدولی (برای کلیدهای یکتای ترکیبی)
+CREATE TABLE Courses (
+    CourseCode VARCHAR(10),
+    Semester INT,
+    CONSTRAINT UQ_Course_Semester UNIQUE (CourseCode, Semester)
+);</code></pre></div>
+
+            </section>
+
+            <section id="indexes" class="content-section" style="display: none;">
+                <h2>ایندکس‌ها (Indexes)</h2>
+                <h3>مفهوم ایندکس</h3>
+                <p>ایندکس یک ساختار داده جداگانه و مرتب‌شده است که به یک یا چند ستون از جدول اشاره می‌کند. همانطور که فهرست یک کتاب به شما کمک می‌کند تا یک مطلب را به سرعت پیدا کنید، ایندکس نیز به پایگاه داده کمک می‌کند تا سطرها را بدون نیاز به اسکن کامل جدول (جستجوی خطی) پیدا کند. هدف اصلی ایندکس، افزایش چشمگیر <strong>سرعت جستجو</strong> است.</p>
+                <div class="note">ایندکس یک ساختار مرتب‌شده (معمولاً B-Tree در MySQL) است که سرعت جستجو (<code>SELECT</code>) را افزایش می‌دهد، اما عملیات نوشتن (<code>INSERT/UPDATE/DELETE</code>) را کند می‌کند. برای ستون‌های متنی بزرگ (<code>TEXT/BLOB</code>)، از ایندکس <code>FULLTEXT</code> استفاده کنید.</div>
+                
+                <h3>ایجاد و حذف ایندکس</h3>
+                <p>علاوه بر ایندکس‌هایی که به صورت خودکار برای کلیدهای اصلی و یکتا ساخته می‌شوند، می‌توانیم به صورت دستی نیز ایندکس ایجاد کنیم:</p>
+                <ul>
+                    <li><strong>۱. در زمان ساخت جدول (`CREATE TABLE`):</strong></li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE TABLE Customer (..., INDEX idx_CNameCity (CName, CCity));</code></pre></div>
+                <ul>
+                    <li><strong>۲. افزودن به جدول موجود (`ALTER TABLE`):</strong></li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER TABLE Customer ADD INDEX idx_CCity (CCity);</code></pre></div>
+                <ul>
+                    <li><strong>۳. با دستور مستقیم `CREATE INDEX`:</strong></li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE INDEX idx_CName ON Customer (CName);</code></pre></div>
+                
+                <h4>حذف ایندکس</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DROP INDEX idx_CName ON Customer;</code></pre></div>
+            </section>
+            
+            <section id="show_commands" class="content-section" style="display: none;">
+                <h2>دستورات SHOW</h2>
+                <p>دستورات `SHOW` ابزارهای اطلاعاتی قدرتمندی هستند که به شما اجازه می‌دهند متادیتا (اطلاعات توصیفی) مربوط به پایگاه‌های داده، جداول، ستون‌ها و سایر اجزای سرور را مشاهده کنید.</p>
+                
+                <h3>فیلتر کردن نتایج با `LIKE`</h3>
+                <p>می‌توانید خروجی دستورات `SHOW` را با استفاده از `LIKE` و دو کاراکتر ویژه فیلتر کنید:</p>
+                <ul>
+                    <li>`%` (درصد): به معنای هر تعداد کاراکتر (از صفر تا بی‌نهایت).</li>
+                    <li>`_` (آندرلاین): به معنای دقیقاً یک کاراکتر.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش پایگاه‌های داده‌ای که با 'test' شروع می‌شوند
+SHOW DATABASES LIKE 'test%';
+
+-- نمایش پایگاه‌های داده‌ای که به 'schema' ختم می‌شوند
+SHOW DATABASES LIKE '%schema';
+
+-- نمایش پایگاه داده‌ای که حرف اول آن هر چیزی و ادامه آن 'akila' باشد
+SHOW DATABASES LIKE '_akila';</code></pre></div>
+                
+                <h3>مشاهده ساختار و جزئیات جداول</h3>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش جداول در پایگاه داده فعلی
+SHOW TABLES;
+
+-- نمایش تعریف ستون‌های یک جدول
+DESCRIBE Customer;
+
+-- نمایش دستور CREATE TABLE کاملی که برای ساخت جدول استفاده شده است
+-- این بهترین راه برای دیدن کلیدهای خارجی و ایندکس‌هاست
+SHOW CREATE TABLE Customer;
+
+-- نمایش تمام ایندکس‌های یک جدول
+SHOW INDEXES FROM Customer;</code></pre></div>
+            </section>
+            
+<section id="script_example" class="content-section">
+                <h2>مثال عملی: اسکریپت کامل پایگاه داده سفارشات</h2>
+                <p>
+                    اسکریپت زیر تمام مفاهیمی که تاکنون آموخته‌ایم را در کنار هم قرار می‌دهد. این کد یک پایگاه داده کامل برای مدیریت سفارشات، مشتریان و محصولات را از صفر ایجاد می‌کند. این اسکریپت شامل ایجاد پایگاه داده، تعریف جداول با انواع داده مختلف، و اعمال قیدهای کلیدی مانند کلید اصلی، کلید خارجی، مقادیر پیش‌فرض و شمارنده خودکار است.
+                </p>
+                
+                <h3>توضیح گام به گام اسکریپت</h3>
+
+                <h4>۱. ایجاد و انتخاب پایگاه داده</h4>
+                <p>
+                    در ابتدا، پایگاه داده اصلی با نام <code>orderdb</code> ایجاد می‌شود. از <code>IF NOT EXISTS</code> برای جلوگیری از خطا در صورت وجود پایگاه داده استفاده شده و <code>CHARSET</code> و <code>COLLATE</code> برای پشتیبانی کامل از زبان فارسی تنظیم شده‌اند. سپس با دستور <code>USE</code>، این پایگاه داده را به عنوان محیط فعال برای اجرای دستورات بعدی انتخاب می‌کنیم.
+                </p>
+
+                <h4>۲. جدول `city_tbl`</h4>
+                <p>
+                    این یک جدول ساده و پایه‌ای (Lookup Table) است که هیچ وابستگی به جداول دیگر ندارد و فقط برای نگهداری نام شهرها استفاده می‌شود. ستون <code>cityId</code> به عنوان کلید اصلی با قابلیت افزایش خودکار (<code>AUTO_INCREMENT</code>) تعریف شده است.
+                </p>
+
+                <h4>۳. جدول `customer_tbl`</h4>
+                <p>
+                    این جدول اطلاعات مشتریان را ذخیره می‌کند و نکات مهمی در تعریف آن وجود دارد:
+                </p>
+                <ul>
+                    <li><strong><code>customertel VARCHAR(30) UNIQUE</code></strong>: قید <code>UNIQUE</code> تضمین می‌کند که هیچ دو مشتری شماره تلفن یکسانی نداشته باشند.</li>
+                    <li><strong><code>credit DECIMAL(16,4) ... DEFAULT 10000000</code></strong>: نوع داده <code>DECIMAL</code> برای دقت بالا در مقادیر مالی انتخاب شده و با <code>DEFAULT</code>، اعتبار اولیه برای هر مشتری جدید به صورت خودکار تخصیص داده می‌شود.</li>
+                    <li><strong><code>status ENUM(...)</code></strong>: نوع داده <code>ENUM</code> مقدار ستون را به یکی از سه گزینه 'active', 'inactive', 'suspended' محدود می‌کند تا از ورود داده‌های نامعتبر جلوگیری شود.</li>
+                    <li><strong><code>CONSTRAINT FK_customer_City_CityId ...</code></strong>: این کلید خارجی، ستون <code>cityId</code> در این جدول را به کلید اصلی جدول <code>city_tbl</code> متصل می‌کند. عبارت <code>ON UPDATE CASCADE</code> باعث می‌شود که اگر شناسه یک شهر در جدول شهرها تغییر کند، این تغییر به صورت خودکار در تمام رکوردهای مشتریان مرتبط نیز اعمال شود.</li>
+                </ul>
+
+                <h4>۴. جدول `productGroup_tbl` (ارتباط بازگشتی)</h4>
+                <p>
+                    این جدول یک مثال عالی از <strong>ارتباط بازگشتی (Self-Referencing Relationship)</strong> است. ستون <code>ParentProductGroupID</code> به کلید اصلی همین جدول ارجاع می‌دهد. این ساختار به ما اجازه می‌دهد تا گروه‌های تودرتو (دسته‌بندی و زیردسته‌بندی) برای محصولات ایجاد کنیم.
+                </p>
+
+                <h4>۵. جدول `orderdetail_tbl` (جدول اتصال)</h4>
+                <p>
+                    این یک <strong>جدول اتصال (Junction Table)</strong> است که ارتباط چندبه‌چند بین سفارشات (`Order_tbl`) و محصولات (`product_tbl`) را پیاده‌سازی می‌کند. نکات کلیدی آن عبارتند از:
+                </p>
+                 <ul>
+                    <li><strong><code>PRIMARY KEY (productID, OrderId)</code></strong>: این یک <strong>کلید اصلی ترکیبی (Composite Primary Key)</strong> است. این قید تضمین می‌کند که ترکیب یک محصول و یک سفارش در کل جدول یکتا باشد، یعنی یک محصول نمی‌تواند دو بار در یک سفارش تکرار شود.</li>
+                    <li><strong>دو کلید خارجی:</strong> این جدول با دو کلید خارجی مجزا، به جداول سفارشات و محصولات متصل شده و یکپارچگی داده‌ها را حفظ می‌کند.</li>
+                </ul>
+
+                <h3>اسکریپت کامل برای اجرا</h3>
+                <div class="code-block-container">
+                    <button class="copy-button">Copy</button>
+                    <pre><code>CREATE DATABASE IF NOT EXISTS orderdb DEFAULT CHARSET utf8 DEFAULT COLLATE utf8_general_ci;
+
+USE orderdb;
+
+CREATE TABLE IF NOT EXISTS city_tbl (
+    cityId      SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    cityName    VARCHAR(25) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS customer_tbl (
+    customerId          INT PRIMARY KEY AUTO_INCREMENT,
+    customerName        VARCHAR(30) NOT NULL,
+    customertel         VARCHAR(30) UNIQUE,
+    customerAddress     VARCHAR(100),
+    credit              DECIMAL(16,4) NOT NULL DEFAULT 10000000,
+    status              ENUM('active', 'inactive', 'suspended') NOT NULL DEFAULT 'active',
+    cityId              SMALLINT NOT NULL,
+    CONSTRAINT FK_customer_City_CityId FOREIGN KEY (cityId) REFERENCES city_tbl (cityId) ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Order_tbl (
+    orderID             INT PRIMARY KEY AUTO_INCREMENT,
+    orderDate           DATETIME NOT NULL,
+    payType             ENUM('cash', 'pos', 'cheque', 'online') NOT NULL,
+    totalSum            DECIMAL(16,4) NOT NULL DEFAULT 0,
+    discountAmount      DECIMAL(16,4) NOT NULL DEFAULT 0,
+    payablePrice        DECIMAL(16,4) NOT NULL DEFAULT 0,
+    customerId          INT NOT NULL,
+    CONSTRAINT FK_Order_customer_customerId FOREIGN KEY (customerId) REFERENCES customer_tbl (customerId) ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS productGroup_tbl (
+    ProductGroupID          SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    ProductGroupTitle       VARCHAR(50) NOT NULL,
+    ParentProductGroupID    SMALLINT,
+    CONSTRAINT FK_productGroup_productGroup_ParentProductGroupID FOREIGN KEY (ParentProductGroupID) REFERENCES productGroup_tbl (ProductGroupID) ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS product_tbl (
+    productID           INT PRIMARY KEY AUTO_INCREMENT,
+    ProductName         VARCHAR(30) NOT NULL,
+    minPrice            DECIMAL(16,4) NOT NULL DEFAULT 0,
+    ProductWeight       INT DEFAULT 0,
+    ProductColor        VARCHAR(30),
+    ProductGroupID      SMALLINT NOT NULL,
+    CONSTRAINT FK_product_productGroup_ProductGroupID FOREIGN KEY (ProductGroupID) REFERENCES productGroup_tbl (ProductGroupID) ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS orderdetail_tbl (
+    productID           INT,
+    OrderId             INT,
+    fee                 DECIMAL(16,4) NOT NULL,
+    qty                 INT NOT NULL,
+    PRIMARY KEY (productID ASC, OrderId DESC),
+    CONSTRAINT FK_orderdetail_Order_OrderId FOREIGN KEY (OrderId) REFERENCES Order_tbl (OrderId),
+    CONSTRAINT FK_orderdetail_Product_ProductId FOREIGN KEY (productID) REFERENCES product_tbl (productID)
+);
+</code></pre>
+                </div>
+            </section>
+            
+           <section id="dml_intro" class="content-section" style="display: none;">
+                <h2>مقدمه‌ای بر دستورات DML</h2>
+                <p>
+                    پس از آنکه با دستورات DDL ساختار پایگاه داده و جداول خود را ایجاد کردیم، نوبت به کار با داده‌های واقعی می‌رسد. این کار از طریق دستورات <strong>DML (Data Manipulation Language)</strong> یا زبان مدیریت داده انجام می‌شود. عملیات DML به دو دسته اصلی تقسیم می‌شوند:
+                </p>
+                <ul>
+                    <li>
+                        <strong>بازیابی (Retrieval):</strong> به معنای خواندن و استخراج داده‌های موجود از جداول است. این کار عمدتاً با دستور <code>SELECT</code> انجام می‌شود.
+                    </li>
+                    <li>
+                        <strong>ذخیره‌سازی (Storage):</strong> شامل هرگونه تغییری در داده‌های جداول است که خود به سه عملیات تقسیم می‌شود:
+                        <ul>
+                            <li><strong>درج (Insert):</strong> افزودن سطرهای جدید به یک جدول.</li>
+                            <li><strong>به‌هنگام‌سازی (Update):</strong> ویرایش و تغییر مقادیر سطرهای موجود.</li>
+                            <li><strong>حذف (Delete):</strong> پاک کردن سطرهای موجود از یک جدول.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section id="select_statement" class="content-section" style="display: none;">
+                <h2>معرفی جامع دستور SELECT</h2>
+                <p>
+                    دستور <code>SELECT</code> مهم‌ترین و پرکاربردترین دستور برای بازیابی و خواندن داده‌ها از پایگاه داده است. خروجی این دستور همیشه به صورت یک جدول مجازی (مجموعه‌ای از سطرها و ستون‌ها) است.
+                </p>
+                <h3>شکل کلی و کامل دستور SELECT</h3>
+                <p>
+                    شکل کلی این دستور شامل بخش‌های مختلفی است که به شما اجازه می‌دهند داده‌ها را به صورت دقیق انتخاب، فیلتر، گروه‌بندی و مرتب کنید. بخش‌هایی که داخل `[]` قرار دارند، اختیاری هستند.
+                </p>
+                <div class="code-block-container">
+                    <button class="copy-button">Copy</button>
+                    <pre><code>SELECT column_list
+FROM table_name
+[WHERE condition]
+[GROUP BY column1, column2, ...]
+[HAVING condition]
+[ORDER BY column1 [ASC|DESC], ...]
+[LIMIT n];</code></pre>
+                </div>
+                <ul>
+                    <li><strong><code>SELECT column_list</code></strong>: لیست ستون‌هایی که می‌خواهید مقادیر آن‌ها را ببینید. برای انتخاب تمام ستون‌ها می‌توانید از ستاره (<code>*</code>) استفاده کنید.</li>
+                    <li><strong><code>FROM table_name</code></strong>: نام جدولی که می‌خواهید داده‌ها را از آن بخوانید.</li>
+                    <li><strong><code>WHERE condition</code></strong>: یک شرط برای فیلتر کردن سطرها. فقط سطرهایی که این شرط برای آن‌ها برقرار (true) باشد، بازگردانده می‌شوند.</li>
+                    <li><strong><code>GROUP BY</code></strong>: سطرها را بر اساس مقادیر یک یا چند ستون گروه‌بندی می‌کند تا بتوان روی هر گروه محاسبات تجمعی (مانند جمع یا میانگین) انجام داد.</li>
+                    <li><strong><code>HAVING</code></strong>: شرطی برای فیلتر کردن گروه‌های ایجاد شده توسط `GROUP BY`.</li>
+                    <li><strong><code>ORDER BY</code></strong>: نتایج نهایی را بر اساس یک یا چند ستون به صورت صعودی (<code>ASC</code>، پیش‌فرض) یا نزولی (<code>DESC</code>) مرتب می‌کند.</li>
+                    <li><strong><code>LIMIT</code></strong>: تعداد سطرهای خروجی را به `n` ردیف محدود می‌کند.</li>
+                </ul>
+            </section>
+            
+            <section id="where_clause" class="content-section" style="display: none;">
+                <h2>کار با شرط (WHERE Clause)</h2>
+                <p>
+                    بخش <code>WHERE</code> قلب فیلتر کردن داده‌ها در SQL است. شرط‌هایی که در این بخش استفاده می‌شوند، نه تنها در دستور <code>SELECT</code>، بلکه در دستورات <code>UPDATE</code> و <code>DELETE</code> نیز برای مشخص کردن سطرهایی که باید ویرایش یا حذف شوند، کاربرد دارند.
+                </p>
+                
+                <h3>۱. عملگرهای مقایسه‌ای</h3>
+                <p>این عملگرها برای مقایسه یک مقدار با مقداری دیگر به کار می‌روند و می‌توانند برای انواع داده عددی، رشته‌ای و تاریخ استفاده شوند.</p>
+                <ul>
+                    <li><code>=</code> (مساوی)</li>
+                    <li><code><></code> یا `!=` (نامساوی)</li>
+                    <li><code>></code> (بزرگ‌تر)</li>
+                    <li><code><</code> (کوچک‌تر)</li>
+                    <li><code>>=</code> (بزرگ‌تر یا مساوی)</li>
+                    <li><code><=</code> (کوچک‌تر یا مساوی)</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- کالاهایی را بیابید که رنگ آن‌ها آبی است
+SELECT * FROM product_tbl WHERE PColor = 'blue';
+
+-- مشتریانی را بیابید که حساب آن‌ها بزرگ‌تر یا مساوی 1000 است
+SELECT * FROM Customer_tbl WHERE CAccount >= 1000;
+
+-- کالاهایی که قرمز رنگ نیستند
+SELECT * FROM product_tbl WHERE PColor <> 'red';</code></pre></div>
+                
+                <h3>۲. عملگرهای منطقی (AND, OR, NOT)</h3>
+                <p>این عملگرها برای ترکیب چند شرط با یکدیگر استفاده می‌شوند.</p>
+                <ul>
+                    <li><strong><code>AND</code></strong>: تمام شرط‌ها باید برقرار باشند.</li>
+                    <li><strong><code>OR</code></strong>: حداقل یکی از شرط‌ها باید برقرار باشد.</li>
+                    <li><strong><code>NOT</code></strong>: نتیجه شرط را معکوس می‌کند.</li>
+                </ul>
+                <div class="note"><strong>اولویت عملگرها:</strong> عملگر <code>AND</code> بر <code>OR</code> اولویت دارد. برای تغییر این اولویت و جلوگیری از ابهام، همیشه از پرانتز <code>()</code> استفاده کنید.</div>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مشتریانی که اهل تهران یا تبریز هستند
+SELECT * FROM Customer_tbl WHERE city = 'Tabriz' OR city = 'Tehran';
+
+-- مشتریانی که اهل تهران هستند و حسابشان بین 1000 و 4000 است
+SELECT * FROM Customer_tbl
+WHERE (CAccount >= 1000 AND CAccount <= 4000) AND (City = 'Tehran');</code></pre></div>
+                
+                <h3>۳. عملگر BETWEEN</h3>
+                <p>برای بررسی قرار گرفتن یک مقدار در یک بازه (شامل خود ابتدا و انتها) استفاده می‌شود.</p>
+                <p><code>Var BETWEEN Value1 AND Value2</code> معادل است با <code>(Var >= Value1) AND (Var <= Value2)</code>.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مشتریانی که حسابشان بین 1000 و 4000 است
+SELECT * FROM Customer_tbl WHERE CAccount BETWEEN 1000 AND 4000;</code></pre></div>
+                
+                <h3>۴. عملگر LIKE</h3>
+                <p>برای جستجوی یک الگو در مقادیر رشته‌ای استفاده می‌شود و با دو کاراکتر ویژه کار می‌کند:</p>
+                <ul>
+                    <li><code>%</code> (درصد): به معنای هر تعداد کاراکتر (از صفر تا بی‌نهایت).</li>
+                    <li><code>_</code> (آندرلاین): به معنای دقیقاً یک کاراکتر.</li>
+                </ul>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مشتریانی که در نام آن‌ها 'Ali' وجود دارد
+SELECT * FROM Customer_tbl WHERE CName LIKE '%Ali%';
+
+-- مشتریانی که نام آن‌ها با 'A' شروع می‌شود
+SELECT * FROM Customer_tbl WHERE CName LIKE 'A%';
+
+-- مشتریانی که نام آن‌ها به 'i' ختم می‌شود
+SELECT * FROM Customer_tbl WHERE CName LIKE '%i';
+
+-- مشتریانی که حرف دوم نامشان 'l' است
+SELECT * FROM Customer_tbl WHERE CName LIKE '_l%';</code></pre></div>
+                
+                <h3>۵. عملگر IN (عضویت در مجموعه)</h3>
+                <p>
+                    این عملگر بررسی می‌کند که آیا مقدار یک ستون در یک مجموعه (لیست) از مقادیر مشخص وجود دارد یا خیر. این دستور یک جایگزین بسیار خواناتر و کارآمدتر برای شرط‌های <code>OR</code> متعدد است. عملگر <code>NOT IN</code> نیز عدم عضویت در مجموعه را بررسی می‌کند.
+                </p>
+                <p>مجموعه مقادیر می‌تواند به دو صورت تعریف شود:</p>
+                
+                <h4>الف) مجموعه ثابت (Static Set)</h4>
+                <p>در این حالت، شما مقادیر مورد نظر را به صورت یک لیست ثابت و جدا شده با کاما داخل پرانتز می‌نویسید.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مشتریانی را بیابید که اهل تهران یا تبریز هستند
+SELECT * FROM Customer_tbl WHERE City IN ('Tehran', 'Tabriz');
+
+-- مشتریانی را بیابید که اهل تهران و تبریز نیستند
+SELECT * FROM Customer_tbl WHERE City NOT IN ('Tehran', 'Tabriz');</code></pre></div>
+                
+                <h4>ب) مجموعه پویا (Dynamic Set)</h4>
+                <p>
+                    در این حالت، لیست مقادیر توسط یک کوئری دیگر (که به آن **Subquery** یا زیر-کوئری گفته می‌شود) به صورت پویا تولید می‌شود. این یکی از قدرتمندترین قابلیت‌های SQL برای نوشتن کوئری‌های پیچیده است.
+                </p>
+                <div class="note">
+                    <strong>نکته بسیار مهم:</strong> زیر-کوئری (Subquery) که در داخل دستور <code>IN</code> استفاده می‌شود، باید <strong class="important">حتماً و فقط یک ستون</strong> را به عنوان خروجی برگرداند.
+                </div>
+
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مثال ۱: سفارشاتی را بیابید که متعلق به مشتریان اهل تبریز هستند
+SELECT *
+FROM Order_tbl
+WHERE CID IN (SELECT CID FROM Customer_tbl WHERE City = 'Tabriz');
+
+-- مثال ۲: مشتریانی را بیابید که حداقل یک سفارش ثبت کرده‌اند
+SELECT *
+FROM Customer_tbl
+WHERE CID IN (SELECT CID FROM Order_tbl);
+
+-- مثال ۳: مشتریانی را بیابید که در بازه زمانی مشخصی سفارشی نداشته‌اند
+SELECT *
+FROM Customer_tbl
+WHERE CID NOT IN (
+    SELECT CID FROM Order_tbl WHERE ODate BETWEEN '2014-01-01' AND '2014-04-01'
+);</code></pre></div>
+                
+                 <h3>۶. عملگر IS NULL</h3>
+                <p>برای بررسی اینکه آیا یک ستون مقدار `NULL` (پوچ یا نامشخص) دارد یا خیر. <strong class="important">هرگز از `=` برای مقایسه با `NULL` استفاده نکنید.</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مشتریانی که شماره تلفن آن‌ها ثبت نشده است
+SELECT * FROM Customer_tbl WHERE CTel IS NULL;
+
+-- مشتریانی که شماره تلفن آن‌ها ثبت شده است
+SELECT * FROM Customer_tbl WHERE CTel IS NOT NULL;</code></pre></div>
+
+<hr class="my-8 border-t-2 border-slate-200">
+                <h4>مثال جامع: ترکیب شرط‌ها و زیرکوئری تودرتو</h4>
+                <p>
+                    اغلب برای پاسخ به سوالات پیچیده، نیاز داریم تا چند جدول را به صورت منطقی به یکدیگر مرتبط کنیم. یکی از راه‌های انجام این کار، استفاده از زیرکوئری‌های تودرتو (Nested Subqueries) است.
+                </p>
+                <p><strong>سوال:</strong> مشتریانی را بیابید که کالاهایی با رنگ «آبی» یا «قرمز» را خریده‌اند.</p>
+                <p>
+                    برای پاسخ به این سوال، باید یک مسیر منطقی از جدول مشتری تا جدول محصول را دنبال کنیم. این مسیر در نمودار زیر نمایش داده شده است:
+                </p>
+
+                <div class="mt-6 bg-gray-100 p-4 rounded shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" width="600" height="280" viewBox="0 0 600 280">
+                        <rect x="20" y="20" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/>
+                        <text x="300" y="40" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">customer_tbl</text>
+                        <rect x="150" y="50" width="150" height="30" fill="white" stroke="#9ca3af"/>
+                        <text x="225" y="68" font-family="Vazirmatn" text-anchor="middle" font-size="12">customerId</text>
+                        
+                        <rect x="20" y="90" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/>
+                        <text x="300" y="110" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">Order_tbl</text>
+                        <rect x="150" y="120" width="150" height="30" fill="white" stroke="#9ca3af"/>
+                        <text x="225" y="138" font-family="Vazirmatn" text-anchor="middle" font-size="12">customerId</text>
+                        <rect x="350" y="120" width="150" height="30" fill="white" stroke="#9ca3af"/>
+                        <text x="425" y="138" font-family="Vazirmatn" text-anchor="middle" font-size="12">orderID</text>
+                        
+                        <rect x="20" y="160" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/>
+                        <text x="300" y="180" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">orderdetail_tbl</text>
+                        <rect x="150" y="190" width="150" height="30" fill="white" stroke="#9ca3af"/>
+                        <text x="225" y="208" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        <rect x="350" y="190" width="150" height="30" fill="white" stroke="#9ca3af"/>
+                        <text x="425" y="208" font-family="Vazirmatn" text-anchor="middle" font-size="12">OrderId</text>
+
+                        <rect x="20" y="230" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/>
+                        <text x="300" y="250" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">product_tbl</text>
+                        <rect x="150" y="260" width="150" height="30" fill="white" stroke="#9ca3af"/>
+                        <text x="225" y="278" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        <text x="425" y="265" font-family="Vazirmatn" text-anchor="middle" fill="#c026d3" font-size="12">ProductColor IN ('red', 'blue')</text>
+                        
+                        <line x1="225" y1="80" x2="225" y2="120" stroke="#4f46e5" stroke-width="2"/>
+                        <line x1="425" y1="150" x2="425" y2="190" stroke="#4f46e5" stroke-width="2"/>
+                        <line x1="225" y1="220" x2="225" y2="260" stroke="#4f46e5" stroke-width="2"/>
+                    </svg>
+                    <p class="text-center text-sm text-gray-600 mt-2">مسیر ارتباطی بین جداول برای یافتن مشتریان</p>
+                </div>
+                
+                <p>کوئری زیر دقیقاً همین مسیر را از داخلی‌ترین شرط به سمت بیرون دنبال می‌کند:</p>
+                <ol>
+                    <li>ابتدا شناسه‌های محصولات با رنگ قرمز یا آبی را پیدا می‌کند.</li>
+                    <li>سپس شناسه‌های سفارشاتی که شامل این محصولات بوده‌اند را پیدا می‌کند.</li>
+                    <li>در مرحله بعد، شناسه‌های مشتریانی که این سفارشات را ثبت کرده‌اند را پیدا می‌کند.</li>
+                    <li>در نهایت، اطلاعات کامل این مشتریان را نمایش می‌دهد.</li>
+                </ol>
+
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT *
+FROM customer_tbl
+WHERE customerId IN (
+    SELECT customerId
+    FROM Order_tbl
+    WHERE orderID IN (
+        SELECT OrderId
+        FROM orderdetail_tbl
+        WHERE productID IN (
+            SELECT productID
+            FROM product_tbl
+            WHERE ProductColor IN ('red', 'blue')
+        )
+    )
+);</code></pre></div>
+            </section>
+			
+            <section id="select_clause" class="content-section">
+                <h2>بررسی کامل بخش SELECT</h2>
+                <p>
+                    بخش <code>SELECT</code> مشخص می‌کند که کدام ستون‌ها و با چه شکلی در خروجی کوئری نمایش داده شوند. این بخش فقط به نام ستون‌های جدول محدود نیست و می‌تواند شامل عبارات محاسباتی، توابع و حتی زیرکوئری‌ها باشد.
+                </p>
+
+                <h3>حذف سطرهای تکراری با `DISTINCT`</h3>
+                <p>
+                    اگر در خروجی کوئری، سطرهایی وجود داشته باشند که مقادیر تمام ستون‌هایشان عیناً یکسان است، کلمه کلیدی `DISTINCT` باعث می‌شود که از بین تمام سطرهای تکراری، فقط یکی نمایش داده شود.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش لیست تمام رنگ‌های موجود برای محصولات، بدون تکرار
+SELECT DISTINCT ProductColor FROM product_tbl;</code></pre></div>
+                
+                <h3>اجزای لیست ستون‌ها (Column List)</h3>
+                
+                <h4>۱. نام ستون‌ها</h4>
+                <p>ساده‌ترین حالت، ذکر نام ستون‌های مورد نظر از جدول است. برای انتخاب تمام ستون‌ها از `*` استفاده می‌شود.</p>
+                
+                <h4>۲. عبارات و مقادیر ثابت (Expressions)</h4>
+                <p>می‌توانید مقادیر ثابت یا عبارات محاسباتی را مستقیماً در لیست ستون‌ها قرار دهید.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش قیمت هر محصول با ۱۰ درصد افزایش
+SELECT 
+    ProductName, 
+    minPrice * 1.1 AS PriceWithTax
+FROM product_tbl;</code></pre></div>
+                
+                <h4>۳. توابع (Functions)</h4>
+                <p>توابع، ابزارهای قدرتمندی برای پردازش و تغییر داده‌ها در لحظه بازیابی هستند.</p>
+                
+                <h5>- توابع رشته‌ای (String Functions)</h5>
+                <ul>
+                    <li><strong><code>CONCAT(str1, str2, ...)</code></strong>: چند رشته را به یکدیگر متصل می‌کند.</li>
+                    <li><strong><code>LENGTH(str)</code></strong>: طول یک رشته را بر حسب بایت برمی‌گرداند.</li>
+                    <li><strong><code>CHAR_LENGTH(str)</code></strong>: طول یک رشته را بر حسب تعداد کاراکتر برمی‌گرداند (برای رشته‌های چندبایتی مانند فارسی مناسب‌تر است).</li>
+                    <li><strong><code>UPPER(str)</code> / <code>LOWER(str)</code></strong>: حروف رشته را به بزرگ یا کوچک تبدیل می‌کند.</li>
+                    <li><strong><code>SUBSTRING(str, index, length)</code></strong>: بخشی از یک رشته را استخراج می‌کند.</li>
+                    <li><strong><code>LOCATE(substr, str)</code></strong>: موقعیت اولین رخداد یک زیررشته را در یک رشته پیدا می‌کند.</li>
+                    <li><strong><code>REPLACE(str, from_str, to_str)</code></strong>: تمام رخدادهای یک زیررشته را با رشته‌ای دیگر جایگزین می‌کند.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- ایجاد نام کامل مشتری از دو ستون مجزا
+SELECT CONCAT(FirstName, ' ', LastName) AS FullName FROM customer_tbl;
+
+-- نمایش نام محصولات با حروف بزرگ
+SELECT UPPER(ProductName) FROM product_tbl;
+
+-- جایگزینی بخشی از آدرس
+SELECT REPLACE(customerAddress, 'خیابان', 'بلوار') FROM customer_tbl;</code></pre></div>
+
+                <h5>- توابع تاریخ و زمان (Date/Time Functions)</h5>
+                <ul>
+                    <li><strong><code>NOW()</code></strong>: تاریخ و زمان کامل فعلی سرور را برمی‌گرداند.</li>
+                    <li><strong><code>CURDATE()</code></strong>: فقط تاریخ فعلی را برمی‌گرداند.</li>
+                    <li><strong><code>CURTIME()</code></strong>: فقط زمان فعلی را برمی‌گرداند.</li>
+                    <li><strong><code>YEAR(date)</code> / <code>MONTH(date)</code> / <code>DAY(date)</code></strong>: بخش‌های مختلف یک تاریخ را استخراج می‌کنند.</li>
+                    <li><strong><code>DATE_FORMAT(date, format)</code></strong>: تاریخ را بر اساس یک الگوی مشخص قالب‌بندی می‌کند.</li>
+                    <li><strong><code>DATEDIFF(date1, date2)</code></strong>: تفاوت بین دو تاریخ را بر حسب روز محاسبه می‌کند.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش سال ثبت سفارش برای هر سفارش
+SELECT orderID, YEAR(orderDate) AS OrderYear FROM Order_tbl;
+
+-- نمایش تاریخ سفارشات با فرمت شمسی (نمایشی)
+-- توجه: این تابع تاریخ را به شمسی تبدیل نمی‌کند، فقط فرمت نمایش را تغییر می‌دهد.
+SELECT orderID, DATE_FORMAT(orderDate, '%Y/%m/%d') AS FormattedDate FROM Order_tbl;
+
+-- محاسبه تعداد روزهایی که از هر سفارش گذشته است
+SELECT orderID, DATEDIFF(CURDATE(), orderDate) AS DaysPassed FROM Order_tbl;</code></pre></div>
+
+                <h5>- توابع تجمعی (Aggregate Functions)</h5>
+                <p>این توابع بر روی گروهی از سطرها عمل کرده و یک مقدار واحد را برمی‌گردانند. این توابع معمولاً با `GROUP BY` استفاده می‌شوند.</p>
+                <ul>
+                    <li><strong><code>COUNT()</code></strong>: تعداد سطرها را می‌شمارد.</li>
+                    <li><strong><code>SUM()</code></strong>: مجموع مقادیر یک ستون را محاسبه می‌کند.</li>
+                    <li><strong><code>AVG()</code></strong>: میانگین مقادیر یک ستون را محاسبه می‌کند.</li>
+                    <li><strong><code>MAX()</code></strong>: بزرگ‌ترین مقدار در یک ستون را پیدا می‌کند.</li>
+                    <li><strong><code>MIN()</code></strong>: کوچک‌ترین مقدار در یک ستون را پیدا می‌کند.</li>
+                </ul>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- محاسبه تعداد کل مشتریان
+SELECT COUNT(customerId) FROM customer_tbl;
+
+-- محاسبه گران‌ترین محصول
+SELECT MAX(minPrice) FROM product_tbl;</code></pre></div>
+<p>در کنار توابع رشته‌ای، عددی و تاریخ/زمان که قبلاً بررسی شدند، چند تابع بسیار پرکاربرد دیگر نیز وجود دارند که برای مدیریت مقادیر شرطی و `NULL` استفاده می‌شوند.</p>
+                
+                <h4>تابع `IF()`</h4>
+                <p>این تابع مانند یک دستور `if-else` ساده عمل می‌کند و بر اساس یک شرط، یکی از دو مقدار را برمی‌گرداند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- شکل کلی
+IF(condition, value_if_true, value_if_false)
+
+-- مثال: برچسب‌گذاری محصولات گران و ارزان
+SELECT 
+    ProductName,
+    minPrice,
+    IF(minPrice > 1000000, 'گران', 'مقرون به صرفه') AS PriceCategory
+FROM product_tbl;</code></pre></div>
+
+                <h4>تابع `COALESCE()`</h4>
+                <p>این تابع لیستی از مقادیر را به عنوان ورودی می‌گیرد و اولین مقدار غیر `NULL` را از سمت چپ برمی‌گرداند. این تابع برای جایگزین کردن مقادیر `NULL` با یک مقدار جایگزین بسیار مفید است.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- شکل کلی
+COALESCE(value1, value2, value3, ...)
+
+-- مثال: نمایش شماره تلفن مشتری. اگر شماره تلفن NULL بود، ایمیل او نمایش داده شود.
+SELECT 
+    customerName,
+    COALESCE(customertel, Email, 'اطلاعات تماس موجود نیست') AS ContactInfo
+FROM customer_tbl;</code></pre></div>
+
+                <h4>تابع `ISNULL()`</h4>
+                <p>این تابع بررسی می‌کند که آیا یک عبارت `NULL` است یا خیر. اگر `NULL` باشد، مقدار `1` (true) و در غیر این صورت `0` (false) را برمی‌گرداند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- بررسی وجود آدرس برای مشتریان
+SELECT 
+    customerName,
+    ISNULL(customerAddress) AS HasNoAddress -- ستونی با مقدار 1 یا 0 برمی‌گرداند
+FROM customer_tbl;</code></pre></div>
+
+                <h4>تابع `SUBSTRING_INDEX()`</h4>
+                <p>این تابع یک زیررشته را از یک رشته، قبل یا بعد از تعداد مشخصی از یک جداکننده (delimiter) استخراج می‌کند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- شکل کلی
+SUBSTRING_INDEX(str, delimiter, count)
+
+-- مثال: جدا کردن نام کاربری از ایمیل
+-- count = 1 یعنی بخش قبل از اولین جداکننده
+SELECT SUBSTRING_INDEX('user@example.com', '@', 1) AS Username;
+
+-- مثال: جدا کردن دامنه از ایمیل
+-- count = -1 یعنی بخش بعد از آخرین جداکننده
+SELECT SUBSTRING_INDEX('user@example.com', '@', -1) AS Domain;</code></pre></div>
+
+                <h4>تابع `CRC32()`</h4>
+                <p>این تابع یک مقدار عددی ۳۲ بیتی برای بررسی صحت داده (Cyclic Redundancy Check) از یک رشته محاسبه می‌کند. این تابع برای رمزنگاری مناسب نیست، اما برای بررسی اینکه آیا داده‌ها در حین انتقال تغییر کرده‌اند یا خیر، کاربرد دارد.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- محاسبه CRC32 برای نام محصول
+SELECT ProductName, CRC32(ProductName) AS DataCheckValue FROM product_tbl;</code></pre></div>
+
+                
+                <h4>۴. زیرکوئری‌ها (Scalar Subqueries)</h4>
+                <p>می‌توان یک دستور `SELECT` کامل را به عنوان یک ستون در کوئری اصلی قرار داد.</p>
+                <div class="note"><strong>قانون زیرکوئری در لیست ستون‌ها:</strong> زیرکوئری که به عنوان یک ستون استفاده می‌شود، باید حتماً و فقط <strong>یک ستون</strong> و حداکثر <strong>یک سطر</strong> را به عنوان خروجی برگرداند.</div>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- به ازای هر مشتری، کد، نام، و تاریخ آخرین سفارش او را نمایش بده
+SELECT 
+    customerId, 
+    customerName,
+    (SELECT MAX(orderDate) FROM Order_tbl WHERE customerId = C.customerId) AS LastOrderDate
+FROM customer_tbl AS C;</code></pre></div>
+
+                <h3>استفاده از نام مستعار (Aliases)</h3>
+                <p>نام مستعار (`AS`) به شما اجازه می‌دهد تا نام ستون‌ها یا جداول را در خروجی یا در طول اجرای کوئری به صورت موقت تغییر دهید.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT 
+    C.customerName AS `نام مشتری`,
+    C.credit AS `اعتبار`
+FROM customer_tbl AS C;</code></pre></div>
+                <p class="important"><strong>قانون محدوده (Scope):</strong> نام مستعار <strong>ستون</strong> (مانند `اعتبار`) نمی‌تواند در بخش `WHERE` همان کوئری استفاده شود، اما در `ORDER BY` قابل استفاده است. نام مستعار <strong>جدول</strong> (مانند `C`) در تمام بخش‌های همان کوئری (`WHERE`, `ORDER BY` و...) قابل استفاده است.</p>
+            </section>
+            
+            <section id="from_clause" class="content-section" style="display: none;">
+                <h2>بررسی کامل بخش FROM</h2>
+                <p>بخش `FROM` مشخص می‌کند که داده‌ها باید از کدام منبع یا منابعی خوانده شوند. این منبع می‌تواند یک جدول ساده، حاصل اتصال چند جدول یا حتی یک جدول مجازی باشد.</p>
+
+                <h3>۱. استفاده از یک جدول</h3>
+                <p>ساده‌ترین حالت، خواندن داده از یک جدول واحد است: `FROM customer_tbl`.</p>
+
+                <h3>۲. استفاده از چند جدول (روش قدیمی اتصال)</h3>
+                <p>می‌توان نام چند جدول را با کاما (`,`) در بخش `FROM` لیست کرد. این کار معادل یک عملیات به نام <strong>ضرب دکارتی (CROSS JOIN)</strong> است که تمام سطرهای جدول اول را با تمام سطرهای جدول دوم ترکیب می‌کند. نتیجه این عمل معمولاً بسیار بزرگ و بی‌معناست، مگر اینکه با یک شرط `WHERE` برای اتصال منطقی آن‌ها فیلتر شود.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- به ازای هر سفارش، کد سفارش و نام مشتری مربوط به آن را نمایش بده
+SELECT O.orderID, C.customerName
+FROM Order_tbl AS O, customer_tbl AS C
+WHERE O.customerId = C.customerId; -- شرط اتصال</code></pre></div>
+                <div class="note">این روش برای اتصال جداول قدیمی است. در جلسات آینده با روش مدرن و استاندارد یعنی دستور `JOIN` آشنا خواهیم شد که خواناتر و قدرتمندتر است.</div>
+
+                <h3>۳. استفاده از جدول مجازی (Derived Table)</h3>
+                <p>می‌توان خروجی یک دستور `SELECT` را به عنوان یک جدول مجازی در بخش `FROM` استفاده کرد. به این زیرکوئری در بخش `FROM`، **جدول مشتق‌شده (Derived Table)** گفته می‌شود.</p>
+                <p class="important"><strong>قانون جدول مشتق‌شده:</strong> جدولی که از یک زیرکوئری در بخش `FROM` ایجاد می‌شود، باید <strong>حتماً</strong> یک نام مستعار (Alias) داشته باشد.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- از بین مشتریانی که بیش از ۵ سفارش دارند، آن‌هایی را پیدا کن که در تهران هستند
+SELECT *
+FROM (
+    -- این زیرکوئری ابتدا مشتریان و تعداد سفارشاتشان را محاسبه می‌کند
+    SELECT 
+        C.customerId, 
+        C.customerName, 
+        C.cityId,
+        (SELECT COUNT(*) FROM Order_tbl WHERE customerId = C.customerId) AS OrderCount
+    FROM customer_tbl AS C
+) AS CustomerOrderStats -- نام مستعار اجباری برای جدول مجازی
+WHERE OrderCount > 5 AND cityId = 1; -- با فرض اینکه CityID تهران 1 است</code></pre></div>
+            
+			
+			<hr class="my-8 border-t-2 border-slate-200">
+                <h4>مثال‌های پیشرفته با استفاده از زیرکوئری (Subquery)</h4>
+                <p>
+                    در ادامه، چند مثال پیچیده‌تر را بررسی می‌کنیم که قدرت واقعی ترکیب کوئری‌ها را نشان می‌دهند.
+                </p>
+
+                <h5 class="!mt-8 !text-base !font-bold">مثال ۱: استفاده از زیرکوئری در لیست ستون‌ها (Scalar Subquery)</h5>
+                <p><strong>سوال:</strong> به ازای هر سفارش، کد سفارش، تاریخ، کد مشتری و <strong>نام مشتری</strong> را نمایش دهید.</p>
+                <p>
+                    مشکل اینجا است که نام مشتری در جدول سفارشات (`Order_tbl`) وجود ندارد. ما می‌توانیم با یک زیرکوئری در لیست ستون‌ها، به ازای هر سفارش، نام مشتری متناظر را از جدول `customer_tbl` استعلام بگیریم.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT 
+    orderID,
+    orderDate,
+    customerId,
+    (SELECT customerName FROM customer_tbl WHERE customerId = O.customerId) AS CustomerName
+FROM Order_tbl AS O;</code></pre></div>
+                <div class="note">
+                    <strong>توضیح:</strong> به این نوع زیرکوئری که فقط یک مقدار (یک سطر و یک ستون) برمی‌گرداند، <strong>Scalar Subquery</strong> گفته می‌شود. این روش کار می‌کند، اما ممکن است برای جداول بزرگ کارایی بالایی نداشته باشد، زیرا به ازای هر سطر از جدول سفارشات، یک کوئری مجزا به جدول مشتریان زده می‌شود. (روش بهینه‌تر استفاده از `JOIN` است که بعداً بررسی خواهیم کرد).
+                </div>
+
+                <h5 class="!mt-8 !text-base !font-bold">مثال ۲: استفاده از توابع تجمعی در زیرکوئری</h5>
+                <p><strong>سوال:</strong> به ازای هر مشتری، کد، نام، <strong>تعداد کل سفارشات</strong> و <strong>تاریخ آخرین سفارش</strong> او را نمایش دهید.</p>
+                <p>
+                    در این مثال نیز، از زیرکوئری‌های اسکالر برای محاسبه مقادیر تجمعی (مانند تعداد با `COUNT` و آخرین تاریخ با `MAX`) برای هر مشتری استفاده می‌کنیم.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT 
+    customerId,
+    customerName,
+    (SELECT COUNT(*) FROM Order_tbl WHERE customerId = C.customerId) AS OrderCount,
+    (SELECT MAX(orderDate) FROM Order_tbl WHERE customerId = C.customerId) AS LastOrderDate
+FROM customer_tbl AS C;</code></pre></div>
+
+                <h5 class="!mt-8 !text-base !font-bold">مثال ۳: فیلتر کردن بر اساس یک مقدار محاسباتی</h5>
+                <p><strong>سوال:</strong> اطلاعات کامل مشتریانی را پیدا کنید که <strong>تعداد سفارشاتشان بیشتر از ۲۰</strong> است.</p>
+                <p>این یک مسئله رایج است. ما نمی‌توانیم از نام مستعار یک ستون محاسباتی (مانند `OrderCount`) مستقیماً در بخش `WHERE` همان کوئری استفاده کنیم. برای حل این مشکل دو راه وجود دارد:</p>
+                
+                <h6>روش اول: استفاده از زیرکوئری در WHERE (اغلب ناکارآمد)</h6>
+                <p>در این روش، ما همان محاسبه تعداد سفارشات را دوباره در بخش `WHERE` تکرار می‌کنیم.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT 
+    customerId,
+    customerName,
+    (SELECT COUNT(*) FROM Order_tbl WHERE customerId = C.customerId) AS OrderCount
+FROM customer_tbl AS C
+WHERE (SELECT COUNT(*) FROM Order_tbl WHERE customerId = C.customerId) > 20;</code></pre></div>
+                <p>این روش به دلیل تکرار زیرکوئری و اجرای چندباره آن، معمولاً کارایی پایینی دارد.</p>
+
+                <h6>روش دوم: استفاده از جدول مجازی یا Derived Table (روش بهینه)</h6>
+                <p>در این روش، ابتدا با یک زیرکوئری در بخش `FROM`، یک جدول مجازی می‌سازیم که شامل اطلاعات مشتری و تعداد سفارشات هر کدام است. سپس، کوئری اصلی را روی این جدول مجازی اجرا کرده و به راحتی آن را فیلتر می‌کنیم.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT *
+FROM (
+    -- این زیرکوئری ابتدا یک جدول مجازی با آمار مشتریان می‌سازد
+    SELECT 
+        customerId,
+        customerName,
+        (SELECT COUNT(*) FROM Order_tbl WHERE customerId = C.customerId) AS OrderCount
+    FROM customer_tbl AS C
+) AS CustomerStats -- نام مستعار برای جدول مجازی اجباری است
+WHERE OrderCount > 20;</code></pre></div>
+                <div class="note">
+                    این روش بسیار بهینه‌تر است، زیرا ابتدا محاسبات تجمعی برای همه مشتریان یک بار انجام شده و سپس عملیات فیلتر روی نتیجه نهایی و کوچک‌تر اعمال می‌شود.
+                </div>
+			</section>
+            
+			<section id="orderby_limit_clause" class="content-section">
+                <h2>مرتب‌سازی و محدود کردن نتایج</h2>
+                <h3>مرتب‌سازی نتایج (ORDER BY)</h3>
+                <p>
+                    کلاز <code>ORDER BY</code> برای مرتب‌سازی سطرهای خروجی بر اساس یک یا چند ستون استفاده می‌شود. این دستور بر روی جدول اصلی تأثیری ندارد و فقط نحوه نمایش خروجی را تغییر می‌دهد.
+                </p>
+                <ul>
+                    <li><strong><code>ASC</code> (Ascending):</strong> مرتب‌سازی صعودی (از کم به زیاد، A تا Z). این حالت پیش‌فرض است.</li>
+                    <li><strong><code>DESC</code> (Descending):</strong> مرتب‌سازی نزولی (از زیاد به کم، Z تا A).</li>
+                </ul>
+                <h4>مرتب‌سازی بر اساس چند ستون</h4>
+                <p>
+                    می‌توانید نتایج را بر اساس چند ستون مرتب کنید. در این حالت، اولویت با اولین ستون ذکر شده است. اگر مقادیر در ستون اول یکسان باشند، سطرها بر اساس ستون دوم مرتب می‌شوند و الی آخر.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش مشتریان، مرتب‌شده بر اساس شهر (صعودی) و سپس اعتبار (نزولی)
+SELECT customerName, cityId, credit
+FROM customer_tbl
+ORDER BY cityId ASC, credit DESC;</code></pre></div>
+            
+                <h2>محدود کردن نتایج (LIMIT)</h2>
+                <p>
+                    بخش <code>LIMIT</code> تعداد سطرهای خروجی را به یک عدد مشخص محدود می‌کند. این دستور تقریباً همیشه باید همراه با <code>ORDER BY</code> استفاده شود تا اطمینان حاصل شود که خروجی قابل پیش‌بینی و معنادار است.
+                </p>
+                <div class="note">
+                    اگر <code>LIMIT</code> را بدون <code>ORDER BY</code> استفاده کنید، پایگاه داده ممکن است در هر بار اجرا، سطرهای متفاوتی را به شما برگرداند.
+                </div>
+                <h4>شکل‌های مختلف دستور</h4>
+                <ul>
+                    <li><code>LIMIT row_count</code>: تعداد سطرهای خروجی را مشخص می‌کند.</li>
+                    <li><code>LIMIT offset, row_count</code>: از سطر `offset` شروع کرده و به تعداد `row_count` سطر را برمی‌گرداند. این روش برای پیاده‌سازی صفحه‌بندی (Pagination) بسیار پرکاربرد است.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش ۳۰ مشتری که بیشترین اعتبار را دارند
+SELECT customerName, credit
+FROM customer_tbl
+ORDER BY credit DESC
+LIMIT 30;
+
+-- نمایش محصولات از ردیف ۱۰ به بعد، به تعداد ۵ عدد (برای صفحه‌بندی)
+-- LIMIT offset, count
+SELECT * FROM product_tbl LIMIT 10, 5;</code></pre></div>
+            </section>
+	<!--		
+            <section id="orderby_clause" class="content-section" style="display: none;">
+                <h2>مرتب‌سازی نتایج (ORDER BY)</h2>
+                <p>
+                    بخش `ORDER BY` برای مرتب‌سازی سطرهای خروجی بر اساس یک یا چند ستون استفاده می‌شود. این دستور بر روی جدول اصلی تأثیری ندارد و فقط نحوه نمایش خروجی را تغییر می‌دهد.
+                </p>
+                <ul>
+                    <li><strong>`ASC` (Ascending):</strong> مرتب‌سازی صعودی (از کم به زیاد، A تا Z). این حالت پیش‌فرض است.</li>
+                    <li><strong>`DESC` (Descending):</strong> مرتب‌سازی نزولی (از زیاد به کم، Z تا A).</li>
+                </ul>
+                <h3>مرتب‌سازی بر اساس چند ستون</h3>
+                <p>
+                    می‌توانید نتایج را بر اساس چند ستون مرتب کنید. در این حالت، اولویت با اولین ستون ذکر شده است. اگر مقادیر در ستون اول یکسان باشند، سطرها بر اساس ستون دوم مرتب می‌شوند و الی آخر.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش مشتریان، مرتب‌شده بر اساس شهر (صعودی) و سپس اعتبار (نزولی)
+SELECT customerName, cityId, credit
+FROM customer_tbl
+ORDER BY cityId ASC, credit DESC;</code></pre></div>
+            </section>
+
+            <section id="limit_clause" class="content-section" style="display: none;">
+                <h2>محدود کردن نتایج (LIMIT)</h2>
+                <p>
+                    بخش `LIMIT` تعداد سطرهای خروجی را به یک عدد مشخص محدود می‌کند. این دستور تقریباً همیشه باید همراه با `ORDER BY` استفاده شود تا اطمینان حاصل شود که خروجی قابل پیش‌بینی و معنادار است.
+                </p>
+                <div class="note">
+                    اگر `LIMIT` را بدون `ORDER BY` استفاده کنید، پایگاه داده ممکن است در هر بار اجرا، سطرهای متفاوتی را به شما برگرداند.
+                </div>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش ۳۰ مشتری که بیشترین اعتبار را دارند
+SELECT customerName, credit
+FROM customer_tbl
+ORDER BY credit DESC
+LIMIT 30;
+
+-- نمایش محصولات از ردیف ۱۰ به بعد، به تعداد ۵ عدد (برای صفحه‌بندی)
+-- LIMIT offset, count
+SELECT * FROM product_tbl LIMIT 10, 5;</code></pre></div>
+            </section>
+			-->
+<section id="inner_join" class="content-section">
+                <h2>پیوند داخلی (INNER JOIN)</h2>
+                <p>
+                    ابزار اصلی برای ترکیب اطلاعات از چند جدول، <strong>پیوند (JOIN)</strong> است. برای درک عمیق پیوند، ابتدا باید با مفهوم پایه‌ای آن یعنی ضرب دکارتی آشنا شویم.
+                </p>
+
+                <h3>از ضرب دکارتی تا پیوند داخلی</h3>
+                <p>
+                    در تئوری پایگاه داده، اگر نام دو جدول را با کاما (<code>,</code>) در بخش <code>FROM</code> بیاوریم، یک <strong>ضرب دکارتی (CROSS JOIN)</strong> ایجاد می‌شود. این عملیات تمام سطرهای جدول اول را با تمام سطرهای جدول دوم ترکیب می‌کند. اگر جدول اول <strong>n</strong> سطر و جدول دوم <strong>m</strong> سطر داشته باشد، نتیجه <strong>n * m</strong> سطر خواهد داشت. ستون‌های جدول حاصل نیز برابر با مجموع ستون‌های دو جدول اولیه است.
+                </p>
+                <p>
+                    این نتیجه خام معمولاً کاربردی نیست. از بین تمام سطرهای تولید شده، فقط سطرهایی برای ما معنادار هستند که مقدار ستون‌های مشترک آن‌ها (یعنی کلید اصلی و کلید خارجی) با یکدیگر برابر باشد. ما این سطرهای معنادار را با یک شرط در بخش <code>WHERE</code> فیلتر می‌کنیم.
+                </p>
+                <div class="note">
+                    <p><strong>بحث تئوری (جبر رابطه‌ای):</strong></p>
+                    <p>در جبر رابطه‌ای، این عملیات (ضرب دکارتی و سپس فیلتر کردن) به صورت یکجا با عملگر پیوند (Join ⋈) نمایش داده می‌شود. فرمول تئوریک آن به این صورت است:</p>
+                    <p dir="ltr" class="text-center font-mono text-lg"><strong>R1 ⋈<sub>C</sub> R2 = σ<sub>C</sub> (R1 × R2)</strong></p>
+                    <p>این فرمول بیان می‌کند که پیوند دو جدول (R1 و R2) بر اساس شرط (C)، معادل است با اعمال یک عملیات انتخاب (σ) با همان شرط (C) بر روی نتیجه ضرب دکارتی (×) آن دو جدول.</p>
+                </div>
+                
+                <p>
+                    در زبان SQL، دستور <code>INNER JOIN ... ON</code> پیاده‌سازی مستقیم همین مفهوم تئوریک است. این روش مدرن، خواناتر و استاندارد برای اتصال جداول است.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- شکل کلی دستور پیوند داخلی
+SELECT *
+FROM table1 AS T1
+INNER JOIN table2 AS T2 ON T1.column = T2.column;</code></pre></div>
+                
+                <h3>سطرهای پیوندشدنی و پیوندناشدنی</h3>
+                <p>
+                    در یک عملیات پیوند، به سطرهایی از جداول که بر اساس شرط اتصال، یک جفت مطابق در جدول دیگر دارند، <strong>سطرهای پیوندشدنی (Joinable Rows)</strong> گفته می‌شود. به سطرهایی که هیچ مطابقی در جدول دیگر ندارند، <strong>سطرهای پیوندناشدنی (Unjoinable Rows)</strong> می‌گویند.
+                </p>
+                <p>
+                    دستور <code>INNER JOIN</code> فقط و فقط <strong>سطرهای پیوندشدنی</strong> را در نتیجه نهایی نمایش می‌دهد. برای مثال، اگر مشتری‌ای وجود داشته باشد که هیچ سفارشی ثبت نکرده، در نتیجه `INNER JOIN` بین جداول مشتری و سفارش، آن مشتری (که یک سطر پیوندناشدنی است) نمایش داده نخواهد شد.
+                </p>
+
+                <h3>پیوند چند جدول (Multi-Table JOIN)</h3>
+                <p>می‌توانیم چندین جدول را به صورت زنجیروار به یکدیگر متصل کنیم. پیوندها معمولاً به صورت چپ به راست اجرا می‌شوند و نیازی به پرانتزگذاری ندارند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- شکل کلی پیوند چندگانه (چپ به راست)
+FROM table1
+INNER JOIN table2 ON condition1
+INNER JOIN table3 ON condition2
+...</code></pre></div>
+                <p>در موارد پیچیده، می‌توان با استفاده از پرانتز، ترتیب اجرای پیوندها را به صورت راست به چپ تغییر داد.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- شکل کلی پیوند چندگانه (راست به چپ)
+FROM table1
+INNER JOIN (table2 INNER JOIN table3 ON condition2) ON condition1;</code></pre></div>
+
+                <h3>مثال‌های کاربردی INNER JOIN</h3>
+                <h4>مثال ۱: یافتن مشتریانی که سفارش دارند</h4>
+                <p>این کوئری تمام مشتریانی که حداقل یک سفارش در جدول سفارشات دارند را لیست می‌کند. از آنجایی که یک مشتری ممکن است چندین سفارش داشته باشد و نام او چندین بار تکرار شود، از <strong><code>DISTINCT</code></strong> برای حذف موارد تکراری استفاده می‌کنیم.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT DISTINCT C.customerId, C.customerName
+FROM customer_tbl AS C
+INNER JOIN Order_tbl AS O ON C.customerId = O.customerId;</code></pre></div>
+
+                <h4>مثال ۲: ترکیب پیوند با شرط `WHERE`</h4>
+                <p><strong>سوال:</strong> به ازای هر سفارش، اطلاعات کامل آن را به همراه نام و شهر مشتری، برای مشتریانی که اهل تبریز هستند و تاریخ سفارششان در بازه مشخصی است، بیابید.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT O.orderID, O.orderDate, C.customerId, C.customerName, CT.cityName
+FROM Order_tbl AS O
+INNER JOIN customer_tbl AS C ON O.customerId = C.customerId
+INNER JOIN city_tbl AS CT ON C.cityId = CT.cityId
+WHERE 
+    CT.cityName = 'تبریز'
+    AND O.orderDate BETWEEN '2023-01-01' AND '2023-06-01';</code></pre></div>
+
+                <h4>مثال ۳: پیوند چهار جدول</h4>
+                <p><strong>سوال:</strong> نام مشتریانی را بیابید که کالاهایی با رنگ «آبی» خریده‌اند.</p>
+                <p>برای پاسخ، باید یک مسیر ارتباطی از جدول مشتری تا جدول محصول را با پیوندهای متوالی ایجاد کنیم. این مسیر در نمودار زیر نمایش داده شده است:</p>
+                <div class="mt-6 bg-gray-100 p-4 rounded shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" width="600" height="280" viewBox="0 0 600 280">
+                        <rect x="20" y="20" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="300" y="45" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">customer_tbl</text>
+                        <rect x="150" y="50" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="225" y="68" font-family="Vazirmatn" text-anchor="middle" font-size="12">customerId</text>
+                        <rect x="20" y="90" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="300" y="115" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">Order_tbl</text>
+                        <rect x="150" y="120" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="225" y="138" font-family="Vazirmatn" text-anchor="middle" font-size="12">customerId</text>
+                        <rect x="350" y="120" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="425" y="138" font-family="Vazirmatn" text-anchor="middle" font-size="12">orderID</text>
+                        <rect x="20" y="160" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="300" y="185" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">orderdetail_tbl</text>
+                        <rect x="150" y="190" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="225" y="208" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        <rect x="350" y="190" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="425" y="208" font-family="Vazirmatn" text-anchor="middle" font-size="12">OrderId</text>
+                        <rect x="20" y="230" width="560" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="300" y="255" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">product_tbl</text>
+                        <rect x="150" y="260" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="225" y="278" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        <line x1="225" y1="80" x2="225" y2="120" stroke="#4f46e5" stroke-width="2"/>
+                        <line x1="425" y1="150" x2="425" y2="190" stroke="#4f46e5" stroke-width="2"/>
+                        <line x1="225" y1="220" x2="225" y2="260" stroke="#4f46e5" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT DISTINCT C.customerName
+FROM customer_tbl AS C
+INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
+INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+INNER JOIN product_tbl AS P ON OD.productID = P.productID
+WHERE P.ProductColor = 'blue';
+
+-- با استفاده از using
+SELECT DISTINCT C.customerName
+FROM customer_tbl AS C
+INNER JOIN Order_tbl AS O USING (customerId)
+INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+INNER JOIN product_tbl AS P USING (productID)
+WHERE P.ProductColor = 'blue';
+
+</code></pre></div>
+
+                <h4>مثال ۴: استفاده از شرط‌های ترکیبی</h4>
+                <p><strong>سوال:</strong> نام مشتریانی را بیابید که کالاهای «آبی» <strong>یا</strong> «قرمز» را خریده‌اند.</p>
+                <p>می‌توان شرط را در بخش `WHERE` یا مستقیماً در `ON` قرار داد. نکته مهم استفاده از پرانتز برای حفظ اولویت عملگرها است.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- روش اول: شرط در WHERE
+SELECT DISTINCT C.customerName
+FROM customer_tbl AS C
+    INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
+    INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+    INNER JOIN product_tbl AS P ON OD.productID = P.productID
+WHERE P.ProductColor IN ('blue', 'red');
+
+-- روش دوم: انتقال شرط به ON (نتیجه یکسان)
+SELECT DISTINCT C.customerName
+FROM customer_tbl AS C
+    INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
+    INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+    INNER JOIN product_tbl AS P ON OD.productID = P.productID AND (P.ProductColor = 'blue' OR P.ProductColor = 'red');</code></pre></div>
+                <p class="important">اگر در روش دوم از پرانتز در شرط `(P.ProductColor = 'blue' OR P.ProductColor = 'red')` استفاده نمی‌کردیم، به دلیل اولویت عملگر `AND` بر `OR`، کوئری به اشتباه تفسیر می‌شد.</p>
+				
+            </section>
+
+
+<section id="outer_join" class="content-section">
+                <h2>پیوندهای خارجی (OUTER JOIN)</h2>
+                <p>
+                    پیوند داخلی یا <code>INNER JOIN</code> فقط سطرهایی را برمی‌گرداند که در هر دو جدول مطابقت دارند. اما گاهی ما به سطرهایی نیاز داریم که مطابقت ندارند (سطرهای پیوندناشدنی). برای مثال، «مشتریانی که هیچ سفارشی ثبت نکرده‌اند». برای پاسخ به این نوع سوالات، از پیوندهای خارجی استفاده می‌کنیم.
+                </p>
+                
+                <h3>۱. پیوند خارجی چپ (LEFT JOIN)</h3>
+                <p>
+                    این دستور <strong>تمام سطرهای جدول سمت چپ</strong> را برمی‌گرداند، به همراه سطرهای مطابق از جدول سمت راست. اگر برای یک سطر از جدول چپ، هیچ مطابقتی در جدول راست پیدا نشود، ستون‌های مربوط به جدول راست با مقدار <strong>NULL</strong> پر می‌شوند.
+                </p>
+                <h4>مفهوم تئوری</h4>
+                <p>در جبر رابطه‌ای، این عمل با نماد ⟕ نمایش داده می‌شود. در این پیوند، تمام سطرهای جدول چپ (R1) به همراه سطرهای پیوندشدنی از جدول راست (R2) در نتیجه ظاهر می‌شوند.</p>
+                <p>با فرض دو جدول R1 (جدول چپ) و R2 (جدول راست):</p>
+                <div class="flex justify-center gap-8 my-4 text-center" dir="ltr">
+                    <table class="border"><thead><tr class="bg-slate-200"><th colspan="2" class="p-2 border">R1</th></tr><tr class="bg-slate-100"><th class="p-2 border">a</th><th class="p-2 border">b</th></tr></thead><tbody><tr><td class="p-2 border">a1</td><td class="p-2 border">b1</td></tr><tr><td class="p-2 border">a2</td><td class="p-2 border">b2</td></tr><tr><td class="p-2 border">a4</td><td class="p-2 border">b4</td></tr></tbody></table>
+                    <table class="border"><thead><tr class="bg-slate-200"><th colspan="2" class="p-2 border">R2</th></tr><tr class="bg-slate-100"><th class="p-2 border">b</th><th class="p-2 border">C</th></tr></thead><tbody><tr><td class="p-2 border">b2</td><td class="p-2 border">c2</td></tr><tr><td class="p-2 border">b3</td><td class="p-2 border">c3</td></tr><tr><td class="p-2 border">b5</td><td class="p-2 border">c5</td></tr></tbody></table>
+                </div>
+                <p>نتیجه <code>R1 LEFT JOIN R2 ON R1.b = R2.b</code> به صورت زیر خواهد بود:</p>
+                <div class="flex justify-center my-4 text-center" dir="ltr">
+                    <table class="border"><thead><tr class="bg-green-200"><th colspan="4" class="p-2 border">R3 (نتیجه)</th></tr><tr class="bg-green-100"><th class="p-2 border">R1.a</th><th class="p-2 border">R1.b</th><th class="p-2 border">R2.b</th><th class="p-2 border">R2.C</th></tr></thead><tbody><tr><td class="p-2 border">a2</td><td class="p-2 border">b2</td><td class="p-2 border">b2</td><td class="p-2 border">c2</td></tr><tr><td class="p-2 border">a1</td><td class="p-2 border">b1</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td></tr><tr><td class="p-2 border">a4</td><td class="p-2 border">b4</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td></tr></tbody></table>
+                </div>
+                
+                <h4>شکل کلی دستور و مثال عملی</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT column_list
+FROM table1
+LEFT JOIN table2 ON table1.column = table2.column;</code></pre></div>
+                <p><strong>سوال:</strong> مشتریانی را بیابید که هیچ سفارشی ندارند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT C.customerName
+FROM customer_tbl AS C
+LEFT JOIN Order_tbl AS O ON C.customerId = O.customerId
+WHERE O.orderID IS NULL;</code></pre></div>
+                
+                <h3>۲. پیوند خارجی راست (RIGHT JOIN)</h3>
+                <p>
+                    این دستور برعکس <code>LEFT JOIN</code> عمل می‌کند. یعنی <strong>تمام سطرهای جدول سمت راست</strong> را برمی‌گرداند و برای آن‌هایی که در جدول چپ مطابقت ندارند، ستون‌های جدول چپ را <code>NULL</code> قرار می‌دهد.
+                </p>
+                <p>نتیجه <code>R1 RIGHT JOIN R2 ON R1.b = R2.b</code> برای جداول بالا به صورت زیر است:</p>
+                <div class="flex justify-center my-4 text-center" dir="ltr">
+                    <table class="border"><thead><tr class="bg-green-200"><th colspan="4" class="p-2 border">R3 (نتیجه)</th></tr><tr class="bg-green-100"><th class="p-2 border">R1.a</th><th class="p-2 border">R1.b</th><th class="p-2 border">R2.b</th><th class="p-2 border">R2.C</th></tr></thead><tbody><tr><td class="p-2 border">a2</td><td class="p-2 border">b2</td><td class="p-2 border">b2</td><td class="p-2 border">c2</td></tr><tr><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border">b3</td><td class="p-2 border">c3</td></tr><tr><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border">b5</td><td class="p-2 border">c5</td></tr></tbody></table>
+                </div>
+                <div class="note">در عمل، تقریباً همیشه می‌توان یک کوئری `RIGHT JOIN` را با جابجا کردن ترتیب جداول به یک `LEFT JOIN` معادل تبدیل کرد. به همین دلیل، استفاده از `LEFT JOIN` بسیار رایج‌تر است.</div>
+
+                <h3>۳. پیوند خارجی کامل (FULL OUTER JOIN)</h3>
+                <p>
+                    این نوع پیوند، اجتماع نتایج پیوند چپ و راست است. یعنی <strong>تمام رکوردهای هر دو جدول</strong> را برمی‌گرداند. اگر مطابقت وجود داشته باشد، آن‌ها را در یک سطر نمایش می‌دهد و اگر برای سطری از هر یک از جداول مطابقت وجود نداشته باشد، ستون‌های جدول مقابل را `NULL` قرار می‌دهد.
+                </p>
+                <p>نتیجه پیوند خارجی کامل برای جداول بالا به صورت زیر است:</p>
+                 <div class="flex justify-center my-4 text-center" dir="ltr">
+                    <table class="border"><thead><tr class="bg-green-200"><th colspan="4" class="p-2 border">R3 (نتیجه)</th></tr><tr class="bg-green-100"><th class="p-2 border">R1.a</th><th class="p-2 border">R1.b</th><th class="p-2 border">R2.b</th><th class="p-2 border">R2.C</th></tr></thead><tbody><tr><td class="p-2 border">a2</td><td class="p-2 border">b2</td><td class="p-2 border">b2</td><td class="p-2 border">c2</td></tr><tr><td class="p-2 border">a1</td><td class="p-2 border">b1</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td></tr><tr><td class="p-2 border">a4</td><td class="p-2 border">b4</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td></tr><tr><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border">b3</td><td class="p-2 border">c3</td></tr><tr><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border font-bold text-red-600">NULL</td><td class="p-2 border">b5</td><td class="p-2 border">c5</td></tr></tbody></table>
+                </div>
+                <p class="important">
+                    <strong>نکته:</strong> MySQL به صورت مستقیم از دستور `FULL OUTER JOIN` پشتیبانی نمی‌کند. اما می‌توان با استفاده از <code>UNION</code> بین یک <code>LEFT JOIN</code> و یک <code>RIGHT JOIN</code>، این عمل را شبیه‌سازی کرد.
+                </p>
+
+                <h3>۴. پیوند به خود (SELF JOIN)</h3>
+                <p>
+                    گاهی نیاز داریم که یک جدول را با خودش پیوند دهیم. این حالت معمولاً در داده‌های سلسله‌مراتبی رخ می‌دهد، مانند ساختار سازمانی که در آن هر کارمند یک مدیر مستقیم دارد و آن مدیر خود یک کارمند است. در این حالت، یک کلید خارجی در جدول به کلید اصلی همان جدول ارجاع می‌دهد.
+                </p>
+                <p><strong>سوال:</strong> به ازای هر کارمند، نام او و نام مدیر مستقیمش را نمایش دهید.</p>
+                <p>برای این کار، باید از جدول کارمندان دو نسخه مجازی با نام‌های مستعار متفاوت ایجاد کنیم: یکی برای کارمند (E1) و دیگری برای مدیر (E2). سپس این دو نسخه را به هم متصل می‌کنیم. استفاده از <code>LEFT JOIN</code> ضروری است تا کارمندی که مدیر ندارد (مانند مدیرعامل) نیز در خروجی نمایش داده شود.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    E1.EName AS `نام کارمند`,
+    E2.EName AS `نام مدیر`
+FROM
+    Employee AS E1
+LEFT JOIN
+    Employee AS E2 ON E1.BossID = E2.EID;</code></pre></div>
+            </section>
+
+<section id="set_operators" class="content-section">
+                <h2>عملگرهای مجموعه (Set Operators)</h2>
+                <p>
+                    عملگرهای مجموعه در SQL برای ترکیب نتایج دو یا چند دستور <code>SELECT</code> مجزا در یک مجموعه نتیجه واحد استفاده می‌شوند.
+                </p>
+                <div class="note">
+                    <strong>قوانین سازگاری برای عملگرهای مجموعه:</strong><br>
+                    برای اینکه بتوان از این عملگرها استفاده کرد، تمام دستورات <code>SELECT</code> شرکت‌کننده در عملیات باید دو شرط اساسی زیر را رعایت کنند:
+                    <ol class="list-decimal mt-2 pr-4">
+                        <li><strong>تعداد ستون‌ها باید یکسان باشد.</strong></li>
+                        <li><strong>نوع داده ستون‌های متناظر باید با یکدیگر سازگار باشد</strong> (مثلاً هر دو عددی یا هر دو رشته‌ای باشند).</li>
+                    </ol>
+                </div>
+
+                <h3>۱. اجتماع نتایج (UNION)</h3>
+                <p>
+                    این عملگر نتایج چند دستور <code>SELECT</code> را با هم ترکیب کرده و در خروجی نمایش می‌دهد.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT column_list FROM table1
+UNION [ALL | DISTINCT]
+SELECT column_list FROM table2;</code></pre></div>
+                <ul>
+                    <li><strong><code>UNION</code> یا <code>UNION DISTINCT</code> (پیش‌فرض):</strong> نتایج را با هم ترکیب کرده و سطرهای تکراری را <strong>حذف می‌کند</strong>.</li>
+                    <li><strong><code>UNION ALL</code></strong>: نتایج را با هم ترکیب می‌کند اما سطرهای تکراری را <strong>حذف نمی‌کند</strong>. این روش سریع‌تر است زیرا نیازی به بررسی تکراری‌ها ندارد.</li>
+                </ul>
+                
+                <h3>۲. اشتراک نتایج (INTERSECT)</h3>
+                <p>
+                    این عملگر فقط سطرهایی را برمی‌گرداند که <strong>در هر دو مجموعه نتیجه</strong> به صورت مشترک وجود داشته باشند. این دستور از MySQL 8.0.31 به بعد پشتیبانی می‌شود.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT column_list FROM table1
+INTERSECT [ALL | DISTINCT]
+SELECT column_list FROM table2;</code></pre></div>
+                 <ul>
+                    <li><strong><code>INTERSECT</code> یا <code>INTERSECT DISTINCT</code> (پیش‌فرض):</strong> اشتراک سطرها را بدون تکرار برمی‌گرداند.</li>
+                    <li><strong><code>INTERSECT ALL</code></strong>: اشتراک سطرها را به همراه تمام تکرارهای ممکن برمی‌گرداند.</li>
+                </ul>
+                <h4>مثال</h4>
+                <p><strong>سوال:</strong> شناسه‌های محصولاتی را پیدا کنید که هم در سال ۲۰۲۳ و هم در سال ۲۰۲۴ فروخته شده‌اند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- محصولاتی که در سال 2023 فروخته شده‌اند
+(SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2023)
+INTERSECT
+-- محصولاتی که در سال 2024 فروخته شده‌اند
+(SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2024);</code></pre></div>
+
+                <h3>۳. تفاضل نتایج (EXCEPT)</h3>
+                <p>
+                    این عملگر سطرهای موجود در نتیجه اولین دستور <code>SELECT</code> را که در نتیجه دومین دستور <code>SELECT</code> وجود <strong>ندارند</strong>، برمی‌گرداند. این دستور نیز از MySQL 8.0.31 به بعد پشتیبانی می‌شود.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT column_list FROM table1
+EXCEPT [ALL | DISTINCT]
+SELECT column_list FROM table2;</code></pre></div>
+                <ul>
+                    <li><strong><code>EXCEPT</code> یا <code>EXCEPT DISTINCT</code> (پیش‌فرض):</strong> تفاضل سطرها را بدون تکرار برمی‌گرداند.</li>
+                    <li><strong><code>EXCEPT ALL</code></strong>: تفاضل سطرها را به همراه تکرارها برمی‌گرداند.</li>
+                </ul>
+                <h4>مثال</h4>
+                <p><strong>سوال:</strong> مشتریانی را پیدا کنید که در سال ۲۰۲۳ سفارش داشته‌اند اما در سال ۲۰۲۴ هیچ سفارشی ثبت نکرده‌اند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مشتریانی که در سال 2023 سفارش داشته‌اند
+(SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2023)
+EXCEPT
+-- مشتریانی که در سال 2024 سفارش داشته‌اند
+(SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2024);</code></pre></div>
+            </section>
+
+
+<section id="grouping_aggregation" class="content-section" style="display: none;">
+                <h2>گروه‌بندی و تجمیع داده‌ها (GROUP BY & HAVING)</h2>
+                <p>
+                    تاکنون یاد گرفتیم چگونه سطرها را با <code>WHERE</code> فیلتر کنیم. اما قدرت واقعی <code>SELECT</code> زمانی آشکار می‌شود که بتوانیم داده‌ها را خلاصه‌سازی و تحلیل کنیم. این کار با استفاده از توابع تجمعی و گروه‌بندی انجام می‌شود.
+                </p>
+
+                <h3>توابع تجمعی (Aggregate Functions)</h3>
+                <p>
+                    توابع تجمعی بر روی مجموعه‌ای از سطرها عمل کرده و یک مقدار واحد را به عنوان نتیجه برمی‌گردانند. این توابع مقادیر <code>NULL</code> را در محاسبات خود نادیده می‌گیرند (به جز <code>COUNT(*)</code>).
+                </p>
+                <ul>
+                    <li>
+                        <strong><code>COUNT(column | *)</code></strong>: تعداد سطرها را می‌شمارد. <code>COUNT(*)</code> تمام سطرها را می‌شمارد، در حالی که <code>COUNT(column)</code> تعداد سطرهایی که در آن ستون مقدار غیر `NULL` دارند را برمی‌گرداند. اگر هیچ سطری یافت نشود، مقدار <strong>0</strong> را برمی‌گرداند.
+                    </li>
+                    <li>
+                        <strong><code>SUM(column)</code></strong>: مجموع مقادیر یک ستون عددی را محاسبه می‌کند.
+                    </li>
+                    <li>
+                        <strong><code>AVG(column)</code></strong>: میانگین مقادیر یک ستون عددی را محاسبه می‌کند.
+                    </li>
+                    <li>
+                        <strong><code>MAX(column)</code></strong>: بزرگ‌ترین مقدار در یک ستون را پیدا می‌کند. (برای ستون‌های عددی، رشته‌ای و تاریخ قابل استفاده است).
+                    </li>
+                    <li>
+                        <strong><code>MIN(column)</code></strong>: کوچک‌ترین مقدار در یک ستون را پیدا می‌کند. (برای ستون‌های عددی، رشته‌ای و تاریخ قابل استفاده است).
+                    </li>
+                </ul>
+                <div class="note"><strong>نکته مهم:</strong> توابع <code>SUM</code>, <code>AVG</code>, <code>MAX</code>, <code>MIN</code> اگر هیچ سطری برای محاسبه پیدا نکنند (مثلاً به دلیل شرط <code>WHERE</code>)، مقدار <strong>NULL</strong> را برمی‌گردانند.</div>
+                
+                <h4>مثال: یافتن مشتری با بیشترین اعتبار</h4>
+                <p>
+                    تابع <code>MAX(credit)</code> فقط مقدار بیشترین اعتبار را برمی‌گرداند، نه خود مشتری را. برای پیدا کردن مشتری، باید از یک زیرکوئری استفاده کنیم:
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT *
+FROM customer_tbl
+WHERE credit = (SELECT MAX(credit) FROM customer_tbl);</code></pre></div>
+
+                <h3>گروه‌بندی نتایج (GROUP BY)</h3>
+                <p>
+                    کلاز <code>GROUP BY</code> سطرهایی که در یک یا چند ستون مقادیر یکسانی دارند را در یک گروه خلاصه می‌کند. پس از گروه‌بندی، توابع تجمعی به جای عمل روی کل جدول، روی هر گروه به صورت مجزا عمل می‌کنند.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT column1, aggregate_function(column2)
+FROM table_name
+GROUP BY column1;</code></pre></div>
+                <p class="important"><strong>قانون GROUP BY:</strong> هر ستونی که در بخش <code>SELECT</code> قرار دارد و جزو توابع تجمعی نیست، باید حتماً در بخش <code>GROUP BY</code> نیز ذکر شود.</p>
+                
+                <h4>مثال ۱: محاسبه تعداد مشتریان هر شهر</h4>
+                <p>این یک مثال کلاسیک از کاربرد <code>GROUP BY</code> است. ما مشتریان را بر اساس شهرشان گروه‌بندی کرده و سپس تعداد اعضای هر گروه را می‌شماریم.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT cityId, COUNT(*) AS NumberOfCustomers
+FROM customer_tbl
+GROUP BY cityId;</code></pre></div>
+
+                <h4>مثال ۲: آمار سفارشات به ازای هر مشتری</h4>
+                <p><strong>سوال:</strong> به ازای هر مشتری، کد و نام او، تاریخ آخرین سفارش و تعداد کل سفارشاتش را پیدا کنید.</p>
+                <p>در این مثال، از <code>LEFT JOIN</code> برای اطمینان از نمایش مشتریانی که هیچ سفارشی ندارند نیز استفاده می‌کنیم.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    C.customerId,
+    C.customerName,
+    MAX(O.orderDate) AS LastOrderDate,
+    COUNT(O.orderID) AS TotalOrders -- COUNT(O.orderID) مقادیر NULL را نمی‌شمارد
+FROM
+    customer_tbl AS C
+LEFT JOIN
+    Order_tbl AS O ON C.customerId = O.customerId
+GROUP BY
+    C.customerId, C.customerName;</code></pre></div>
+                
+                <h3>فیلتر کردن گروه‌ها (HAVING)</h3>
+                <p>
+                    گاهی نیاز داریم که نتایج را پس از گروه‌بندی فیلتر کنیم (مثلاً شهرهایی که بیش از ۱۰ مشتری دارند). شرط <code>WHERE</code> قبل از گروه‌بندی عمل می‌کند و نمی‌تواند روی نتایج توابع تجمعی شرط بگذارد. برای این کار از کلاز <code>HAVING</code> استفاده می‌کنیم.
+                </p>
+                <div class="note">
+                    <strong>تفاوت کلیدی `WHERE` و `HAVING`:</strong>
+                    <ul>
+                        <li><strong><code>WHERE</code></strong> سطرها را <strong>قبل از</strong> گروه‌بندی فیلتر می‌کند.</li>
+                        <li><strong><code>HAVING</code></strong> گروه‌ها را <strong>بعد از</strong> گروه‌بندی و محاسبه توابع تجمعی فیلتر می‌کند.</li>
+                    </ul>
+                </div>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT column1, aggregate_function(column2)
+FROM table_name
+WHERE row_condition
+GROUP BY column1
+HAVING aggregate_condition;</code></pre></div>
+
+                <h4>مثال</h4>
+                <p><strong>سوال:</strong> شهرهایی را پیدا کنید که مجموع اعتبار مشتریان آن‌ها بیشتر از ۵۰ میلیون است.</p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT cityId, SUM(credit) AS TotalCredit
+FROM customer_tbl
+GROUP BY cityId
+HAVING SUM(credit) > 50000000;</code></pre></div>
+                 
+                 <h4>مثال ترکیبی</h4>
+                 <p><strong>سوال:</strong> به ازای هر کالا و هر شهر، مجموع تعداد و مبلغ فروش را برای سفارشاتی که بعد از تاریخ '2023-01-01' ثبت شده‌اند، محاسبه کرده و فقط گروه‌هایی را نمایش دهید که تعداد فروششان بیشتر از ۱۰۰ عدد بوده است.</p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    P.ProductName,
+    CT.cityName,
+    SUM(OD.qty) AS TotalQuantity,
+    SUM(OD.qty * OD.fee) AS TotalPrice
+FROM product_tbl AS P
+INNER JOIN orderdetail_tbl AS OD ON P.productID = OD.productID
+INNER JOIN Order_tbl AS O ON OD.OrderId = O.orderID
+INNER JOIN customer_tbl AS C ON O.customerId = C.customerId
+INNER JOIN city_tbl AS CT ON C.cityId = CT.cityId
+WHERE O.orderDate >= '2023-01-01' -- فیلتر کردن سطرها قبل از گروه‌بندی
+GROUP BY P.ProductName, CT.cityName
+HAVING SUM(OD.qty) > 100; -- فیلتر کردن گروه‌ها بعد از تجمیع</code></pre></div>
+
+
+<hr class="my-8 border-t-2 border-slate-200">
+            <h3>مثال‌های پیشرفته گروه‌بندی و تجمیع</h3>
+
+            <h4>مثال ۱: گزارش فروش بر اساس گروه کالا و شهر</h4>
+            <p>
+                <strong>سوال:</strong> به ازای هر گروه کالا، می‌خواهیم بدانیم که از آن گروه به مشتریان هر شهر، چه تعداد، به چه مبلغ و با چه وزن کلی فروخته شده است. این گزارش فقط باید شامل سفارشات بعد از تاریخ <strong>'2025-01-01'</strong> باشد.
+            </p>
+            <p>
+                برای پاسخ به این سوال، ما به یک زنجیره طولانی از پیوندها نیاز داریم تا اطلاعات را از جداول گروه کالا، محصول، جزئیات سفارش، سفارش، مشتری و شهر به یکدیگر متصل کنیم. سپس، نتیجه را بر اساس نام گروه کالا و نام شهر گروه‌بندی کرده و محاسبات تجمعی را روی هر گروه انجام می‌دهیم.
+            </p>
+            <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    PG.ProductGroupTitle,
+    CT.cityName,
+    SUM(OD.qty) AS TotalQuantity,
+    SUM(OD.qty * OD.fee) AS TotalPrice,
+    SUM(OD.qty * P.ProductWeight) AS TotalWeight
+FROM productGroup_tbl AS PG
+    INNER JOIN product_tbl AS P ON PG.ProductGroupID = P.ProductGroupID
+    INNER JOIN orderdetail_tbl AS OD ON P.productID = OD.productID
+    INNER JOIN Order_tbl AS O ON OD.OrderId = O.orderID
+    INNER JOIN customer_tbl AS C ON O.customerId = C.customerId
+    INNER JOIN city_tbl AS CT ON C.cityId = CT.cityId
+WHERE
+    O.orderDate >= '2025-01-01'
+GROUP BY
+    PG.ProductGroupTitle, CT.cityName
+ORDER BY
+    PG.ProductGroupTitle, CT.cityName;</code></pre></div>
+
+            <h4 class="!mt-12">مثال ۲: گزارش تجمیعی شرطی</h4>
+            <p>
+                <strong>سوال:</strong> به ازای هر مشتری، تعداد و مبلغ کل فروش کالاهای «سبز» و «آبی» را به صورت ستون‌های مجزا نمایش دهید.
+            </p>
+            
+            <h3>مقایسه دو روش حل</h3>
+            <p>
+                برای حل این مسئله دو رویکرد وجود دارد که در ادامه بررسی می‌کنیم.
+            </p>
+            
+            <h5>روش اول: استفاده از چند پیوند به یک جدول (Self-Join Approach)</h5>
+                <p>
+                    در این روش، که در گزارش کار به آن اشاره شده بود، ما جدول سفارش (`Order_tbl`) را به صورت مجزا یک بار به مسیر محصولات سبز و یک بار به مسیر محصولات آبی متصل می‌کنیم. این کار نیازمند استفاده از نام‌های مستعار متعدد برای جداول `orderdetail_tbl` و `product_tbl` است.
+                </p>
+                <p>
+                    نمودار ارتباطی برای این روش به صورت زیر است که انشعاب از جدول سفارش را به خوبی نشان می‌دهد:
+                </p>
+                <div class="mt-6 bg-gray-100 p-4 rounded shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" width="700" height="280" viewBox="0 0 700 280">
+                        <rect x="20" y="20" width="660" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="350" y="45" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">customer_tbl</text>
+                        <rect x="275" y="50" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="350" y="68" font-family="Vazirmatn" text-anchor="middle" font-size="12">customerId</text>
+                        
+                        <rect x="20" y="90" width="660" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="350" y="115" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">Order_tbl</text>
+                        <rect x="275" y="120" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="350" y="138" font-family="Vazirmatn" text-anchor="middle" font-size="12">customerId</text>
+                        <rect x="475" y="120" width="150" height="30" fill="white" stroke="#9ca3af"/><text x="550" y="138" font-family="Vazirmatn" text-anchor="middle" font-size="12">orderID</text>
+                        
+                        <rect x="20" y="160" width="320" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="180" y="185" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">orderdetail_tbl (OD1)</text>
+                        <rect x="125" y="190" width="110" height="30" fill="white" stroke="#9ca3af"/><text x="180" y="208" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        
+                        <rect x="360" y="160" width="320" height="50" fill="#f3f4f6" stroke="#e5e7eb" rx="5"/><text x="520" y="185" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">orderdetail_tbl (OD2)</text>
+                        <rect x="465" y="190" width="110" height="30" fill="white" stroke="#9ca3af"/><text x="520" y="208" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+
+                        <rect x="20" y="230" width="320" height="50" fill="#f0fdf4" stroke="#e5e7eb" rx="5"/><text x="180" y="255" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">product_tbl (P1)</text>
+                        <rect x="125" y="260" width="110" height="30" fill="white" stroke="#9ca3af"/><text x="180" y="278" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        
+                        <rect x="360" y="230" width="320" height="50" fill="#dbeafe" stroke="#e5e7eb" rx="5"/><text x="520" y="255" font-family="Vazirmatn" text-anchor="middle" font-weight="bold">product_tbl (P2)</text>
+                        <rect x="465" y="260" width="110" height="30" fill="white" stroke="#9ca3af"/><text x="520" y="278" font-family="Vazirmatn" text-anchor="middle" font-size="12">productID</text>
+                        
+                        <line x1="350" y1="80" x2="350" y2="120" stroke="#4f46e5" stroke-width="2"/>
+                        <path d="M 550 150 C 350 170, 350 170, 180 190" stroke="#4f46e5" stroke-width="2" fill="none"/>
+                        <path d="M 550 150 C 550 170, 550 170, 520 190" stroke="#4f46e5" stroke-width="2" fill="none"/>
+                        <line x1="180" y1="220" x2="180" y2="260" stroke="#4f46e5" stroke-width="2"/>
+                        <line x1="520" y1="220" x2="520" y2="260" stroke="#4f46e5" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    C.customerId,
+    C.customerName,
+    COUNT(OD1.qty) AS GreenQuantity,
+    SUM(OD1.qty * OD1.fee) AS GreenTotalPrice,
+    COUNT(OD2.qty) AS BlueQuantity,
+    SUM(OD2.qty * OD2.fee) AS BlueTotalPrice
+FROM customer_tbl AS C
+    INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
+    INNER JOIN orderdetail_tbl AS OD1 ON O.orderID = OD1.OrderId
+    INNER JOIN product_tbl AS P1 ON OD1.productID = P1.productID AND P1.ProductColor = 'green'
+    INNER JOIN orderdetail_tbl AS OD2 ON O.orderID = OD2.OrderId
+    INNER JOIN product_tbl AS P2 ON OD2.productID = P2.productID AND P2.ProductColor = 'blue'
+GROUP BY
+    C.customerId, C.customerName;</code></pre></div>
+                <p class="important">
+                    <strong>اشکال این روش:</strong> این روش برای این مسئله مشخص، به دلیل ایجاد ضرب دکارتی ناخواسته بین کالاهای سبز و آبی در یک سفارش، نتایج را به اشتباه چند برابر می‌کند و پاسخ نادرستی تولید می‌کند. برای مثال، اگر یک سفارش شامل ۲ کالای سبز و ۳ کالای آبی باشد، این پیوند به ازای آن سفارش، ۶=۳*۲ سطر تولید می‌کند که باعث محاسبه چندباره و اشتباه جمع‌ها می‌شود.
+                </p>
+
+            <h5>روش دوم: استفاده از تجمیعی شرطی (روش صحیح و بهینه)</h5>
+            <p>
+                روش استاندارد و صحیح برای این کار، استفاده از <strong>«تجمیعی شرطی»</strong> با تابع <code>IF</code> یا دستور <code>CASE</code> است. در این روش، ما تمام جداول مورد نیاز را فقط یک بار به هم متصل می‌کنیم. سپس در داخل توابع تجمعی (مانند <code>SUM</code>)، با یک شرط بررسی می‌کنیم که آیا رنگ کالا مورد نظر ما هست یا خیر. این روش هر سطر را فقط یک بار پردازش کرده و مقادیر را در ستون صحیح (سبز یا آبی) جمع می‌زند.
+            </p>
+            <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    C.customerId,
+    C.customerName,
+    SUM(IF(P.ProductColor = 'green', OD.qty, 0)) AS GreenQuantity,
+    SUM(IF(P.ProductColor = 'green', OD.qty * OD.fee, 0)) AS GreenTotalPrice,
+    SUM(IF(P.ProductColor = 'blue', OD.qty, 0)) AS BlueQuantity,
+    SUM(IF(P.ProductColor = 'blue', OD.qty * OD.fee, 0)) AS BlueTotalPrice
+FROM customer_tbl AS C
+    INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
+    INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+    INNER JOIN product_tbl AS P ON OD.productID = P.productID
+WHERE
+    P.ProductColor IN ('green', 'blue')
+GROUP BY
+    C.customerId, C.customerName
+ORDER BY
+    C.customerId;</code></pre></div>
+            </section>
+
+
+            </section>
+
+
+ <section id="cte_non_recursive" class="content-section">
+                <h2>عبارات جدولی مشترک (CTE)</h2>
+                <p>
+                    کلاز <code>WITH</code> به شما اجازه می‌دهد تا یک یا چند نتیجه موقت و نام‌گذاری شده (CTE) را تعریف کنید که فقط در طول اجرای یک کوئری اصلی وجود دارند. CTEها به خصوص برای شکستن کوئری‌های پیچیده به بخش‌های منطقی، خواناتر و قابل استفاده مجدد، بسیار مفید هستند.
+                </p>
+
+                <h3>۱. CTE‌های غیربازگشتی (Non-Recursive CTEs)</h3>
+                <p>
+                    این نوع CTE، رایج‌ترین حالت استفاده است. شما یک زیرکوئری را اجرا کرده، نتیجه آن را در یک نام موقت ذخیره و سپس در کوئری اصلی از آن استفاده می‌کنید.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- تعریف یک CTE
+WITH CteName AS (
+    SELECT ... FROM ...
+)
+-- استفاده از CTE در کوئری اصلی
+SELECT * FROM CteName;
+
+-- تعریف چند CTE (جدا شده با کاما)
+WITH
+    Cte1 AS (SELECT ...),
+    Cte2 AS (SELECT ... FROM Cte1) -- CTE دوم می‌تواند به اولی ارجاع دهد
+SELECT * FROM Cte2;</code></pre></div>
+                
+                <h4>مثال‌ها</h4>
+                <p><strong>مثال ۱: ساده‌سازی کوئری با `JOIN`</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH EnrichedOrders AS (
+    SELECT
+        O.orderID,
+        O.orderDate,
+        O.payablePrice,
+        C.customerName,
+        CT.cityName
+    FROM Order_tbl AS O
+    INNER JOIN customer_tbl AS C ON O.customerId = C.customerId
+    INNER JOIN city_tbl AS CT ON C.cityId = CT.cityId
+)
+SELECT * FROM EnrichedOrders WHERE cityName = 'تهران';</code></pre></div>
+
+                <p><strong>مثال ۲: CTE‌های زنجیره‌ای</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH TopCustomers AS (
+    SELECT customerId, customerName, credit
+    FROM customer_tbl
+    ORDER BY credit DESC
+    LIMIT 10
+),
+LastOrders AS (
+    SELECT
+        customerId,
+        MAX(orderDate) AS LastOrderDate
+    FROM Order_tbl
+    GROUP BY customerId
+)
+SELECT TC.customerName, TC.credit, LO.LastOrderDate
+FROM TopCustomers AS TC
+LEFT JOIN LastOrders AS LO ON TC.customerId = LO.customerId;</code></pre></div>
+
+                <p><strong>مثال ۳: استفاده از CTE برای محاسبات تجمعی</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH ProductSalesStats AS (
+    SELECT
+        P.productID,
+        P.ProductName,
+        SUM(OD.qty) AS TotalQuantity,
+        SUM(OD.qty * OD.fee) AS TotalRevenue
+    FROM product_tbl AS P
+    JOIN orderdetail_tbl AS OD ON P.productID = OD.productID
+    GROUP BY P.productID, P.ProductName
+)
+SELECT *
+FROM ProductSalesStats
+WHERE TotalQuantity > 100;</code></pre></div>
+
+                <p><strong>مثال ۴: استفاده از CTE با دستور `UPDATE`</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH TehranCustomers AS (
+    SELECT customerId
+    FROM customer_tbl
+    WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران')
+)
+UPDATE customer_tbl
+SET credit = credit * 1.1
+WHERE customerId IN (SELECT customerId FROM TehranCustomers);</code></pre></div>
+            </section>
+            
+            <section id="cte_recursive" class="content-section" style="display:none;">
+                 <h2>CTE‌های بازگشتی (Recursive CTEs)</h2>
+                <p>
+                    یک CTE بازگشتی به خودش ارجاع می‌دهد و برای پیمایش داده‌های سلسله‌مراتبی (مانند ساختار سازمانی یا دسته‌بندی محصولات) یا تولید سری داده‌ها استفاده می‌شود.
+                </p>
+                <h3>ساختار یک CTE بازگشتی</h3>
+                <p>یک CTE بازگشتی از دو بخش اصلی تشکیل شده که با <code>UNION ALL</code> به هم متصل می‌شوند:</p>
+                <ol>
+                    <li><strong>عضو ثابت (Anchor Member):</strong> یک کوئری اولیه که نقطه شروع بازگشت است و فقط یک بار اجرا می‌شود.</li>
+                    <li><strong>عضو بازگشتی (Recursive Member):</strong> کوئری‌ای که به نام خود CTE ارجاع می‌دهد. این بخش به صورت مکرر اجرا شده و در هر مرحله، از خروجی مرحله قبل به عنوان ورودی استفاده می‌کند تا زمانی که دیگر هیچ سطر جدیدی تولید نکند.</li>
+                </ol>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH RECURSIVE CteName (column_list) AS (
+    -- Anchor Member
+    SELECT ...
+    UNION ALL
+    -- Recursive Member
+    SELECT ... FROM CteName WHERE ...
+)
+SELECT * FROM CteName;</code></pre></div>
+                
+                <h4>مثال‌ها</h4>
+                <p><strong>مثال ۱: تولید یک سری اعداد</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH RECURSIVE NumberSeries (n) AS (
+    SELECT 1 -- Anchor: نقطه شروع
+    UNION ALL
+    SELECT n + 1 FROM NumberSeries WHERE n < 5 -- Recursive: در هر مرحله 1 واحد اضافه کن
+)
+SELECT * FROM NumberSeries;</code></pre></div>
+
+                <p><strong>مثال ۲: نمایش ساختار سلسله‌مراتبی گروه‌های محصول</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH RECURSIVE CategoryHierarchy (GroupID, Title, ParentID, Level) AS (
+    -- Anchor: گروه اصلی را انتخاب کن (فرض کنیم ID آن 1 است)
+    SELECT ProductGroupID, ProductGroupTitle, ParentProductGroupID, 0
+    FROM productGroup_tbl
+    WHERE ProductGroupID = 1
+
+    UNION ALL
+
+    -- Recursive: زیرگروه‌های هر گروه پیدا شده در مرحله قبل را پیدا کن
+    SELECT
+        pg.ProductGroupID,
+        pg.ProductGroupTitle,
+        pg.ParentProductGroupID,
+        ch.Level + 1
+    FROM productGroup_tbl AS pg
+    INNER JOIN CategoryHierarchy AS ch ON pg.ParentProductGroupID = ch.GroupID
+)
+SELECT * FROM CategoryHierarchy;</code></pre></div>
+                
+                <p><strong>مثال ۳: تولید یک سری تاریخ</strong></p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH RECURSIVE DateSeries (dt) AS (
+    SELECT CURDATE() -- Anchor: تاریخ امروز
+    UNION ALL
+    SELECT dt + INTERVAL 1 DAY FROM DateSeries WHERE dt < CURDATE() + INTERVAL 6 DAY -- Recursive
+)
+SELECT * FROM DateSeries;</code></pre></div>
+
+                 <p><strong>مثال ۴: پیمایش ساختار سازمانی (کارمند و مدیر)</strong></p>
+                  <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>WITH RECURSIVE EmployeeHierarchy (EmployeeID, EmployeeName, ManagerID, Level) AS (
+    -- Anchor: مدیری که می‌خواهیم از او شروع کنیم (مثلاً با EID = 10)
+    SELECT EID, EName, BossID, 0
+    FROM Employee
+    WHERE EID = 10
+
+    UNION ALL
+
+    -- Recursive: کارمندانی که مدیرشان، کارمند پیدا شده در مرحله قبل است
+    SELECT
+        e.EID,
+        e.EName,
+        e.BossID,
+        h.Level + 1
+    FROM Employee AS e
+    INNER JOIN EmployeeHierarchy AS h ON e.BossID = h.EmployeeID
+)
+SELECT * FROM EmployeeHierarchy;</code></pre></div>
+            </section>			
+
+<section id="insert_statement" class="content-section" style="display: none;">
+                <h2>دستور INSERT (درج داده‌ها)</h2>
+                <p>
+                    دستور <code>INSERT</code> اولین دستور از مجموعه DML (زبان مدیریت داده) است که برای افزودن یک یا چند سطر جدید به یک جدول استفاده می‌شود. این دستور سه شکل اصلی دارد که هر کدام کاربرد خاص خود را دارند.
+                </p>
+
+                <h3>شکل اول: <code>INSERT ... VALUES</code> (درج مقادیر مشخص)</h3>
+                <p>
+                    این رایج‌ترین و پایه‌ای‌ترین شکل دستور <code>INSERT</code> است که برای درج سطرهایی با مقادیر از پیش تعیین‌شده به کار می‌رود.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>INSERT [INTO] table_name [(column_list)]
+VALUES (value_list_1), (value_list_2), ...;</code></pre></div>
+                
+                <h4>نکات کلیدی و مثال‌ها</h4>
+                <ul>
+                    <li><strong>درج چند سطری:</strong> شما می‌توانید با جدا کردن لیست مقادیر هر سطر با کاما (<code>,</code>)، چندین سطر را با یک دستور واحد درج کنید.</li>
+                    <li><strong>لیست ستون‌ها (<code>column_list</code>):</strong> این بخش اختیاری است اما استفاده از آن به شدت توصیه می‌شود.
+                        <ul>
+                            <li><strong>اگر لیست ستون‌ها ذکر نشود:</strong> شما باید برای <strong>تمام</strong> ستون‌های جدول، به <strong>ترتیب دقیق</strong> تعریف آن‌ها در ساختار جدول، مقدار ارائه دهید.</li>
+                            <li><strong>اگر لیست ستون‌ها ذکر شود (روش پیشنهادی):</strong> شما فقط برای ستون‌های نام‌برده شده مقدار می‌دهید. ترتیب مقادیر در بخش <code>VALUES</code> باید دقیقاً با ترتیب ستون‌ها در <code>column_list</code> مطابقت داشته باشد. این روش به شما اجازه می‌دهد ستون‌هایی که مقدار پیش‌فرض دارند یا <code>AUTO_INCREMENT</code> هستند را نادیده بگیرید.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مثال ۱: درج دو شهر جدید در جدول شهرها
+-- لیست ستون‌ها ذکر نشده، پس باید برای تمام ستون‌ها (به جز auto_increment) مقدار دهیم
+INSERT INTO city_tbl (cityName) VALUES ('شیراز'), ('اصفهان');
+
+-- مثال ۲: درج یک مشتری جدید با ذکر نام ستون‌ها (روش امن‌تر)
+INSERT INTO customer_tbl (customerName, customertel, cityId, status)
+VALUES ('سارا احمدی', '09121112233', 1, 'active');
+-- توجه کنید که ستون‌های customerId (چون auto_increment است) و credit (چون DEFAULT دارد) ذکر نشده‌اند.
+
+-- مثال ۳: درج یک محصول با ترتیب متفاوت ستون‌ها
+INSERT INTO product_tbl (ProductName, ProductColor, minPrice, ProductGroupID)
+VALUES ('مانیتور ۲۴ اینچ', 'مشکی', 7500000, 3);</code></pre></div>
+
+                <h3>شکل دوم: <code>INSERT ... SET</code> (سینتکس جایگزین MySQL)</h3>
+                <p>
+                    این شکل از دستور که مختص MySQL است، برای درج <strong>یک سطر واحد</strong> به کار می‌رود و به دلیل شباهت به دستور <code>UPDATE</code>، خوانایی بالایی دارد. در این روش، هر ستون به صورت صریح با مقدار خود جفت می‌شود.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>INSERT [INTO] table_name
+SET column1 = value1, column2 = value2, ...;</code></pre></div>
+                <h4>مثال</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>INSERT INTO product_tbl
+SET
+    ProductName = 'کیبورد مکانیکی',
+    ProductColor = 'سفید',
+    minPrice = 2100000,
+    ProductGroupID = 4;</code></pre></div>
+
+                <h3>شکل سوم: <code>INSERT ... SELECT</code> (کپی کردن داده‌ها)</h3>
+                <p>
+                    این شکل قدرتمند به شما اجازه می‌دهد تا نتیجه یک دستور <code>SELECT</code> را مستقیماً در یک جدول دیگر درج کنید. این روش برای کپی کردن، آرشیو کردن، خلاصه‌سازی و انتقال داده‌ها بین جداول (مهاجرت داده) بسیار کاربردی است.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>INSERT [INTO] table_name [(column_list)]
+SELECT ... FROM ...;</code></pre></div>
+                <div class="note">تعداد و نوع داده ستون‌ها در خروجی دستور <code>SELECT</code> باید با ستون‌های جدول مقصد (که در <code>column_list</code> مشخص شده‌اند) سازگار باشد.</div>
+                
+                <h4>مثال جامع: انتقال داده از سیستم قدیمی</h4>
+                <p>
+                    <strong>سناریو:</strong> فرض کنید داده‌های مشتریان از یک سیستم قدیمی در جدولی به نام <code>OldDB.OldCast</code> وجود دارد. در این جدول قدیمی، کد مشتری یک رشته ترکیبی (مانند `C1024`) و آدرس و شهر در یک ستون واحد (مانند `تهران - خیابان ولیعصر`) ذخیره شده‌اند. ما می‌خواهیم این داده‌ها را به جدول جدید <code>customer_tbl</code> منتقل کنیم.
+                </p>
+                <p>
+                    برای این کار، باید در حین خواندن داده‌ها با <code>SELECT</code>، آن‌ها را با استفاده از توابع رشته‌ای پردازش کنیم:
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>INSERT INTO customer_tbl (customerId, customerName, customertel, cityName, customerAddress)
+SELECT
+    CAST(SUBSTRING(Code, 2) AS UNSIGNED), -- جدا کردن و تبدیل بخش عددی کد
+    Name,
+    Tel,
+    SUBSTRING_INDEX(Address, '-', 1), -- استخراج بخش قبل از خط تیره (شهر)
+    SUBSTRING_INDEX(Address, '-', -1) -- استخراج بخش بعد از خط تیره (آدرس)
+FROM OldDB.OldCast;</code></pre></div>
+            </section>
+
+<section id="update_statement" class="content-section" style="display: none;">
+                <h2>دستور UPDATE (به‌روزرسانی داده‌ها)</h2>
+                <p>
+                    دستور <code>UPDATE</code> برای ویرایش و تغییر مقادیر سطرهای موجود در یک جدول استفاده می‌شود. این دستور به شما اجازه می‌دهد تا یک یا چند ستون از یک یا چند سطر را که با شرط مشخصی مطابقت دارند، به‌روزرسانی کنید.
+                </p>
+
+                <h3>شکل کلی دستور</h3>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>UPDATE table_name
+SET
+    column1 = {value1 | expr1},
+    column2 = {value2 | expr2},
+    ...
+[WHERE condition]
+[ORDER BY ...]
+[LIMIT n];</code></pre></div>
+                
+                <h3>تشریح بخش‌های دستور</h3>
+                <ul>
+                    <li>
+                        <strong><code>SET</code></strong>: در این بخش، شما لیست ستون‌هایی که می‌خواهید تغییر دهید را به همراه مقادیر جدیدشان مشخص می‌کنید. مقدار جدید می‌تواند یک مقدار ثابت، یک عبارت محاسباتی (مانند <code>price * 1.1</code>) یا حتی مقدار پیش‌فرض ستون (با کلمه کلیدی <code>DEFAULT</code>) باشد.
+                    </li>
+                    <li>
+                        <strong><code>WHERE</code></strong>: این بخش، مهم‌ترین و حیاتی‌ترین قسمت دستور <code>UPDATE</code> است. این شرط مشخص می‌کند که کدام سطرها باید به‌روزرسانی شوند.
+                    </li>
+                </ul>
+                <p class="important">
+                    <strong>هشدار بسیار مهم:</strong> اگر بخش <code>WHERE</code> را در دستور <code>UPDATE</code> حذف کنید، تغییرات بر روی <strong>تمام سطرهای جدول</strong> اعمال خواهد شد! این عمل معمولاً غیرقابل بازگشت است و باید با احتیاط فراوان انجام شود.
+                </p>
+                 <ul>
+                    <li>
+                        <strong><code>ORDER BY</code> و <code>LIMIT</code></strong>: این دو بخش معمولاً با هم به کار می‌روند و به شما اجازه می‌دهند تا به‌روزرسانی را به تعداد محدودی از سطرها که بر اساس معیار خاصی مرتب شده‌اند، محدود کنید. برای مثال، به‌روزرسانی ۱۰ مشتری که بیشترین اعتبار را دارند.
+                    </li>
+                </ul>
+
+                <h3>مثال‌های کاربردی</h3>
+                
+                <h4>مثال ۱: به‌روزرسانی یک سطر خاص</h4>
+                <p><strong>سوال:</strong> رنگ و قیمت محصولی با شناسه (productID) برابر با ۱۰ را تغییر دهید.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>UPDATE product_tbl
+SET
+    ProductColor = 'قرمز',
+    minPrice = 150000
+WHERE
+    productID = 10;</code></pre></div>
+                <p>چون <code>productID</code> کلید اصلی و یکتاست، این دستور حداکثر یک سطر را تغییر خواهد داد.</p>
+                
+                <h4>مثال ۲: به‌روزرسانی چند سطر با شرط</h4>
+                <p><strong>سوال:</strong> قیمت تمام محصولات متعلق به گروه کالای شماره ۳ (<code>ProductGroupID = 3</code>) را ۱۰ درصد افزایش دهید.</p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>UPDATE product_tbl
+SET minPrice = minPrice * 1.1
+WHERE ProductGroupID = 3;</code></pre></div>
+
+                <h4>مثال ۳: به‌روزرسانی با استفاده از توابع</h4>
+                <p><strong>سوال:</strong> فرض کنید می‌خواهیم به ابتدای تمام شماره تلفن‌های ۷ رقمی شهر تبریز، یک عدد «۳» اضافه کنیم تا ۸ رقمی شوند.</p>
+                <p>
+                    در این مثال، از تابع <code>CONCAT</code> برای چسباندن رشته‌ها و از تابع <code>CHAR_LENGTH</code> برای پیدا کردن طول رشته استفاده می‌کنیم.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>UPDATE customer_tbl
+SET customertel = CONCAT('3', customertel)
+WHERE
+    cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تبریز')
+    AND CHAR_LENGTH(customertel) = 7;</code></pre></div>
+                
+                <h4>مثال ۴: به‌روزرسانی هدفمند با `ORDER BY` و `LIMIT`</h4>
+                <p><strong>سوال:</strong> به ۱۰ مشتری که بیشترین اعتبار را دارند و اعتبارشان بالای ۳۰ میلیون است، یک تخفیف ۱ میلیونی (کاهش از اعتبار) بدهید.</p>
+                <p>
+                    در اینجا، ابتدا با <code>WHERE</code> مشتریان هدف را جدا می‌کنیم، سپس با <code>ORDER BY CAccount DESC</code> آن‌ها را بر اساس بیشترین اعتبار مرتب کرده و در نهایت با <code>LIMIT 10</code>، تغییر را فقط به ۱۰ نفر اول اعمال می‌کنیم.
+                </p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>UPDATE customer_tbl
+SET credit = credit - 1000000
+WHERE credit >= 30000000
+ORDER BY credit DESC
+LIMIT 10;</code></pre></div>
+            </section>
+
+<section id="delete_statement" class="content-section" style="display: none;">
+                <h2>دستور DELETE (حذف داده‌ها)</h2>
+                <p>
+                    دستور <code>DELETE</code> برای پاک کردن یک یا چند سطر از یک جدول استفاده می‌شود. این دستور، مانند <code>UPDATE</code>، بسیار قدرتمند است و باید با احتیاط فراوان از آن استفاده کرد.
+                </p>
+
+                <h3>شکل کلی دستور</h3>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DELETE FROM table_name
+[WHERE condition]
+[ORDER BY ...]
+[LIMIT n];</code></pre></div>
+                
+                <h3>تشریح بخش‌های دستور</h3>
+                <ul>
+                    <li>
+                        <strong><code>WHERE</code></strong>: این بخش، حیاتی‌ترین قسمت دستور <code>DELETE</code> است و مشخص می‌کند که کدام سطرها باید حذف شوند.
+                    </li>
+                </ul>
+                <p class="important">
+                    <strong>هشدار بسیار مهم:</strong> اگر بخش <code>WHERE</code> را در دستور <code>DELETE</code> حذف کنید، <strong>تمام سطرهای جدول</strong> حذف خواهند شد!
+                </p>
+                 <ul>
+                    <li>
+                        <strong><code>ORDER BY</code> و <code>LIMIT</code></strong>: این دو بخش به شما اجازه می‌دهند تا حذف را به تعداد محدودی از سطرها که بر اساس معیار خاصی مرتب شده‌اند، محدود کنید. برای مثال، حذف ۵۰ مشتری که هیچ سفارشی ندارند و بر اساس نام مرتب شده‌اند.
+                    </li>
+                </ul>
+                <div class="note">
+                    <strong>نکته در مورد کلیدهای خارجی:</strong> اگر سطری که قصد حذف آن را دارید، در جدول دیگری از طریق کلید خارجی به آن ارجاع داده شده باشد (مثلاً یک مشتری که سفارشاتی دارد)، موفقیت عملیات حذف به اقدام ارجاعی (<code>ON DELETE</code>) تعریف شده برای آن کلید خارجی بستگی دارد. اگر اقدام <code>RESTRICT</code> یا <code>NO ACTION</code> باشد، دستور <code>DELETE</code> با خطا مواجه خواهد شد.
+                </div>
+
+                <h3>مثال‌های کاربردی</h3>
+                
+                <h4>مثال ۱: حذف سطرهای خاص با شرط</h4>
+                <p><strong>سوال:</strong> تمام سفارشاتی که در تاریخ '2024-05-11' ثبت شده‌اند را حذف کنید.</p>
+                <p>
+                    این کار باید در دو مرحله انجام شود، زیرا نمی‌توان یک سفارش را مستقیماً حذف کرد اگر جزئیاتی (سطرهایی در <code>orderdetail_tbl</code>) به آن ارجاع داده باشند. ابتدا باید جزئیات سفارشات را حذف کنیم و سپس خود سفارشات را.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- مرحله اول: حذف جزئیات سفارشات مربوطه
+DELETE FROM orderdetail_tbl
+WHERE OrderId IN (SELECT orderID FROM Order_tbl WHERE orderDate = '2024-05-11');
+
+-- مرحله دوم: حذف خود سفارشات
+DELETE FROM Order_tbl
+WHERE orderDate = '2024-05-11';</code></pre></div>
+                
+                <h4>مثال ۲: حذف با استفاده از زیرکوئری</h4>
+                <p><strong>سوال:</strong> مشتریانی که هیچ سفارشی ندارند را حذف کنید.</p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DELETE FROM customer_tbl
+WHERE customerId NOT IN (SELECT DISTINCT customerId FROM Order_tbl);</code></pre></div>
+
+                <h4>مثال ۳: حذف هدفمند با `ORDER BY` و `LIMIT`</h4>
+                <p><strong>سوال:</strong> ۵۰ مشتری را که هیچ سفارشی ندارند و بر اساس نام خانوادگی مرتب شده‌اند، حذف کنید.</p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DELETE FROM customer_tbl
+WHERE customerId NOT IN (SELECT DISTINCT customerId FROM Order_tbl)
+ORDER BY customerName
+LIMIT 50;</code></pre></div>
+
+<h3>دستور TRUNCATE</h3>
+                <p>دستور <code>TRUNCATE TABLE</code> نیز تمام سطرها را از یک جدول حذف می‌کند، اما تفاوت‌های اساسی و مهمی با `DELETE` دارد.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>TRUNCATE TABLE table_name;</code></pre></div>
+                
+                <h4>مقایسه `DELETE` و `TRUNCATE`</h4>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>ویژگی</th>
+                            <th>DELETE</th>
+                            <th>TRUNCATE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>محدوده</strong></td>
+                            <td>می‌تواند تمام یا بخشی از سطرها را (با `WHERE`) حذف کند.</td>
+                            <td><strong>همیشه تمام سطرها</strong> را حذف می‌کند.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>سرعت</strong></td>
+                            <td>کندتر است، زیرا هر سطر را به صورت جداگانه بررسی و حذف می‌کند.</td>
+                            <td>بسیار سریع‌تر است، زیرا کل فضای تخصیص داده شده به جدول را آزاد می‌کند.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>تراکنش (Transaction)</strong></td>
+                            <td>یک عملیات DML است و <strong>قابل بازگشت (Rollback)</strong> می‌باشد.</td>
+                            <td>یک عملیات DDL است و معمولاً <strong>غیرقابل بازگشت</strong> است.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>شمارنده `AUTO_INCREMENT`</strong></td>
+                            <td>شمارنده را ریست نمی‌کند.</td>
+                            <td>شمارنده را به مقدار اولیه <strong>ریست می‌کند</strong>.</td>
+                        </tr>
+                         <tr>
+                            <td><strong>تریگرها (Triggers)</strong></td>
+                            <td>تریگرهای `ON DELETE` را برای هر سطر فعال می‌کند.</td>
+                            <td>تریگرها را فعال <strong>نمی‌کند</strong>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+			
+<section id="backup_restore" class="content-section">
+                <h2>پشتیبان‌گیری و بازیابی (Backup & Restore)</h2>
+                <p>
+                    یکی از مهم‌ترین وظایف در مدیریت پایگاه داده، تهیه نسخه پشتیبان (Backup) از داده‌ها و توانایی بازیابی (Restore) آن در مواقع ضروری است. MySQL برای این کار ابزار خط فرمان قدرتمندی به نام <code>mysqldump</code> فراهم کرده است.
+                </p>
+                <div class="note important">
+                    <strong>نکته بسیار مهم:</strong> دستور <code>mysqldump</code> و انواع آن باید از خط فرمان سیستم‌عامل (CMD یا PowerShell) اجرا شود، نه از داخل محیط تعاملی <code>mysql></code>.
+                </div>
+
+                <h3>پشتیبان‌گیری با `mysqldump`</h3>
+                <p>
+                    این ابزار یک فایل متنی با پسوند <code>.sql</code> تولید می‌کند که شامل تمام دستورات DDL (برای بازسازی ساختار جداول) و DML (برای درج مجدد داده‌ها) می‌باشد.
+                </p>
+                <h4>اشکال مختلف دستور</h4>
+                <ol>
+                    <li><strong>پشتیبان‌گیری از یک پایگاه داده واحد (و یا جداول خاصی از آن):</strong></li>
+                    <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>mysqldump [options] database_name [table_name1 table_name2 ...]</code></pre></div>
+                    <p>این شکل از دستور، فقط از یک پایگاه داده و یا جداول مشخصی از آن پشتیبان تهیه می‌کند. <strong class="important">نکته مهم این است که در خروجی این دستور، دستور <code>CREATE DATABASE</code> وجود ندارد.</strong></p>
+                    
+                    <li><strong>پشتیبان‌گیری از چند پایگاه داده مشخص (با ساختار کامل):</strong></li>
+                    <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>mysqldump [options] --databases db_name1 db_name2 ...</code></pre></div>
+                    <p>استفاده از سوئیچ <code>--databases</code> باعث می‌شود که در فایل خروجی، دستورات <code>CREATE DATABASE IF NOT EXISTS</code> و <code>USE</code> برای هر پایگاه داده به صورت خودکار اضافه شود که فرآیند بازیابی را بسیار ساده‌تر می‌کند.</p>
+
+                    <li><strong>پشتیبان‌گیری از کل سرور (تمام پایگاه‌های داده):</strong></li>
+                    <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>mysqldump [options] --all-databases</code></pre></div>
+                     <p>این دستور از تمام پایگاه‌های داده موجود بر روی سرور (شامل پایگاه‌های داده سیستمی مانند `mysql`) یک نسخه پشتیبان کامل تهیه می‌کند و دستورات `CREATE DATABASE` و `USE` را نیز در خروجی قرار می‌دهد.</p>
+                </ol>
+
+                <h4>ذخیره خروجی در فایل</h4>
+                <p>
+                    خروجی دستور <code>mysqldump</code> به صورت پیش‌فرض در همان پنجره خط فرمان نمایش داده می‌شود. برای ذخیره آن در یک فایل، از عملگر ریدایرکت (<code>></code>) استفاده می‌کنیم.
+                </p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>mysqldump [options] ... > path\to\your\file.sql</code></pre></div>
+                <p>عملگر <code>></code> فایل موجود را بازنویسی (Overwrite) می‌کند. اگر بخواهید خروجی را به انتهای یک فایل موجود اضافه کنید، از عملگر <code>>></code> استفاده کنید (این کار برای فایل‌های پشتیبان SQL معمولاً توصیه نمی‌شود).</p>
+
+                <h4>گزینه‌های پرکاربرد</h4>
+                <ul>
+                    <li><strong><code>-u username -p</code></strong>: برای مشخص کردن نام کاربری و درخواست رمز عبور به صورت امن.</li>
+                    <li><strong><code>--no-data</code></strong>: فقط ساختار جداول (Schema) را بدون داده‌ها خروجی می‌دهد. این گزینه برای به اشتراک‌گذاری ساختار پایگاه داده بدون به اشتراک‌گذاری محتوای آن بسیار مفید است.</li>
+                    <li><strong><code>--xml</code></strong>: خروجی را به جای دستورات SQL، در قالب XML تولید می‌کند که برای استفاده در سیستم‌های دیگر می‌تواند کاربردی باشد.</li>
+                    <li><strong><code>--tables table_name1 ...</code></strong>: فقط از جداول مشخص شده در یک پایگاه داده پشتیبان‌گیری می‌کند.</li>
+                </ul>
+
+                <h3>بازیابی اطلاعات (Restore)</h3>
+                <p>برای بازیابی اطلاعات از یک فایل <code>.sql</code>، می‌توان از دو روش اصلی استفاده کرد.</p>
+
+                <h4>روش اول: از داخل محیط تعاملی MySQL (روش تعاملی)</h4>
+                <p>
+                    این روش برای فایل‌های کوچک‌تر مناسب است و به شما اجازه می‌دهد تا فرآیند را به صورت تعاملی مشاهده کنید. در این روش از دستور <code>source</code> یا معادل آن (<code>\.</code>) استفاده می‌شود.
+                </p>
+                <div class="note">
+                    <strong>نکته:</strong> برای این روش، اگر فایل پشتیبان شما فاقد دستور <code>CREATE DATABASE</code> است (یعنی با روش ساده و بدون سوئیچ <code>--databases</code> تهیه شده)، باید ابتدا به صورت دستی یک پایگاه داده خالی ایجاد کرده و با دستور <code>USE</code> آن را انتخاب کنید.
+                </div>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- 1. به MySQL متصل شوید
+mysql -u root -p
+
+-- 2. (در صورت نیاز) پایگاه داده را ایجاد و انتخاب کنید
+CREATE DATABASE IF NOT EXISTS orderdb;
+USE orderdb;
+
+-- 3. با دستور source (یا معادل آن \.) فایل پشتیبان را اجرا کنید
+source D:/backups/orderdb_backup.sql;
+
+-- یا به صورت خلاصه:
+\. D:/backups/orderdb_backup.sql</code></pre></div>
+                
+                <h4>روش دوم: از طریق خط فرمان سیستم‌عامل (روش سریع‌تر)</h4>
+                <p>این روش برای فایل‌های حجیم مناسب‌تر است و به صورت غیرتعاملی اجرا می‌شود. در این روش، از عملگر <code><</code> برای هدایت محتوای فایل به عنوان ورودی دستور `mysql` استفاده می‌کنیم.</p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- فایل پشتیبان را به پایگاه داده مورد نظر وارد کنید
+-- در اینجا نیز اگر فایل پشتیبان دستور ساخت دیتابیس را نداشته باشد، باید ابتدا آن را ایجاد کنید
+mysql -u root -p orderdb < D:\backups\orderdb_backup.sql</code></pre></div>
+            </section>
+			
+            <section id="assignment_final" class="content-section" style="display: none;">
+                <h2>تکلیف جلسات</h2>
+                <div class="assignment-box">
+                    <h3 class="!mt-0">تکلیف عملی</h3>
+                    <p>دانشجویان باید SCRIPT کامل ایجاد جداول مربوط به پروژه <strong>اختصاصی خودشان</strong> را (نه مثال `orderdb`)، بر اساس مدل رابطه‌ای که طراحی کرده‌اند، در این بخش قرار دهند و با دستور `DESC` ساختار هر یک از جداول را نمایش دهند.</p>
+                    <h3 class="!mt-8">تمرین</h3>
+                    <p><strong>سوال:</strong> سفارشاتی را بیابید که در آن از کالاهای آبی رنگ یا قرمز رنگ به فروش رفته باشد و این سفارشات مربوط به مشتریانی باشند که اهل تبریز و تهران نیستند.</p>
+                </div>
+            </section>
+			
+			
+			<section id="views" class="content-section" style="display: none;">
+                <h2>ديدها (Views)</h2>
+                <p>
+                    یک ديد یا <strong>View</strong>، یک جدول مجازی است که بر اساس نتیجه یک دستور <code>SELECT</code> ساخته می‌شود. View خود داده‌ای را ذخیره نمی‌کند، بلکه مانند یک پنجره به داده‌های موجود در جداول پایه عمل می‌کند. هر زمان که یک View فراخوانی می‌شود، دستور <code>SELECT</code> تعریف‌شده برای آن در همان لحظه اجرا شده و نتیجه به‌روز را نمایش می‌دهد.
+                </p>
+                
+                <h3>چرا از View استفاده می‌کنیم؟</h3>
+                <ul>
+                    <li><strong>ساده‌سازی پیچیدگی:</strong> کوئری‌های پیچیده که شامل چندین <code>JOIN</code> و محاسبات هستند را می‌توان در یک View ذخیره کرد. پس از آن، کاربران می‌توانند به سادگی و با یک <code>SELECT * FROM MyView</code> به نتیجه آن دسترسی پیدا کنند، بدون اینکه نیاز به درک پیچیدگی کوئری اصلی داشته باشند.</li>
+                    <li><strong>امنیت:</strong> شما می‌توانید به کاربران اجازه دسترسی به یک View را بدهید، به جای اینکه به آن‌ها اجازه دسترسی مستقیم به جداول پایه را بدهید. با این کار، می‌توانید دسترسی آن‌ها را به سطرها یا ستون‌های خاصی محدود کنید.</li>
+                    <li><strong>استقلال منطقی داده‌ها:</strong> اگر ساختار جداول پایه تغییر کند (مثلاً یک ستون به دو ستون تقسیم شود)، تا زمانی که بتوان View را برای بازگرداندن همان نتیجه قبلی بازنویسی کرد، اپلیکیشن‌هایی که از آن View استفاده می‌کنند، نیازی به تغییر نخواهند داشت.</li>
+                </ul>
+
+                <h3>دستور CREATE VIEW</h3>
+                <p>
+                    این دستور برای ایجاد یک View جدید استفاده می‌شود.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE [OR REPLACE] VIEW view_name [(column_list)]
+AS
+SELECT ... ;</code></pre></div>
+                <ul>
+                    <li><strong><code>OR REPLACE</code></strong>: اگر این گزینه استفاده شود و View با همین نام از قبل موجود باشد، View جدید جایگزین قبلی می‌شود. در غیر این صورت، ایجاد یک View با نام تکراری باعث خطا می‌شود.</li>
+                    <li><strong><code>(column_list)</code></strong>: این بخش اختیاری است و به شما اجازه می‌دهد تا برای ستون‌های View، نام‌های مستعار جدیدی تعریف کنید.</li>
+                </ul>
+
+                <h4>مثال ۱: ایجاد یک View ساده برای مشتریان تهران</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE OR REPLACE VIEW V_TehranCustomers AS
+SELECT customerId, customerName, customertel, customerAddress
+FROM customer_tbl
+WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران');
+
+-- استفاده از View
+SELECT * FROM V_TehranCustomers;</code></pre></div>
+
+                <h4>مثال ۲: ایجاد یک View پیچیده با `JOIN` و نام ستون سفارشی</h4>
+                <p><strong>سوال:</strong> یک View بسازید که اطلاعات کامل سفارشات شامل نام مشتری و نام شهر را نمایش دهد.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE OR REPLACE VIEW V_FullOrderDetails (OrderID, OrderDate, Price, Customer, City)
+AS
+SELECT
+    O.orderID,
+    O.orderDate,
+    O.payablePrice,
+    C.customerName,
+    CT.cityName
+FROM Order_tbl AS O
+INNER JOIN customer_tbl AS C ON O.customerId = C.customerId
+INNER JOIN city_tbl AS CT ON C.cityId = CT.cityId;
+
+-- استفاده از View
+SELECT * FROM V_FullOrderDetails WHERE Price > 500000;</code></pre></div>
+
+                <h3>دستور ALTER VIEW</h3>
+                <p>
+                    این دستور برای تغییر تعریف یک View موجود (تغییر دستور <code>SELECT</code> آن) استفاده می‌شود.
+                </p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>ALTER VIEW V_TehranCustomers AS
+SELECT customerId, customerName, customertel, customerAddress, status
+FROM customer_tbl
+WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران');</code></pre></div>
+
+                <h3>دستور DROP VIEW</h3>
+                <p>
+                    این دستور یک یا چند View را از پایگاه داده حذف می‌کند. حذف یک View هیچ تأثیری بر روی داده‌های جداول پایه ندارد.
+                </p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DROP VIEW [IF EXISTS] view_name1, view_name2, ...;</code></pre></div>
+            </section>
+			
+			
+			<section id="advanced_functions" class="content-section" style="display: none;">
+                <h2>توابع پیشرفته در MySQL</h2>
+                <p>
+                    علاوه بر توابع تجمعی و پایه‌ای، MySQL مجموعه‌ای بسیار غنی از توابع داخلی را برای کار با انواع داده‌ها ارائه می‌دهد. آشنایی با این توابع می‌تواند به نوشتن کوئری‌های کوتاه‌تر، خواناتر و کارآمدتر کمک شایانی کند. در ادامه، برخی از پرکاربردترین توابع را به صورت دسته‌بندی شده بررسی می‌کنیم.
+                </p>
+
+                <h3>توابع ریاضی (Mathematical Functions)</h3>
+                <ul>
+                    <li><strong><code>CEILING(x)</code> / <code>FLOOR(x)</code></strong>: به ترتیب، عدد x را به نزدیک‌ترین عدد صحیح بزرگ‌تر (سقف) یا کوچک‌تر (کف) گرد می‌کنند.</li>
+                    <li><strong><code>ROUND(x, d)</code></strong>: عدد x را تا d رقم اعشار گرد می‌کند. اگر d حذف شود، به نزدیک‌ترین عدد صحیح گرد می‌کند.</li>
+                    <li><strong><code>POW(x, y)</code> / <code>POWER(x, y)</code></strong>: عدد x به توان y را محاسبه می‌کند.</li>
+                    <li><strong><code>SQRT(x)</code></strong>: جذر (ریشه دوم) عدد x را محاسبه می‌کند.</li>
+                    <li><strong><code>MOD(x, y)</code> یا <code>x % y</code></strong>: باقیمانده تقسیم x بر y را برمی‌گرداند.</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>SELECT
+    CEILING(15.2) AS CeilVal,   -- Result: 16
+    FLOOR(15.7) AS FloorVal,     -- Result: 15
+    ROUND(15.5) AS RoundVal,     -- Result: 16
+    ROUND(123.456, 2) AS RoundTo2, -- Result: 123.46
+    POW(2, 10) AS PowerVal,      -- Result: 1024
+    MOD(10, 3) AS ModVal;        -- Result: 1</code></pre></div>
+
+                <h3>توابع تاریخ و زمان (Date and Time Functions)</h3>
+                <ul>
+                    <li><strong><code>DATE_ADD(date, INTERVAL expr unit)</code></strong>: یک بازه زمانی را به تاریخ اضافه می‌کند.</li>
+                    <li><strong><code>DATE_SUB(date, INTERVAL expr unit)</code></strong>: یک بازه زمانی را از تاریخ کم می‌کند.</li>
+                    <li><strong><code>DATEDIFF(date1, date2)</code></strong>: تفاوت بین دو تاریخ را بر حسب روز محاسبه می‌کند.</li>
+                    <li><strong><code>DAYNAME(date)</code> / <code>MONTHNAME(date)</code></strong>: نام روز یا ماه تاریخ را به صورت رشته‌ای برمی‌گرداند.</li>
+                </ul>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- محاسبه تاریخ ۳ ماه بعد از سفارش
+SELECT orderDate, DATE_ADD(orderDate, INTERVAL 3 MONTH) AS FutureDate
+FROM Order_tbl
+WHERE orderID = 1;
+
+-- محاسبه سن مشتری بر اساس تاریخ تولد (فرض وجود ستون BirthDate)
+SELECT customerName, DATEDIFF(CURDATE(), BirthDate) / 365 AS Age
+FROM customer_tbl;
+
+-- نمایش نام روزی که سفارش ثبت شده است
+SELECT orderDate, DAYNAME(orderDate) AS DayName FROM Order_tbl LIMIT 1;</code></pre></div>
+
+                <h3>توابع رشته‌ای (String Functions)</h3>
+                <div class="note"><strong>تفاوت <code>LENGTH</code> و <code>CHAR_LENGTH</code>:</strong> تابع <code>LENGTH(str)</code> طول رشته را بر حسب **بایت** برمی‌گرداند، در حالی که <code>CHAR_LENGTH(str)</code> طول رشته را بر حسب **تعداد کاراکتر** محاسبه می‌کند. برای کار با رشته‌های فارسی که از انکودینگ چندبایتی (مانند UTF-8) استفاده می‌کنند، همیشه از <code>CHAR_LENGTH</code> استفاده کنید.</div>
+                <ul>
+                    <li><strong><code>ASCII(str)</code></strong>: کد اسکی اولین کاراکتر رشته را برمی‌گرداند.</li>
+                    <li><strong><code>CHAR(n1, n2, ...)</code></strong>: کاراکتر متناظر با کدهای اسکی ورودی را برمی‌گرداند.</li>
+                    <li><strong><code>CONV(N, from_base, to_base)</code></strong>: عدد N را از مبنای `from_base` به مبنای `to_base` تبدیل می‌کند.</li>
+                    <li><strong><code>COMPRESS(str)</code> / <code>UNCOMPRESS(str)</code></strong>: رشته‌ها را فشرده و از حالت فشرده خارج می‌کند (برای ذخیره‌سازی بهینه متون طولانی).</li>
+                </ul>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- تبدیل عدد ۱۰ از مبنای ۱۰ به مبنای ۲
+SELECT CONV(10, 10, 2); -- Result: '1010'
+
+-- تبدیل عدد 'FF' از مبنای ۱۶ به مبنای ۱۰
+SELECT CONV('FF', 16, 10); -- Result: '255'
+
+-- نمایش طول نام مشتری بر حسب بایت و کاراکتر
+SELECT customerName, LENGTH(customerName) AS ByteLength, CHAR_LENGTH(customerName) AS CharLength
+FROM customer_tbl LIMIT 1;</code></pre></div>
+
+                <h3>توابع سیستمی و کنترلی</h3>
+                <ul>
+                    <li><strong><code>DATABASE()</code> یا <code>SCHEMA()</code></strong>: نام پایگاه داده فعال فعلی را برمی‌گرداند.</li>
+                    <li><strong><code>VERSION()</code></strong>: نسخه سرور MySQL را نمایش می‌دهد.</li>
+                    <li><strong><code>CONNECTION_ID()</code></strong>: شناسه اتصال فعلی به سرور را برمی‌گرداند.</li>
+                    <li><strong><code>CURRENT_USER()</code> یا <code>USER()</code></strong>: نام کاربری و هاست کاربر فعلی را نمایش می‌دهد.</li>
+                    <li><strong><code>CAST(expr AS type)</code> / <code>CONVERT(expr, type)</code></strong>: یک مقدار را از یک نوع داده به نوع دیگر تبدیل می‌کند.</li>
+                </ul>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- نمایش اطلاعات سیستم
+SELECT DATABASE(), VERSION(), CONNECTION_ID(), USER();
+
+-- تبدیل یک رشته به نوع داده تاریخ
+SELECT CAST('2025-08-20' AS DATE) AS ConvertedDate;</code></pre></div>
+            </section>
+			
+			<section id="dcl_concepts" class="content-section" style="display: none;">
+                <h2>مفاهیم کاربران و سطوح دسترسی (DCL)</h2>
+                <p>
+                    زبان کنترل داده یا <strong>DCL (Data Control Language)</strong> به مجموعه‌ای از دستورات گفته می‌شود که برای مدیریت امنیت و مجوزهای دسترسی کاربران به پایگاه داده استفاده می‌شود. در یک محیط واقعی، هرگز نباید تمام کاربران با یک حساب کاربری مشترک (مانند `root`) به پایگاه داده متصل شوند. به جای آن، برای هر کاربر یا هر بخش از اپلیکیشن، یک حساب کاربری مجزا با حداقل دسترسی‌های لازم ایجاد می‌شود.
+                </p>
+
+                <h3>شناسایی کاربر در MySQL</h3>
+                <p>
+                    در MySQL، یک کاربر فقط با نام کاربری‌اش شناخته نمی‌شود، بلکه با ترکیبی از نام کاربری و نام میزبان (هاست) که از آن متصل می‌شود، شناسایی می‌گردد.
+                </p>
+                <h4>شکل کلی نام کاربری</h4>
+                <div class="code-block-container"><pre><code>'username'@'hostname'</code></pre></div>
+                <ul>
+                    <li><strong><code>'username'</code></strong>: نام کاربری مورد نظر.</li>
+                    <li><strong><code>'hostname'</code></strong>: آدرس یا نام میزبانی که کاربر مجاز است از آن متصل شود. این بخش می‌تواند مقادیر مختلفی داشته باشد:
+                        <ul>
+                            <li><strong><code>'localhost'</code></strong>: کاربر فقط می‌تواند از همان ماشینی که سرور MySQL روی آن قرار دارد، متصل شود.</li>
+                            <li><strong><code>'%'</code></strong>: (Wildcard) کاربر می‌تواند از هر کامپیوتر یا سروری در شبکه متصل شود.</li>
+                            <li><strong>یک آدرس IP خاص</strong> (مانند <code>'192.168.1.10'</code>): کاربر فقط از آن IP مشخص مجاز به اتصال است.</li>
+                            <li><strong>یک محدوده IP</strong> (مانند <code>'192.168.1.%'</code>): کاربر می‌تواند از هر IP در آن محدوده متصل شود.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>سطوح دسترسی (Privilege Levels)</h3>
+                <p>
+                    مجوزها در MySQL می‌توانند در چهار سطح مختلف اعطا شوند که از گسترده‌ترین به محدودترین عبارتند از:
+                </p>
+                <ol>
+                    <li><strong>سطح سراسری (Global Level - <code>*.*</code>):</strong> این سطح، بالاترین سطح دسترسی است و مجوزهای اعطا شده در این سطح بر روی <strong>تمام پایگاه‌های داده</strong> روی سرور اعمال می‌شود. این نوع دسترسی معمولاً فقط به مدیران اصلی پایگاه داده داده می‌شود.</li>
+                    <li><strong>سطح پایگاه داده (Database Level - <code>database_name.*</code>):</strong> مجوزهای اعطا شده در این سطح بر روی <strong>تمام اشیاء</strong> (جداول، ویوها، روتین‌ها و...) در یک پایگاه داده مشخص اعمال می‌شود.</li>
+                    <li><strong>سطح جدول (Table Level - <code>database_name.table_name</code>):</strong> مجوزها فقط بر روی یک جدول (یا View) خاص اعمال می‌شوند.</li>
+                    <li><strong>سطح ستون (Column Level):</strong> این سطح، محدودترین سطح دسترسی است و به شما اجازه می‌دهد تا مجوزها را فقط برای ستون‌های خاصی از یک جدول تعریف کنید.</li>
+                </ol>
+            </section>
+            
+            <section id="user_management" class="content-section" style="display: none;">
+                <h2>ایجاد و مدیریت کاربران</h2>
+                <p>
+                    قبل از اعطای دسترسی، ابتدا باید کاربران مورد نظر را در پایگاه داده ایجاد کنیم.
+                </p>
+
+                <h3>ایجاد کاربر (CREATE USER)</h3>
+                <p>
+                    این دستور یک یا چند کاربر جدید را در MySQL ایجاد می‌کند. در زمان ایجاد، می‌توان برای هر کاربر یک رمز عبور نیز تعیین کرد.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE USER 'username'@'hostname' IDENTIFIED BY 'password';</code></pre></div>
+                <h4>مثال‌ها</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- ایجاد یک کاربر برای اپلیکیشن که فقط از همین سرور متصل می‌شود
+CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'a_strong_password_123!';
+
+-- ایجاد یک کاربر برای یک مدیر که می‌تواند از هر جایی متصل شود
+CREATE USER 'remote_admin'@'%' IDENTIFIED BY 'another_secure_pass_456#';</code></pre></div>
+
+                <h3>حذف کاربر (DROP USER)</h3>
+                <p>
+                    این دستور یک یا چند کاربر را به طور کامل از سیستم حذف می‌کند.
+                </p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>DROP USER 'app_user'@'localhost', 'remote_admin'@'%';</code></pre></div>
+
+                <h3>تغییر رمز عبور (SET PASSWORD)</h3>
+                <p>
+                    این دستور برای تغییر رمز عبور یک کاربر موجود استفاده می‌شود.
+                </p>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- تغییر رمز عبور کاربر فعلی که با آن لاگین کرده‌اید
+SET PASSWORD = PASSWORD('new_password');
+
+-- تغییر رمز عبور یک کاربر دیگر (نیاز به دسترسی مدیریتی دارد)
+SET PASSWORD FOR 'app_user'@'localhost' = PASSWORD('a_newer_stronger_password');</code></pre></div>
+                 <div class="note">
+                    <strong>نکته مهم:</strong> در نسخه‌های قدیمی‌تر MySQL، استفاده از تابع <code>PASSWORD()</code> برای هش کردن رمز عبور ضروری بود. در نسخه‌های جدیدتر، مکانیزم‌های احراز هویت تغییر کرده و دستور <code>ALTER USER</code> روش پیشنهادی و مدرن‌تری برای تغییر رمز عبور است.
+                 </div>
+                 <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- روش مدرن و پیشنهادی برای تغییر رمز عبور
+ALTER USER 'app_user'@'localhost' IDENTIFIED BY 'a_newer_stronger_password';</code></pre></div>
+            </section>
+			
+			<section id="grant_statement" class="content-section" style="display: none;">
+                <h2>اعطای دسترسی‌ها (دستور GRANT)</h2>
+                <p>
+                    دستور <code>GRANT</code> برای اعطای یک یا چند مجوز به یک یا چند کاربر استفاده می‌شود. در MySQL، کاربران جدید به صورت پیش‌فرض هیچ دسترسی‌ای ندارند و تمام مجوزهای آن‌ها باید به صورت صریح با این دستور اعطا شود.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>GRANT privilege_type [(column_list)] [, privilege_type ...]
+ON object_type
+TO 'user'@'host' [IDENTIFIED BY 'password'] [, 'user'@'host' ...]
+[WITH GRANT OPTION];</code></pre></div>
+
+                <h3>تشریح بخش‌های دستور</h3>
+                <ul>
+                    <li><strong><code>privilege_type</code></strong>: نوع مجوزی که می‌خواهید اعطا کنید. برخی از مهم‌ترین مجوزها عبارتند از:
+                        <ul>
+                            <li><code>ALL PRIVILEGES</code>: اعطای تمام دسترسی‌ها.</li>
+                            <li><code>SELECT</code>: مجوز خواندن داده‌ها.</li>
+                            <li><code>INSERT</code>: مجوز درج سطرهای جدید.</li>
+                            <li><code>UPDATE</code>: مجوز ویرایش سطرهای موجود.</li>
+                            <li><code>DELETE</code>: مجوز حذف سطرها.</li>
+                            <li><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>: مجوزهای DDL برای مدیریت ساختار.</li>
+                            <li><code>EXECUTE</code>: مجوز اجرای روتین‌ها (Stored Procedures/Functions).</li>
+                            <li><code>USAGE</code>: پایین‌ترین سطح دسترسی که فقط اجازه اتصال به سرور را می‌دهد (بدون دسترسی به هیچ پایگاه داده‌ای).</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>ON object_type</code></strong>: سطحی که مجوز روی آن اعمال می‌شود (Global, Database, Table).</li>
+                    <li><strong><code>TO 'user'@'host'</code></strong>: کاربری که مجوز را دریافت می‌کند.</li>
+                    <li><strong><code>WITH GRANT OPTION</code></strong>: این گزینه بسیار قدرتمند به کاربر اجازه می‌دهد تا مجوزهایی را که خودش دارد، به کاربران دیگر نیز اعطا کند.</li>
+                </ul>
+
+                <h4>مثال‌های کاربردی</h4>
+                <p><strong>مثال ۱: ایجاد یک مدیر با دسترسی کامل (مانند root)</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>GRANT ALL PRIVILEGES ON *.* TO 'superadmin'@'localhost' IDENTIFIED BY 'complex_password' WITH GRANT OPTION;</code></pre></div>
+
+                <p><strong>مثال ۲: ایجاد یک کاربر برای اپلیکیشن با دسترسی کامل به یک پایگاه داده</strong></p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- ابتدا کاربر را ایجاد می‌کنیم
+CREATE USER 'order_app_user'@'localhost' IDENTIFIED BY 'app_pass_123';
+
+-- سپس دسترسی‌های لازم را به او می‌دهیم
+GRANT ALL PRIVILEGES ON orderdb.* TO 'order_app_user'@'localhost';</code></pre></div>
+
+                <p><strong>مثال ۳: ایجاد یک کاربر فقط خواندنی (Read-Only)</strong></p>
+                <p>این کاربر فقط می‌تواند داده‌ها را از تمام جداول پایگاه داده <code>orderdb</code> بخواند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE USER 'reporter'@'%' IDENTIFIED BY 'report_pass';
+
+GRANT SELECT ON orderdb.* TO 'reporter'@'%';</code></pre></div>
+
+                <p><strong>مثال ۴: دسترسی در سطح ستون</strong></p>
+                <p>فرض کنید می‌خواهیم کاربری ایجاد کنیم که فقط بتواند نام و تلفن مشتریان را ببیند و فقط آدرس آن‌ها را ویرایش کند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>CREATE USER 'data_entry'@'localhost' IDENTIFIED BY 'entry_pass';
+
+GRANT SELECT (customerId, customerName, customertel) ON orderdb.customer_tbl TO 'data_entry'@'localhost';
+GRANT UPDATE (customerAddress) ON orderdb.customer_tbl TO 'data_entry'@'localhost';</code></pre></div>
+            </section>
+
+            <section id="revoke_statement" class="content-section" style="display: none;">
+                <h2>لغو دسترسی‌ها (دستور REVOKE)</h2>
+                <p>
+                    دستور <code>REVOKE</code> برعکس <code>GRANT</code> عمل کرده و برای پس گرفتن یک یا چند مجوز از یک یا چند کاربر استفاده می‌شود. سینتکس این دستور بسیار شبیه به <code>GRANT</code> است.
+                </p>
+                <h4>شکل کلی دستور</h4>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>REVOKE privilege_type [(column_list)] [, privilege_type ...]
+ON object_type
+FROM 'user'@'host' [, 'user'@'host' ...];</code></pre></div>
+
+                <h4>مثال‌های کاربردی</h4>
+                <p><strong>مثال ۱: لغو مجوز حذف از کاربر اپلیکیشن</strong></p>
+                <p>می‌خواهیم کاربر <code>order_app_user</code> دیگر نتواند از هیچ جدولی در پایگاه داده <code>orderdb</code> داده‌ای را حذف کند.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>REVOKE DELETE ON orderdb.* FROM 'order_app_user'@'localhost';</code></pre></div>
+
+                <p><strong>مثال ۲: لغو تمام دسترسی‌های یک کاربر</strong></p>
+                <p>برای لغو تمام دسترسی‌ها، باید از همان عبارتی استفاده کنیم که با آن دسترسی داده شده است.</p>
+                <div class="code-block-container"><button class="copy-button">Copy</button><pre><code>-- لغو تمام دسترسی‌ها در سطح سراسری
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'superadmin'@'localhost';
+
+-- لغو تمام دسترسی‌ها در سطح پایگاه داده
+REVOKE ALL PRIVILEGES ON orderdb.* FROM 'order_app_user'@'localhost';</code></pre></div>
+                <div class="note">
+                    <strong>نکته مهم:</strong> دستور <code>REVOKE ALL PRIVILEGES</code> فقط مجوزها را پس می‌گیرد و خود کاربر را حذف نمی‌کند. کاربر همچنان می‌تواند به سرور متصل شود (با دسترسی `USAGE`)، اما به هیچ پایگاه داده‌ای دسترسی نخواهد داشت. برای حذف کامل کاربر، باید از دستور <code>DROP USER</code> استفاده کرد.
+                </div>
+            </section>
+			
+			
+			<footer style="text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; color: #9ca3af; font-size: 0.9rem;">
+                <p>
+                    تمام حقوق این محتوای آموزشی متعلق به سید سجاد پیراهش و دانشگاه آزاد واحد تبريز است.
+                    <br>
+                    هرگونه کپی‌برداری و استفاده مجدد بدون ذکر منبع، مجاز نمی‌باشد.
+                </p>
+                <p style="margin-top: 0.5rem;">© 1404</p>
+            </footer>
+        </main>
+        <nav id="sidebar">
+		<div style="padding: 1rem; text-align: center; border-bottom: 1px solid #334155;">
+    <img src="images/university_logo.png" alt="دانشگاه آزاد واحد تبريز" style="width: 60px; height: 60px; margin: 0 auto 0.5rem auto; border-radius: 50%;">
+    <p style="font-weight: 600; font-size: 1rem; color: #e2e8f0;">دانشگاه آزاد تبريز</p>
+    <p style="font-size: 0.9rem; color: #94a3b8;">مدرس: سجاد پیراهش</p>
+</div>
+    <header>آزمایشگاه پایگاه داده</header>
+
+    <div class="nav-header" onclick="toggleMenu(this)">مفاهیم و طراحی</div>
+    <div class="sub-menu">
+        <a href="#intro" class="nav-link">مقدمه و مفاهیم پایه</a>
+        <a href="#design" class="nav-link">طراحی پایگاه داده</a>
+    </div>
+
+    <div class="nav-header" onclick="toggleMenu(this)">راه‌اندازی محیط</div>
+    <div class="sub-menu">
+        <a href="#installation" class="nav-link">نصب و راه‌اندازی MySQL</a>
+        <a href="#cli" class="nav-link">کار با خط فرمان</a>
+    </div>
+
+    <div class="nav-header" onclick="toggleMenu(this)">زبان تعریف داده (DDL)</div>
+    <div class="sub-menu">
+        <a href="#db_ddl" class="nav-link">مدیریت پایگاه داده</a>
+        <a href="#table_ddl" class="nav-link">ایجاد جدول (CREATE)</a>
+        <a href="#data_types" class="nav-link">انواع داده</a>
+        <a href="#alter_table" class="nav-link">دستور ALTER TABLE</a>
+        <a href="#key_constraints" class="nav-link">قواعد جامعيتي در جدول</a>
+        <a href="#indexes" class="nav-link">ایندکس‌ها (Indexes)</a>
+        <a href="#show_commands" class="nav-link">دستورات SHOW</a>
+        <a href="#script_example" class="nav-link">مثال عملی: اسکریپت کامل</a>
+    </div>
+
+    <div class="nav-header" onclick="toggleMenu(this)">زبان مدیریت داده (DML)</div>
+    <div class="sub-menu">
+	    <a href="#dml_intro" class="nav-link">مقدمه‌ای بر DML</a>
+		<a href="#select_statement" class="nav-link">معرفی دستور SELECT</a>
+		<a href="#where_clause" class="nav-link">كلاز WHERE</a>
+        <a href="#select_clause" class="nav-link">كلاز SELECT و توابع</a>
+		<a href="#from_clause" class="nav-link">بررسی کامل بخش FROM</a>
+        <a href="#orderby_limit_clause" class="nav-link">مرتب‌سازی و محدود کردن</a>
+        <a href="#inner_join" class="nav-link">پیوند داخلی (INNER JOIN)</a>
+        <a href="#outer_join" class="nav-link">پیوندهای خارجی (OUTER JOIN)</a>
+        <a href="#set_operators" class="nav-link">عملگرهای مجموعه</a>
+        <a href="#grouping_aggregation" class="nav-link">گروه‌بندی و تجمیع</a>
+        <a href="#insert_statement" class="nav-link">دستور INSERT</a>
+        <a href="#update_statement" class="nav-link">دستور UPDATE</a>
+        <a href="#delete_statement" class="nav-link">دستورات حذف</a>
+    </div>
+
+    <div class="nav-header" onclick="toggleMenu(this)">مباحث پیشرفته</div>
+    <div class="sub-menu">
+        <a href="#cte_non_recursive" class="nav-link">CTE های غیربازگشتی</a>
+        <a href="#cte_recursive" class="nav-link">CTE های بازگشتی</a>
+		<a href="#views" class="nav-link">ديدها (Views)</a>
+		<a href="#advanced_functions" class="nav-link">توابع پیشرفته</a>
+    </div>
+
+    <div class="nav-header" onclick="toggleMenu(this)">مدیریت و نگهداری</div>
+    <div class="sub-menu">
+        <a href="#backup_restore" class="nav-link">پشتیبان‌گیری و بازیابی</a>
+    </div>
+
+	<div class="nav-header" onclick="toggleMenu(this)">کنترل دسترسی (DCL)</div>
+    <div class="sub-menu">
+		<a href="#dcl_concepts" class="nav-link">مفاهیم کاربران و دسترسی‌ها</a>
+        <a href="#user_management" class="nav-link">ایجاد و مدیریت کاربران</a>
+        <a href="#grant_statement" class="nav-link">اعطای دسترسی (GRANT)</a>
+        <a href="#revoke_statement" class="nav-link">لغو دسترسی (REVOKE)</a>
+    </div>
+
+    <div class="nav-header" onclick="toggleMenu(this)">تکالیف</div>
+    <div class="sub-menu">
+        <a href="#assignment" class="nav-link">تکلیف جلسه اول</a>
+        <a href="#assignment_final" class="nav-link">تکلیف نهایی</a>
+    </div>
+</nav>
+    </div>
+
+<script>
+/* ---------- نمایش بخش‌ها ---------- */
+function showSection(id, updateHistory = true) {
+    document.querySelectorAll('.content-section').forEach(sec => {
+        sec.style.display = 'none';
+        sec.classList.remove('active');
+    });
+
+    const target = document.getElementById(id);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+    }
+
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const link = document.querySelector(`.nav-link[href="#${id}"]`);
+    if (link) {
+        link.classList.add('active');
+    }
+
+    if (updateHistory && window.history.pushState) {
+        window.history.pushState({ path: `#${id}` }, '', `#${id}`);
+    }
+}
+
+/* ---------- باز و بسته کردن منوها (نسخه نهایی و بهینه) ---------- */
+function toggleMenu(header) {
+    const sub = header.nextElementSibling;
+    if (!sub || !sub.classList.contains('sub-menu')) return;
+
+    const isOpen = sub.classList.contains('open');
+
+    // همه منوهای باز دیگر را ببند
+    document.querySelectorAll('.sub-menu.open').forEach(sm => {
+        if (sm !== sub) {
+            sm.classList.remove('open');
+            sm.style.maxHeight = null;
+            const prevHeader = sm.previousElementSibling;
+            if (prevHeader) {
+                prevHeader.classList.add('collapsed');
+            }
+        }
+    });
+
+    // منوی کلیک‌شده را باز یا بسته کن
+    if (isOpen) {
+        // اگر باز است، آن را ببند
+        sub.classList.remove('open');
+        header.classList.add('collapsed');
+        sub.style.maxHeight = null;
+    } else {
+        // اگر بسته است، آن را باز کن
+        sub.classList.add('open');
+        header.classList.remove('collapsed');
+        sub.style.maxHeight = sub.scrollHeight + "px"; // محاسبه ارتفاع دقیق
+    }
+}
+
+
+/* ---------- رویدادهای اولیه در زمان بارگذاری صفحه ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+    // رویداد کلیک برای تمام لینک‌های منو
+    document.querySelectorAll('#sidebar .nav-link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const id = link.getAttribute('href').substring(1);
+            showSection(id);
+        });
+    });
+
+    // مدیریت URL hash در بارگذاری اولیه
+    const currentHash = window.location.hash.substring(1);
+    const targetSectionId = currentHash || 'intro';
+    showSection(targetSectionId, false);
+
+    // باز کردن منوی والدِ بخش فعال در بارگذاری اولیه
+    const activeLink = document.querySelector(`.nav-link[href="#${targetSectionId}"]`);
+    if (activeLink) {
+        const parentSubMenu = activeLink.closest('.sub-menu');
+        if (parentSubMenu) {
+            const header = parentSubMenu.previousElementSibling;
+            if (header && header.classList.contains('nav-header')) {
+                header.classList.remove('collapsed');
+                parentSubMenu.classList.add('open');
+                parentSubMenu.style.maxHeight = parentSubMenu.scrollHeight + "px";
+            }
+        }
+    } else {
+        // اگر هیچ لینکی فعال نبود، اولین منو را باز کن
+        const firstHeader = document.querySelector('.nav-header');
+        if (firstHeader) {
+            toggleMenu(firstHeader);
+        }
+    }
+
+    // فعال‌سازی دکمه‌های کپی
+    document.querySelectorAll('.copy-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const preElement = this.closest('.code-block-container').querySelector('pre');
+            if (preElement) {
+                navigator.clipboard.writeText(preElement.innerText).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = 'کپی شد!';
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.disabled = false;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            }
+        });
+    });
+});
+    </script>
+
+</body>
+</html>
