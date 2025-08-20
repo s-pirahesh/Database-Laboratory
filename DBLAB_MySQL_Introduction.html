@@ -262,7 +262,15 @@ body {
             background-color: #cbd5e1;
         }
     </style>
+	<style>
+		@media print {
+            #sidebar { display: none !important; }
+            #main-content { margin-right: 0 !important; width: 100% !important; }
+            .content-section { display: block !important; }
+            .nav-header { display: none; }
+        }
 	
+	</style>
 	
 	
 </head>
