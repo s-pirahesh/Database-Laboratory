@@ -1,0 +1,2634 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوره آموزشی PHP و MySQL</title>
+    <!-- 1. CSS Theme for Prism -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>
+
+    <!-- 2. Prism JS Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <style>
+        /* ---------- Basic Setup & Fonts ---------- */
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: "Vazirmatn", sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            background-color: #fffaf0; /* Floral White - A warm off-white */
+            color: #44403c; /* Stone 700 - A warm dark gray */
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .flex-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* ---------- Main Content Area ---------- */
+        #main-content {
+            flex: 1;
+            margin-right: 280px; /* Space for the sidebar */
+            padding: 30px 45px;
+            background-color: #ffffff;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #c2410c; /* Orange 700 */
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #fdba74; /* Orange 300 */
+        }
+
+        .content-section h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #d97706; /* Amber 600 */
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .note {
+            background-color: #fef3c7; /* Amber 100 */
+            border-right: 5px solid #f59e0b; /* Amber 500 */
+            padding: 15px 20px;
+            margin: 1.5em 0;
+            border-radius: 4px;
+        }
+
+        .code-block-container {
+            position: relative;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #292524; /* Stone 800 */
+            direction: ltr;
+        }
+
+        .code-block-container pre {
+            color: #f5f5f4; /* Stone 100 */
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+            font-size: 1rem;
+        }
+
+        /* --- Code Block and Copy Button --- */
+        .code-block-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        pre[class*="language-"] {
+            /* Make space for the button */
+            padding-top: 3rem !important;
+            border-radius: 8px;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem; /* Positioned top-left for LTR code */
+            background-color: #fb923c; /* Orange 400 */
+            color: white;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0; /* Hidden by default */
+            transition: all 0.2s;
+            font-family: "Vazirmatn", sans-serif;
+        }
+
+        .code-block-container:hover .copy-button {
+            opacity: 1; /* Show on hover */
+        }
+
+        .copy-button:disabled {
+            background-color: #22c55e; /* Green for success */
+            cursor: default;
+        }
+
+        /* ---------- Sidebar ---------- */
+        #sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #4a2c2a 0%, #2c1d1c 100%); /* Warm dark brown gradient */
+            color: #fde68a; /* Amber 200 */
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: width .3s;
+            z-index: 40;
+        }
+
+        #sidebar header {
+            padding: 1.25rem 1rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            border-bottom: 1px solid #5e4a4a;
+            background: #2c1d1c;
+            color: #fff;
+        }
+
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: .75rem 1rem;
+            font-weight: 600;
+            transition: background .2s;
+            color: #fde68a; /* Amber 200 */
+        }
+
+        .nav-header:hover {
+            background: #5e4a4a;
+        }
+
+        .nav-header::after {
+            content: '▾';
+            transition: transform .2s;
+        }
+
+        .nav-header.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .sub-menu {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.35s ease-in-out;
+        }
+
+        .sub-menu.open {
+            max-height: 800px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: .5rem 1.75rem;
+            font-size: .9rem;
+            color: #eab308; /* Amber 500 */
+            transition: background .2s, color .2s;
+            text-decoration: none;
+        }
+
+        .nav-link.active,
+        .nav-link:hover {
+            background: #fb923c; /* Orange 400 */
+            color: #fff;
+            border-radius: 0 20px 20px 0;
+            margin-right: .25rem;
+        }
+    </style>
+
+    <style>
+        @media print {
+            #sidebar {
+                display: none !important;
+            }
+
+            #main-content {
+                margin-right: 0 !important;
+                width: 100% !important;
+            }
+
+            .content-section {
+                display: block !important;
+            }
+
+            .nav-header {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="flex-container">
+    <main id="main-content">
+        <!-- ========== فصل اول ========== -->
+        <section id="intro_php" class="content-section">
+            <h2>۱-۱: PHP چیست؟</h2>
+            <p>
+                <strong>PHP</strong> که مخفف <strong>Hypertext Preprocessor</strong> است، یک زبان اسکریپت‌نویسی اپن‌سورس
+                و بسیار محبوب است که به طور ویژه برای توسعه وب طراحی شده است. برخلاف زبان‌هایی مانند HTML یا CSS که در
+                مرورگر کاربر (کلاینت) پردازش می‌شوند، کدهای PHP روی <strong>سرور</strong> اجرا شده و نتیجه نهایی آن به
+                صورت HTML خالص به مرورگر ارسال می‌شود.
+            </p>
+            <h3>مثال: PHP در عمل</h3>
+            <p>
+                فایل زیر یک مثال ساده از ترکیب کد PHP در یک صفحه HTML است. سرور قبل از ارسال این صفحه به مرورگر، بخش PHP
+                را پردازش کرده و نتیجه (تاریخ و زمان فعلی) را جایگزین آن می‌کند.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My First PHP Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome!&lt;/h1&gt;
+    &lt;p&gt;Today's date and time is: &lt;?php echo date('Y-m-d H:i:s'); ?&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+            <p>
+                این ویژگی (اجرا در سمت سرور) به PHP قدرت فوق‌العاده‌ای برای انجام کارهای زیر می‌دهد:
+            </p>
+            <ul>
+                <li><strong>ایجاد محتوای پویا:</strong> نمایش اطلاعات مختلف به کاربران مختلف بر اساس نیاز.</li>
+                <li><strong>تعامل با پایگاه داده:</strong> PHP می‌تواند به راحتی با انواع پایگاه‌های داده، به خصوص
+                    MySQL، ارتباط برقرار کرده و اطلاعات را ذخیره، ویرایش، حذف یا بازیابی کند.
+                </li>
+                <li><strong>مدیریت فرم‌ها و ورودی کاربر:</strong> جمع‌آوری اطلاعات از کاربران از طریق فرم‌های وب.</li>
+                <li><strong>مدیریت نشست‌ها (Sessions) و کوکی‌ها:</strong> برای حفظ اطلاعات کاربر در طول بازدید از سایت.
+                </li>
+            </ul>
+            <div class="note">
+                به زبان ساده، PHP مغز متفکر پشت صحنه یک وب‌سایت است. در حالی که HTML اسکلت و CSS ظاهر سایت را می‌سازد،
+                PHP به آن جان بخشیده و آن را تعاملی و هوشمند می‌کند.
+            </div>
+        </section>
+        <section id="client_server_arch" class="content-section">
+            <h2>۱-۲: معماری کلاینت-سرور</h2>
+            <p>
+                برای درک عملکرد PHP، باید با معماری بنیادین وب یعنی <strong>کلاینت-سرور (Client-Server)</strong> آشنا
+                شویم. در این مدل، دو بازیگر اصلی وجود دارند:
+            </p>
+            <ul>
+                <li><strong>کلاینت (Client):</strong> معمولاً مرورگر وب شما (مانند Chrome، Firefox) است که روی کامپیوتر
+                    یا موبایل شما اجرا می‌شود. وظیفه کلاینت، ارسال درخواست برای دریافت یک صفحه وب است.
+                </li>
+                <li><strong>سرور (Server):</strong> یک کامپیوتر قدرتمند و همیشه روشن است که فایل‌های وب‌سایت (کدهای PHP،
+                    HTML، تصاویر و...) روی آن قرار دارد. وظیفه سرور، دریافت درخواست از کلاینت، پردازش آن و ارسال پاسخ
+                    مناسب است.
+                </li>
+            </ul>
+            <h3>فرآیند کار یک وب‌سایت پویا</h3>
+            <div style="text-align:center; margin: 2rem 0;">
+                <svg width="100%" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#c2410c"/>
+                        </marker>
+                    </defs>
+                    <!-- Client -->
+                    <rect x="50" y="100" width="150" height="100" rx="10" fill="#fffbe_b" stroke="#fb923c"
+                          stroke-width="2"/>
+                    <text x="125" y="145" font-family="Vazirmatn" font-size="18" text-anchor="middle" fill="#c2410c">
+                        کلاینت (مرورگر)
+                    </text>
+                    <text x="125" y="170" font-family="Vazirmatn" font-size="14" text-anchor="middle" fill="#44403c">
+                        کامپیوتر شما
+                    </text>
+
+                    <!-- Server -->
+                    <rect x="600" y="50" width="150" height="200" rx="10" fill="#fffbe_b" stroke="#fb923c"
+                          stroke-width="2"/>
+                    <text x="675" y="80" font-family="Vazirmatn" font-size="18" text-anchor="middle" fill="#c2410c">
+                        سرور
+                    </text>
+                    <rect x="610" y="100" width="130" height="40" rx="5" fill="#fed7aa"/>
+                    <text x="675" y="125" font-family="Vazirmatn" font-size="14" text-anchor="middle">وب سرور (Apache)
+                    </text>
+                    <rect x="610" y="150" width="130" height="40" rx="5" fill="#fed7aa"/>
+                    <text x="675" y="175" font-family="Vazirmatn" font-size="14" text-anchor="middle">مفسر PHP</text>
+                    <rect x="610" y="200" width="130" height="40" rx="5" fill="#fed7aa"/>
+                    <text x="675" y="225" font-family="Vazirmatn" font-size="14" text-anchor="middle">پایگاه داده
+                        (MySQL)
+                    </text>
+
+                    <!-- Arrows -->
+                    <line x1="210" y1="130" x2="590" y2="130" stroke="#c2410c" stroke-width="2"
+                          marker-end="url(#arrowhead)"/>
+                    <text x="400" y="120" font-family="Vazirmatn" font-size="14" text-anchor="middle">۱. درخواست HTTP
+                    </text>
+                    <line x1="590" y1="170" x2="210" y2="170" stroke="#c2410c" stroke-width="2"
+                          marker-end="url(#arrowhead)"/>
+                    <text x="400" y="190" font-family="Vazirmatn" font-size="14" text-anchor="middle">۲. پاسخ (صفحه
+                        HTML)
+                    </text>
+                </svg>
+            </div>
+            <ol>
+                <li>شما آدرس یک سایت را در مرورگر (کلاینت) خود وارد می‌کنید.</li>
+                <li>مرورگر یک <strong>درخواست HTTP</strong> به سرور آن سایت ارسال می‌کند.</li>
+                <li>وب‌سرور (مثلاً Apache) درخواست را دریافت می‌کند. اگر صفحه درخواستی یک فایل PHP باشد، آن را به مفسر
+                    PHP می‌دهد.
+                </li>
+                <li>مفسر PHP کدهای درون فایل را خط به خط اجرا می‌کند. اگر نیاز به ارتباط با پایگاه داده باشد، این کار را
+                    انجام می‌دهد.
+                </li>
+                <li>نتیجه نهایی اجرای کد، یک صفحه HTML خالص است که به وب‌سرور بازگردانده می‌شود.</li>
+                <li>وب‌سرور این صفحه HTML را به عنوان <strong>پاسخ</strong> به مرورگر شما ارسال می‌کند.</li>
+                <li>مرورگر شما کد HTML را دریافت کرده و آن را برای شما نمایش می‌دهد.</li>
+            </ol>
+        </section>
+        <section id="xampp_stack" class="content-section">
+            <h2>۱-۳: معرفی پشته XAMPP</h2>
+            <p>
+                برای اینکه بتوانیم کدهای PHP را روی کامپیوتر شخصی خود اجرا و تست کنیم، باید نرم‌افزارهای سمت سرور را روی
+                سیستم خودمان نصب کنیم. نصب و هماهنگ‌سازی تک تک این نرم‌افزارها (وب‌سرور، مفسر PHP، پایگاه داده) می‌تواند
+                پیچیده باشد.
+            </p>
+            <p>
+                <strong>XAMPP</strong> یک پکیج نرم‌افزاری رایگان و اپن‌سورس است که این کار را برای ما بسیار ساده می‌کند.
+                شما می‌توانید آخرین نسخه آن را از وب‌سایت رسمی <a href="https://www.apachefriends.org" target="_blank">apachefriends.org</a>
+                دانلود کنید.
+            </p>
+            <p>نام XAMPP از حروف اول نرم‌افزارهای اصلی تشکیل دهنده آن گرفته شده است:</p>
+            <ul>
+                <li><strong>X (Cross-Platform):</strong> یعنی روی سیستم‌عامل‌های مختلف (ویندوز، مک، لینوکس) قابل نصب
+                    است.
+                </li>
+                <li><strong>A (Apache):</strong> محبوب‌ترین وب‌سرور جهان که وظیفه پاسخ به درخواست‌های HTTP را بر عهده
+                    دارد.
+                </li>
+                <li><strong>M (MariaDB/MySQL):</strong> سیستم مدیریت پایگاه داده قدرتمند برای ذخیره و مدیریت اطلاعات.
+                </li>
+                <li><strong>P (PHP):</strong> زبان اسکریپت‌نویسی که کدهای ما با آن نوشته می‌شود.</li>
+                <li><strong>P (Perl):</strong> یک زبان اسکریپت‌نویسی دیگر که در این پکیج گنجانده شده است.</li>
+            </ul>
+            <div class="note">
+                XAMPP با فراهم کردن تمام این ابزارها در یک بسته واحد، به ما اجازه می‌دهد تا به سرعت یک محیط توسعه کامل و
+                آماده برای برنامه‌نویسی PHP راه‌اندازی کنیم.
+            </div>
+        </section>
+
+        <!-- ========== فصل دوم ========== -->
+        <section id="setup_php_standalone" class="content-section">
+            <h2>۲-۱: نصب PHP به صورت مستقل</h2>
+            <p>
+                گرچه در این دوره از XAMPP به عنوان راهکار اصلی استفاده خواهیم کرد، اما درک نحوه نصب PHP به صورت مستقل
+                می‌تواند بسیار آموزنده باشد. این روش به شما کنترل بیشتری بر روی نسخه و تنظیمات PHP می‌دهد اما نیازمند
+                پیکربندی دستی بیشتری است.
+            </p>
+            <div class="note">
+                <strong>توجه:</strong> این روش فقط مفسر PHP را نصب می‌کند و شما برای اجرای یک وب‌سایت کامل، نیاز به نصب
+                و پیکربندی جداگانه یک وب‌سرور (مانند Apache یا Nginx) خواهید داشت. در این بخش، ما فقط نصب مفسر برای اجرا
+                از طریق خط فرمان (Command Line) را پوشش می‌دهیم.
+            </div>
+
+            <h3>مرحله اول: دانلود PHP</h3>
+            <p>
+                ابتدا به صفحه دانلود رسمی PHP برای ویندوز در آدرس <a href="https://windows.php.net/download/"
+                                                                     target="_blank">windows.php.net/download/</a>
+                بروید. در این صفحه، نسخه‌های مختلفی را مشاهده خواهید کرد.
+            </p>
+            <ul>
+                <li><strong>Thread Safe (TS):</strong> این نسخه برای استفاده با وب‌سرورهایی مانند Apache که از مدل
+                    چندریسمانی (Multi-threaded) استفاده می‌کنند، طراحی شده است.
+                </li>
+                <li><strong>Non-Thread Safe (NTS):</strong> این نسخه برای استفاده با وب‌سرورهایی مانند Nginx یا برای
+                    اجرای اسکریپت‌ها از طریق خط فرمان مناسب‌تر است و کارایی بهتری دارد.
+                </li>
+            </ul>
+            <p>برای شروع، نسخه <strong>VS16 x64 Thread Safe</strong> را به صورت فایل Zip دانلود کنید.</p>
+
+            <h3>مرحله دوم: استخراج فایل‌ها</h3>
+            <p>
+                یک پوشه در ریشه درایو C خود با نام `php` بسازید (مثلاً `C:\php`). سپس، محتویات فایل Zip دانلود شده را در
+                این پوشه استخراج کنید.
+            </p>
+
+            <h3>مرحله سوم: پیکربندی php.ini</h3>
+            <p>
+                در پوشه `C:\php`، فایلی به نام `php.ini-development` را پیدا کرده و یک کپی از آن با نام `php.ini`
+                بسازید. این فایل، تنظیمات اصلی PHP را در خود دارد.
+            </p>
+            <p>
+                فایل `php.ini` را با یک ویرایشگر متن باز کرده و خطوط زیر را پیدا کنید. علامت `;` در ابتدای این خطوط را
+                بردارید تا افزونه‌های مورد نیاز برای اتصال به MySQL فعال شوند:
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code>;extension=mysqli
+;extension=pdo_mysql</code></pre>
+            </div>
+            <p>این خطوط باید به شکل زیر تغییر کنند:</p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code>extension=mysqli
+extension=pdo_mysql</code></pre>
+            </div>
+
+            <h3>مرحله چهارم: افزودن PHP به PATH ویندوز</h3>
+            <p>
+                برای اینکه بتوانید دستور `php` را از هر جایی در خط فرمان اجرا کنید، باید مسیر پوشه PHP را به متغیر محیطی
+                PATH ویندوز اضافه کنید.
+            </p>
+            <ol>
+                <li>روی This PC راست کلیک کرده و Properties را انتخاب کنید.</li>
+                <li>به Advanced system settings بروید.</li>
+                <li>روی دکمه Environment Variables کلیک کنید.</li>
+                <li>در بخش System variables، متغیر `Path` را پیدا کرده، روی آن دوبار کلیک کنید.</li>
+                <li>روی New کلیک کرده و آدرس `C:\php` را وارد کنید. سپس تمام پنجره‌ها را با OK ببندید.</li>
+            </ol>
+
+            <h3>مرحله پنجم: تست نصب</h3>
+            <p>
+                یک پنجره Command Prompt (CMD) <strong>جدید</strong> باز کنید و دستور زیر را وارد نمایید:
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code>php -v</code></pre>
+            </div>
+            <p>
+                اگر همه چیز به درستی انجام شده باشد، باید اطلاعات نسخه PHP نصب شده را مشاهده کنید، مانند:
+            </p>
+            <div class="code-block-container">
+                    <pre><code>PHP 8.x.x (cli) (built: ...) (Zend Engine v4.x.x, with Zend OPcache v8.x.x)
+</code></pre>
+            </div>
+            <p>
+                اکنون شما می‌توانید یک فایل ساده PHP (مثلاً `test.php`) ساخته و آن را از طریق خط فرمان با دستور `php
+                test.php` اجرا کنید.
+            </p>
+        </section>
+        <section id="setup_xampp" class="content-section">
+            <h2>۲-۲: نصب XAMPP (روش پیشنهادی)</h2>
+            <p>
+                همانطور که در بخش قبل دیدید، نصب و پیکربندی PHP به صورت مستقل نیازمند مراحل متعددی است و هنوز یک وب‌سرور
+                برای اجرای پروژه‌ها در مرورگر نصب نکرده‌ایم. برای یک محیط توسعه کامل، ما به وب‌سرور (مانند Apache) و
+                پایگاه داده (مانند MySQL) نیز نیاز داریم.
+            </p>
+            <p>
+                <strong>XAMPP</strong> این فرآیند را فوق‌العاده ساده می‌کند. این نرم‌افزار تمام ابزارهای لازم را در یک
+                بسته واحد و از پیش پیکربندی شده ارائه می‌دهد و به شما اجازه می‌دهد تا در عرض چند دقیقه یک محیط توسعه
+                کامل و حرفه‌ای را راه‌اندازی کنید. به همین دلیل، استفاده از XAMPP <strong>روش پیشنهادی و
+                استاندارد</strong> برای این دوره آموزشی است.
+            </p>
+
+            <h3>مرحله اول: دانلود XAMPP</h3>
+            <p>
+                برای دانلود، به وب‌سایت رسمی آن در آدرس <a href="https://www.apachefriends.org" target="_blank">apachefriends.org</a>
+                مراجعه کنید. در صفحه اصلی، نسخه‌های مختلفی برای سیستم‌عامل‌های ویندوز، لینوکس و مک وجود دارد.
+            </p>
+            <p>
+                مطابق با آخرین نسخه پایدار PHP، نسخه مناسب برای ویندوز را دانلود کنید. (مثلاً نسخه مربوط به PHP 8.x).
+            </p>
+
+            <h3>مرحله دوم: نصب XAMPP</h3>
+            <p>
+                پس از دانلود، فایل نصب را اجرا کنید. مراحل نصب بسیار ساده و شبیه به نصب سایر نرم‌افزارهاست:
+            </p>
+            <ol>
+                <li><strong>صفحه خوش‌آمدگویی:</strong> روی `Next` کلیک کنید.</li>
+                <li><strong>انتخاب اجزا (Select Components):</strong> مطمئن شوید که گزینه‌های <strong>Apache</strong>,
+                    <strong>MySQL</strong>, <strong>PHP</strong> و <strong>phpMyAdmin</strong> تیک خورده باشند.
+                    می‌توانید سایر گزینه‌ها را به حالت پیش‌فرض رها کنید.
+                </li>
+                <li><strong>انتخاب پوشه نصب (Installation Folder):</strong> مسیر پیش‌فرض <code>C:\xampp</code> یک انتخاب
+                    عالی است. توصیه می‌شود این مسیر را تغییر ندهید.
+                </li>
+                <li><strong>شروع نصب:</strong> روی `Next` کلیک کنید تا فرآیند نصب آغاز شود. این مرحله ممکن است چند دقیقه
+                    طول بکشد.
+                </li>
+                <li><strong>پایان نصب:</strong> پس از اتمام نصب، تیک گزینه "Do you want to start the Control Panel now?"
+                    را بزنید و روی `Finish` کلیک کنید.
+                </li>
+            </ol>
+
+            <h3>مرحله سوم: آشنایی با کنترل پنل XAMPP</h3>
+            <p>
+                کنترل پنل XAMPP ابزار اصلی شما برای مدیریت سرویس‌های مختلف است.
+            </p>
+            <div style="text-align:center; margin: 2rem 0;">
+                <svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"
+                     font-family="Vazirmatn, sans-serif">
+                    <rect x="1" y="1" width="598" height="298" fill="#f5f5f5" stroke="#ccc" stroke-width="2" rx="10"/>
+                    <rect x="10" y="10" width="580" height="40" fill="#d97706" rx="5"/>
+                    <text x="300" y="35" font-size="18" fill="white" text-anchor="middle">XAMPP Control Panel v3.3.0
+                    </text>
+                    <rect x="20" y="70" width="560" height="50" fill="#fff" stroke="#ddd" rx="5"/>
+                    <text x="40" y="90" font-size="16" fill="#333">Module</text>
+                    <text x="130" y="90" font-size="16" fill="#333">PID(s)</text>
+                    <text x="220" y="90" font-size="16" fill="#333">Port(s)</text>
+                    <text x="350" y="90" font-size="16" fill="#333" text-anchor="middle">Actions</text>
+                    <text x="520" y="90" font-size="16" fill="#333" text-anchor="middle">Service</text>
+                    <rect x="20" y="125" width="560" height="40" fill="#f0fdf4" stroke="#ddd" rx="5"/>
+                    <rect x="22" y="127" width="10" height="36" fill="#22c55e"/>
+                    <text x="40" y="150" font-size="16" font-weight="bold">Apache</text>
+                    <text x="130" y="150" font-size="14">1234, 5678</text>
+                    <text x="220" y="150" font-size="14">80, 443</text>
+                    <rect x="300" y="132" width="100" height="26" fill="#ef4444" rx="5"/>
+                    <text x="350" y="150" fill="white" text-anchor="middle">Stop</text>
+                    <rect x="410" y="132" width="60" height="26" fill="#e5e5e5" stroke="#ccc" rx="5"/>
+                    <text x="440" y="150" fill="#555" text-anchor="middle">Admin</text>
+                    <rect x="20" y="170" width="560" height="40" fill="#f0fdf4" stroke="#ddd" rx="5"/>
+                    <rect x="22" y="172" width="10" height="36" fill="#22c55e"/>
+                    <text x="40" y="195" font-size="16" font-weight="bold">MySQL</text>
+                    <text x="130" y="195" font-size="14">9101</text>
+                    <text x="220" y="195" font-size="14">3306</text>
+                    <rect x="300" y="177" width="100" height="26" fill="#ef4444" rx="5"/>
+                    <text x="350" y="195" fill="white" text-anchor="middle">Stop</text>
+                    <rect x="410" y="177" width="60" height="26" fill="#e5e5e5" stroke="#ccc" rx="5"/>
+                    <text x="440" y="195" fill="#555" text-anchor="middle">Admin</text>
+                    <text x="300" y="230" font-size="14" fill="#888" text-anchor="middle">...</text>
+                    <rect x="20" y="250" width="560" height="40" fill="#fafafa" stroke="#ddd" rx="5"/>
+                    <text x="30" y="275" font-size="12" fill="#333" font-family="monospace">[Apache] Status change
+                        detected: running
+                    </text>
+                </svg>
+            </div>
+            <ul>
+                <li><strong>Modules:</strong> لیست سرویس‌های نصب شده مانند Apache و MySQL.</li>
+                <li><strong>Actions:</strong> مهم‌ترین بخش کنترل پنل. با کلیک روی دکمه <code>Start</code> در ردیف
+                    <strong>Apache</strong> و <strong>MySQL</strong>، این دو سرویس را فعال کنید. پس از فعال شدن، نام
+                    آن‌ها سبز رنگ شده و دکمه به <code>Stop</code> تغییر می‌کند.
+                </li>
+            </ul>
+
+            <h3>مرحله چهارم: پوشه `htdocs` و تست سرور</h3>
+            <p>
+                تمام پروژه‌های وبی که می‌نویسید باید در پوشه <code>htdocs</code> قرار بگیرند. این پوشه، ریشه (root)
+                وب‌سرور شماست.
+            </p>
+            <p><strong>مسیر:</strong> <code>C:\xampp\htdocs</code></p>
+            <p>برای تست عملکرد سرور، مراحل زیر را انجام دهید:</p>
+            <ol>
+                <li>در پوشه <code>htdocs</code>، یک پوشه جدید برای پروژه خود بسازید (مثلاً <code>myproject</code>).</li>
+                <li>داخل پوشه <code>myproject</code>، یک فایل جدید با نام <code>index.php</code> بسازید.</li>
+                <li>فایل <code>index.php</code> را با یک ویرایشگر باز کرده و کد زیر را در آن قرار دهید:
+                    <div class="code-block-container">
+                        <button class="copy-button">کپی</button>
+                        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;تست سرور&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;سرور محلی با موفقیت کار می‌کند!&lt;/h1&gt;
+    &lt;p&gt;
+        &lt;?php
+            echo "این پیام توسط PHP تولید شده است.";
+        ?&gt;
+    &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                </li>
+                <li>مرورگر خود را باز کرده و آدرس <code>http://localhost/myproject/</code> را وارد کنید.</li>
+            </ol>
+            <p>
+                اگر صفحه وب را با پیام‌های بالا مشاهده کردید، به این معنی است که XAMPP به درستی نصب و اجرا شده است.
+            </p>
+
+            <h3>مشکلات رایج: تداخل پورت (Port Conflict)</h3>
+            <p>
+                گاهی اوقات ممکن است هنگام استارت کردن سرویس Apache با خطا مواجه شوید. شایع‌ترین دلیل این مشکل، اشغال
+                بودن <strong>پورت 80</strong> توسط نرم‌افزار دیگری (مانند Skype یا IIS) است.
+            </p>
+            <p>
+                برای حل این مشکل، در کنترل پنل XAMPP، در ردیف Apache روی دکمه <code>Config</code> کلیک کرده و فایل
+                <code>httpd.conf</code> را باز کنید. در این فایل، به دنبال خط <code>Listen 80</code> بگردید و عدد 80 را
+                به یک پورت دیگر (مانند 8080) تغییر دهید (<code>Listen 8080</code>). فایل را ذخیره کرده و دوباره Apache
+                را استارت کنید. از این پس برای دسترسی به پروژه‌هایتان باید از آدرس <code>http://localhost:8080/</code>
+                استفاده کنید.
+            </p>
+        </section>
+        <section id="setup_phpstorm" class="content-section">
+            <h2>۲-۳: معرفی و نصب PHPStorm</h2>
+            <p>
+                گرچه می‌توان کدهای PHP را با هر ویرایشگر متن ساده‌ای (مانند Notepad) نوشت، اما استفاده از یک <strong>محیط
+                توسعه یکپارچه (IDE - Integrated Development Environment)</strong> فرآیند کدنویسی را بسیار سریع‌تر،
+                ساده‌تر و لذت‌بخش‌تر می‌کند. IDEها ابزارهای هوشمندی هستند که به طور خاص برای برنامه‌نویسی طراحی شده‌اند.
+            </p>
+            <p>
+                <strong>PHPStorm</strong>، محصول شرکت JetBrains، یکی از قدرتمندترین و محبوب‌ترین IDEها برای توسعه PHP در
+                جهان است.
+            </p>
+
+            <h3>چرا از PHPStorm استفاده کنیم؟</h3>
+            <p>
+                استفاده از یک IDE مانند PHPStorm مزایای بسیار زیادی نسبت به یک ویرایشگر متن ساده دارد:
+            </p>
+            <ul>
+                <li><strong>تکمیل خودکار هوشمند کد (Intelligent Code Completion):</strong> PHPStorm کدهای شما را درک
+                    کرده و توابع، متغیرها و کلاس‌های مرتبط را به شما پیشنهاد می‌دهد.
+                </li>
+                <li><strong>تجزیه و تحلیل و خطایابی آنی کد:</strong> قبل از اجرای کد، اشتباهات تایپی و منطقی را به شما
+                    گوشزد می‌کند.
+                </li>
+                <li><strong>ابزارهای دیباگینگ پیشرفته:</strong> به شما اجازه می‌دهد تا اجرای کد را خط به خط دنبال کرده و
+                    مقادیر متغیرها را در هر لحظه مشاهده کنید.
+                </li>
+                <li><strong>یکپارچگی با ابزارهای دیگر:</strong> به راحتی با سیستم‌های کنترل نسخه (مانند Git)، ابزارهای
+                    مدیریت پایگاه داده و ترمینال خط فرمان یکپارچه می‌شود.
+                </li>
+                <li><strong>ناوبری و جستجوی قدرتمند:</strong> پیدا کردن تعاریف توابع و کلاس‌ها در پروژه‌های بزرگ به
+                    سادگی امکان‌پذیر است.
+                </li>
+            </ul>
+            <div class="note">
+                در یک کلام، PHPStorm مانند یک دستیار هوشمند عمل می‌کند که نه تنها به شما در نوشتن کد کمک می‌کند، بلکه
+                کیفیت و صحت آن را نیز افزایش می‌دهد.
+            </div>
+
+            <h3>مرحله اول: دانلود PHPStorm</h3>
+            <p>
+                برای دانلود این نرم‌افزار، به وب‌سایت رسمی شرکت JetBrains به آدرس <a
+                    href="https://www.jetbrains.com/phpstorm/" target="_blank">jetbrains.com/phpstorm</a> مراجعه کرده و
+                آخرین نسخه آن را دانلود کنید.
+            </p>
+            <p>
+                <strong>نکته:</strong> PHPStorm یک نرم‌افزار تجاری است اما یک دوره آزمایشی ۳۰ روزه رایگان ارائه می‌دهد.
+                همچنین، این نرم‌افزار برای دانشجویان و پروژه‌های اپن‌سورس به صورت <strong>رایگان</strong> قابل استفاده
+                است.
+            </p>
+
+            <h3>مرحله دوم: نصب PHPStorm</h3>
+            <p>
+                نصب PHPStorm بسیار ساده است و تفاوتی با نصب سایر نرم‌افزارها در ویندوز ندارد. کافی است فایل دانلود شده
+                را اجرا کرده و مراحل نصب را با تنظیمات پیش‌فرض دنبال کنید.
+            </p>
+            <ol>
+                <li>فایل نصب را اجرا کنید و روی `Next` کلیک کنید.</li>
+                <li>مسیر نصب را در حالت پیش‌فرض رها کرده و روی `Next` کلیک کنید.</li>
+                <li>در بخش گزینه‌های نصب (Installation Options)، می‌توانید تیک گزینه‌هایی مانند "Create Desktop
+                    Shortcut" (ایجاد میانبر روی دسکتاپ) و "Add 'Open Folder as Project'" (برای باز کردن پروژه‌ها با
+                    راست‌کلیک) را بزنید.
+                </li>
+                <li>روی `Install` کلیک کنید و منتظر بمانید تا فرآیند نصب به پایان برسد.</li>
+            </ol>
+            <p>
+                پس از اتمام نصب، می‌توانید PHPStorm را اجرا کنید. در اولین اجرا، ممکن است از شما خواسته شود تا تنظیمات
+                اولیه مانند تم (Theme) را انتخاب کنید.
+            </p>
+        </section>
+        <section id="first_project" class="content-section">
+            <h2>۲-۴: ایجاد و اجرای اولین پروژه</h2>
+            <p>
+                اکنون که تمام ابزارهای لازم را نصب کرده‌ایم، زمان آن رسیده است که همه چیز را کنار هم قرار داده و اولین
+                پروژه PHP خود را ایجاد و اجرا کنیم. در این بخش، یاد می‌گیریم چگونه یک پروژه جدید در PHPStorm بسازیم، آن
+                را به مفسر PHP متصل کنیم و خروجی آن را در مرورگر مشاهده کنیم.
+            </p>
+
+            <h3>مرحله اول: ایجاد پوشه پروژه</h3>
+            <p>
+                همانطور که قبلاً اشاره شد، وب‌سرور Apache که توسط XAMPP نصب شده است، فایل‌ها را از پوشه
+                <code>htdocs</code> سرویس‌دهی می‌کند. بنابراین، اولین قدم ایجاد یک پوشه برای پروژه جدیدمان در این مسیر
+                است.
+            </p>
+            <ol>
+                <li>به مسیر نصب XAMPP بروید (معمولاً <code>C:\xampp</code>).</li>
+                <li>وارد پوشه <code>htdocs</code> شوید.</li>
+                <li>یک پوشه جدید با نام دلخواه برای پروژه خود بسازید. برای مثال، ما نام آن را <code>learning_php</code>
+                    می‌گذاریم.
+                </li>
+            </ol>
+            <p>بنابراین، مسیر کامل پروژه ما به این شکل خواهد بود: <code>C:\xampp\htdocs\learning_php</code></p>
+            <div style="text-align:center; margin: 2rem 0;">
+                <svg width="500" height="200" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg"
+                     font-family="Vazirmatn, sans-serif">
+                    <rect x="1" y="1" width="498" height="198" fill="#fffaf0" stroke="#fed7aa" stroke-width="1"
+                          rx="10"/>
+                    <!-- C:\ -->
+                    <rect x="20" y="20" width="80" height="40" fill="#fff" stroke="#ccc" rx="5"/>
+                    <text x="60" y="45" text-anchor="middle">C:\</text>
+                    <!-- xampp -->
+                    <rect x="130" y="20" width="100" height="40" fill="#fff" stroke="#ccc" rx="5"/>
+                    <text x="180" y="45" text-anchor="middle">xampp</text>
+                    <!-- htdocs -->
+                    <rect x="260" y="20" width="100" height="40" fill="#fff" stroke="#ccc" rx="5"/>
+                    <text x="310" y="45" text-anchor="middle">htdocs</text>
+                    <!-- project -->
+                    <rect x="200" y="90" width="150" height="50" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"
+                          rx="5"/>
+                    <text x="275" y="120" text-anchor="middle" font-weight="bold">learning_php</text>
+
+                    <line x1="100" y1="35" x2="130" y2="35" stroke="#aaa"/>
+                    <line x1="230" y1="35" x2="260" y2="35" stroke="#aaa"/>
+                    <path d="M 310 60 Q 310 75 275 90" stroke="#aaa" fill="none" stroke-dasharray="4 2"/>
+                </svg>
+            </div>
+
+            <h3>مرحله دوم: باز کردن پروژه در PHPStorm</h3>
+            <ol>
+                <li>PHPStorm را اجرا کنید.</li>
+                <li>از صفحه خوش‌آمدگویی، روی گزینه `Open` کلیک کنید.</li>
+                <li>به مسیری که در مرحله قبل ساختید (<code>C:\xampp\htdocs\learning_php</code>) بروید و آن را انتخاب
+                    کنید.
+                </li>
+            </ol>
+            <p>اکنون PHPStorm پوشه شما را به عنوان یک پروژه باز می‌کند و ساختار فایل‌ها را در پنل سمت چپ نمایش
+                می‌دهد.</p>
+
+            <h3>مرحله سوم: پیکربندی مفسر (Interpreter) PHP</h3>
+            <p>
+                باید به PHPStorm بگوییم که از کدام نسخه PHP برای تحلیل و اجرای کدهای ما استفاده کند. ما از نسخه PHP که
+                همراه با XAMPP نصب شده است، استفاده خواهیم کرد.
+            </p>
+            <ol>
+                <li>از منوی `File` به `Settings` بروید (یا کلیدهای `Ctrl+Alt+S` را فشار دهید).</li>
+                <li>در پنجره تنظیمات، به مسیر `PHP` بروید.</li>
+                <li>در بخش `CLI Interpreter`، روی دکمه `...` کلیک کنید.</li>
+                <li>در پنجره جدید، روی علامت `+` کلیک کرده و گزینه `Local...` را انتخاب کنید.</li>
+                <li>در بخش `PHP executable`، آدرس فایل اجرایی PHP در پوشه XAMPP را وارد کنید. این فایل معمولاً در مسیر
+                    زیر قرار دارد:
+                    <div class="code-block-container">
+                        <pre><code>C:\xampp\php\php.exe</code></pre>
+                    </div>
+                </li>
+                <li>روی `OK` کلیک کنید تا مفسر شناسایی شود. PHPStorm نسخه PHP را به شما نمایش خواهد داد.</li>
+                <li>تمام پنجره‌های تنظیمات را با `OK` ببندید.</li>
+            </ol>
+            <div class="note">
+                این کار فقط یک بار برای هر پروژه (یا به صورت سراسری) لازم است و به PHPStorm اجازه می‌دهد تا کدهای شما را
+                با توجه به نسخه صحیح PHP تحلیل کند.
+            </div>
+
+            <h3>مرحله چهارم: نوشتن و اجرای اسکریپت "Hello, World!"</h3>
+            <ol>
+                <li>در پنل پروژه (سمت چپ)، روی پوشه `learning_php` راست‌کلیک کرده و از منوی `New`، گزینه `PHP File` را
+                    انتخاب کنید.
+                </li>
+                <li>نام فایل را `index` بگذارید و Enter را بزنید. یک فایل جدید به نام `index.php` ساخته می‌شود.</li>
+                <li>کد زیر را در این فایل بنویسید:
+                    <div class="code-block-container">
+                        <button class="copy-button">کپی</button>
+                        <pre><code class="language-php">&lt;?php
+
+            echo "Hello, World!";
+            echo "&lt;br&gt;";
+            echo "سلام دنیا!";
+
+            ?&gt;</code></pre>
+                    </div>
+                </li>
+                <li>
+                    <strong>اجرای پروژه:</strong> برای دیدن نتیجه، نیازی به اجرای چیزی از داخل PHPStorm نیست. کافی است
+                    کنترل پنل XAMPP را باز کرده و مطمئن شوید سرویس‌های **Apache** و **MySQL** در حال اجرا (سبز رنگ)
+                    هستند.
+                </li>
+                <li>
+                    مرورگر وب خود را باز کرده و آدرس زیر را در آن وارد کنید:
+                    <div class="code-block-container">
+                        <button class="copy-button">کپی</button>
+                        <pre><code>http://localhost/learning_php/</code></pre>
+                    </div>
+                </li>
+            </ol>
+            <p>
+                اگر همه چیز به درستی انجام شده باشد، باید خروجی زیر را در مرورگر خود مشاهده کنید:
+            </p>
+            <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 5px; background-color: #fafafa; direction: ltr;">
+                Hello, World!<br>
+                سلام دنیا!
+            </div>
+            <p>
+                تبریک می‌گوییم! شما با موفقیت اولین پروژه PHP خود را راه‌اندازی و اجرا کردید.
+            </p>
+        </section>
+
+        <!-- ========== فصل سوم ========== -->
+        <section id="php_syntax" class="content-section">
+            <h2>۳-۱: سینتکس پایه</h2>
+            <p>
+                برای اینکه وب‌سرور بتواند کدهای PHP را از کدهای HTML تشخیص دهد، باید تمام دستورات PHP را درون تگ‌های
+                مخصوص آن قرار دهیم. در این بخش با ساختار اصلی یک فایل PHP، نحوه نمایش خروجی و نوشتن توضیحات آشنا
+                می‌شویم.
+            </p>
+
+            <h3>تگ‌های PHP</h3>
+            <p>
+                بلوک اصلی کد PHP با تگ <code>&lt;?php</code> آغاز و با تگ <code>?&gt;</code> به پایان می‌رسد. هر چیزی که
+                بین این دو تگ قرار بگیرد، توسط مفسر PHP پردازش خواهد شد.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+                // Your PHP code goes here
+            ?&gt;</code></pre>
+            </div>
+            <p>
+                شما می‌توانید چندین بلوک PHP را در یک فایل HTML داشته باشید. این قابلیت به شما اجازه می‌دهد تا منطق‌های
+                پویا را دقیقاً در جایی که نیاز دارید، به صفحه خود تزریق کنید.
+            </p>
+
+            <h3>دستور `echo` برای نمایش خروجی</h3>
+            <p>
+                رایج‌ترین و ساده‌ترین راه برای نمایش خروجی (مانند متن یا مقادیر متغیرها) در PHP، استفاده از دستور <code>echo</code>
+                است. هر چیزی که با `echo` چاپ شود، مستقیماً در همان نقطه از فایل HTML قرار می‌گیرد.
+            </p>
+            <div class="note">
+                <strong>نکته مهم:</strong> هر دستور در PHP باید با یک نقطه-ویرگول (<code>;</code>) به پایان برسد. این
+                کاراکتر به مفسر PHP می‌گوید که انتهای یک دستور کجاست. فراموش کردن آن یکی از شایع‌ترین خطاها در بین
+                برنامه‌نویسان مبتدی است.
+            </div>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            &lt;body&gt;
+                &lt;h1&gt; &lt;?php echo "این یک تیتر از PHP است"; ?&gt; &lt;/h1&gt;
+                &lt;p&gt;
+                    &lt;?php
+                        echo "این یک پاراگراف است.";
+                        echo "&lt;br&gt;"; // می‌توان تگ‌های HTML را نیز چاپ کرد
+                        echo "این خط دوم پاراگراف است.";
+                    ?&gt;
+                &lt;/p&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;</code></pre>
+            </div>
+
+            <h3>نوشتن توضیحات (Comments)</h3>
+            <p>
+                نوشتن توضیحات در کد یک عادت بسیار خوب برنامه‌نویسی است. توضیحات به شما (و دیگران) کمک می‌کند تا منطق و
+                هدف یک بخش از کد را در آینده بهتر درک کنید. مفسر PHP توضیحات را نادیده گرفته و آن‌ها را اجرا نمی‌کند.
+            </p>
+            <p>در PHP دو نوع کامنت وجود دارد:</p>
+            <ul>
+                <li><strong>توضیحات تک‌خطی:</strong> با استفاده از <code>//</code> یا <code>#</code> ایجاد می‌شوند و تا
+                    انتهای همان خط ادامه دارند.
+                </li>
+                <li><strong>توضیحات چندخطی:</strong> با <code>/*</code> شروع شده و با <code>*/</code> به پایان می‌رسند و
+                    می‌توانند چندین خط را شامل شوند.
+                </li>
+            </ul>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+                // این یک توضیح تک‌خطی است
+                echo "Hello World!"; // نمایش پیام
+
+                # این هم یک توضیح تک‌خطی دیگر است
+
+                /*
+                  این یک توضیح چندخطی است.
+                  می‌تواند هر تعداد خط که نیاز باشد
+                  ادامه پیدا کند.
+                */
+                echo "End of script.";
+            ?&gt;</code></pre>
+            </div>
+        </section>
+
+        <section id="php_data_types" class="content-section">
+            <h2>۳-۲: متغیرها و انواع داده</h2>
+            <p>
+                متغیرها در برنامه‌نویسی، مانند ظرف‌هایی برای نگهداری اطلاعات هستند. ما می‌توانیم داده‌های مختلفی مانند
+                نام یک کاربر، سن او، یا قیمت یک محصول را در متغیرها ذخیره کرده و در طول اجرای برنامه از آن‌ها استفاده
+                کنیم.
+            </p>
+
+            <h3>تعریف و استفاده از متغیرها</h3>
+            <p>
+                در PHP، تمام متغیرها با علامت دلار (<code>$</code>) شروع می‌شوند و به دنبال آن نام متغیر می‌آید.
+            </p>
+            <h4>قوانین نام‌گذاری متغیرها:</h4>
+            <ul>
+                <li>نام متغیر باید با یک حرف یا علامت آندرلاین (<code>_</code>) شروع شود.</li>
+                <li>نام متغیر نمی‌تواند با یک عدد شروع شود.</li>
+                <li>نام متغیر فقط می‌تواند شامل حروف الفبا (a-z, A-Z)، اعداد (0-9) و آندرلاین (<code>_</code>) باشد.
+                </li>
+                <li>نام متغیرها به بزرگی و کوچکی حروف حساس است (<strong>Case-sensitive</strong>). این یعنی
+                    <code>$name</code>، <code>$Name</code> و <code>$NAME</code> سه متغیر کاملاً متفاوت هستند.
+                </li>
+            </ul>
+            <p>برای مقداردهی به یک متغیر، از عملگر مساوی (<code>=</code>) استفاده می‌کنیم.</p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// تعریف چند متغیر
+$productName = "لپ تاپ ایسوس"; // یک متغیر از نوع رشته
+$price = 25000000;         // یک متغیر از نوع عدد صحیح
+$isAvailable = true;       // یک متغیر از نوع بولین (منطقی)
+
+// استفاده از متغیرها و نمایش آن‌ها
+echo "نام محصول: " . $productName;
+echo "&lt;br&gt;";
+echo "قیمت: " . $price . " تومان";
+?&gt;</code></pre>
+            </div>
+            <div class="note">
+                <strong>نکته مهم:</strong> PHP یک زبان <strong>Loosely Typed</strong> (با نوع‌دهی ضعیف) است. این یعنی
+                شما نیازی ندارید که قبل از استفاده، نوع یک متغیر را مشخص کنید. PHP به صورت خودکار نوع داده را بر اساس
+                مقداری که در آن قرار می‌دهید، تشخیص می‌دهد.
+            </div>
+
+            <h3>انواع داده اصلی (Data Types)</h3>
+            <p>PHP از انواع داده مختلفی پشتیبانی می‌کند. در اینجا با مهم‌ترین آن‌ها آشنا می‌شویم:</p>
+
+            <h4>۱. رشته (String)</h4>
+            <p>
+                رشته‌ها مجموعه‌ای از کاراکترها هستند و برای نگهداری متن استفاده می‌شوند. رشته‌ها را می‌توان با کوتیشن
+                تکی (<code>'</code>) یا کوتیشن دوتایی (<code>"</code>) تعریف کرد.
+            </p>
+            <ul>
+                <li><strong>کوتیشن تکی (' '):</strong> هر چیزی که داخل آن قرار بگیرد، به عنوان متن ساده در نظر گرفته
+                    می‌شود.
+                </li>
+                <li><strong>کوتیشن دوتایی (" "):</strong> متغیرهایی که داخل آن قرار بگیرند، مقدارشان جایگزین نامشان
+                    می‌شود (به این عمل <strong>Parsing</strong> می‌گویند).
+                </li>
+            </ul>
+            <p>برای اتصال (الحاق) چند رشته به یکدیگر، از عملگر نقطه (<code>.</code>) استفاده می‌کنیم.</p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+$name = "علی";
+
+// استفاده از کوتیشن تکی و اتصال با نقطه
+echo 'سلام ' . $name . '، به سایت ما خوش آمدی.';
+echo "&lt;br&gt;";
+
+// استفاده از کوتیشن دوتایی (ساده‌تر و خواناتر)
+echo "سلام $name، به سایت ما خوش آمدی.";
+?&gt;</code></pre>
+            </div>
+
+            <h4>۲. عدد صحیح (Integer)</h4>
+            <p>
+                برای نگهداری اعداد کامل (بدون اعشار)، چه مثبت و چه منفی، استفاده می‌شود.
+            </p>
+
+            <h4>۳. عدد اعشاری (Float / Double)</h4>
+            <p>
+                برای نگهداری اعداد اعشاری استفاده می‌شود.
+            </p>
+
+            <h4>۴. بولین (Boolean)</h4>
+            <p>
+                این نوع داده فقط می‌تواند دو مقدار داشته باشد: <code>true</code> (درست) یا <code>false</code> (نادرست).
+                بولین‌ها اساس کار دستورات شرطی هستند.
+            </p>
+
+            <hr style="margin: 3rem 0; border: 1px solid #fdba74;">
+
+            <h4>۵. آرایه (Array)</h4>
+            <p>
+                آرایه یک متغیر ویژه و بسیار قدرتمند است که به شما اجازه می‌دهد **چندین مقدار** را در قالب یک متغیر واحد
+                ذخیره کنید. آرایه‌ها برای نگهداری لیست‌هایی از داده‌ها مانند لیست محصولات، لیست کاربران یا نتایج یک
+                کوئری از پایگاه داده، ضروری هستند.
+            </p>
+
+            <h5>الف) آرایه‌های ایندکسی (Indexed Arrays)</h5>
+            <p>
+                در این نوع آرایه، به هر مقدار یک ایندکس (شماره) عددی به صورت خودکار اختصاص داده می‌شود که از
+                <strong>صفر</strong> شروع می‌شود.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// تعریف یک آرایه ایندکسی از نام محصولات
+$products = ["لپ تاپ", "موبایل", "تبلت"];
+
+// دسترسی به عناصر آرایه با استفاده از ایندکس
+echo "محصول اول: " . $products[0]; // خروجی: لپ تاپ
+echo "&lt;br&gt;";
+echo "محصول سوم: " . $products[2]; // خروجی: تبلت
+
+// افزودن یک آیتم جدید به انتهای آرایه
+$products[] = "ساعت هوشمند";
+
+// چاپ تمام محتویات آرایه برای دیباگ کردن
+print_r($products);
+?&gt;</code></pre>
+            </div>
+
+            <h5>ب) آرایه‌های انجمنی (Associative Arrays)</h5>
+            <p>
+                در این نوع آرایه، شما به جای ایندکس‌های عددی، برای هر مقدار یک **کلید (Key)** متنی و دلخواه تعریف
+                می‌کنید. این نوع آرایه برای نگهداری داده‌های ساختاریافته (مانند اطلاعات یک کاربر) بسیار مفید است.
+                `$_POST` و `$_GET` نمونه‌هایی از آرایه‌های انجمنی هستند.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// تعریف یک آرایه انجمنی برای اطلاعات یک مشتری
+$customer = [
+    "customerName" => "سارا رضایی",
+    "email" => "sara@example.com",
+    "cityId" => 5
+];
+
+// دسترسی به مقادیر با استفاده از کلید
+echo "نام مشتری: " . $customer["customerName"]; // خروجی: سارا رضایی
+echo "&lt;br&gt;";
+echo "ایمیل: " . $customer["email"];
+
+// افزودن یک آیتم جدید
+$customer["customertel"] = "09121112233";
+
+// چاپ آرایه
+print_r($customer);
+?&gt;</code></pre>
+            </div>
+            <p>
+                آرایه‌ها را می‌توان با حلقه `foreach` پیمایش کرد که در بخش‌های بعدی با آن آشنا خواهیم شد.
+            </p>
+        </section>
+
+        <section id="php_control_structures" class="content-section">
+            <h2>۳-۳: ساختارهای کنترلی و حلقه‌ها</h2>
+            <p>
+                تا اینجا یاد گرفتیم که چگونه داده‌ها را در متغیرها ذخیره کنیم. اما قدرت واقعی برنامه‌نویسی زمانی مشخص
+                می‌شود که بتوانیم بر اساس شرایط مختلف، تصمیم‌گیری کنیم و یا یک سری دستورات را چندین بار تکرار نماییم.
+                این کارها با استفاده از <strong>ساختارهای کنترلی</strong> و <strong>حلقه‌ها</strong> انجام می‌شود.
+            </p>
+
+            <h3>دستورات شرطی (Conditional Statements)</h3>
+            <p>
+                دستورات شرطی به برنامه ما اجازه می‌دهند تا مانند یک انسان فکر کند و بر اساس درستی یا نادرستی یک شرط،
+                مسیرهای مختلفی را در پیش بگیرد.
+            </p>
+
+            <h4>۱. دستور `if`</h4>
+            <p>
+                ساده‌ترین ساختار شرطی است. اگر شرط داخل پرانتز `true` (درست) باشد، کدهای داخل بلوک `if` اجرا می‌شوند. در
+                غیر این صورت، برنامه از آن بلوک عبور می‌کند.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+            $age = 20;
+
+            if ($age >= 18) {
+                echo "شما بزرگسال هستید و می‌توانید رای دهید.";
+            }
+            ?&gt;</code></pre>
+            </div>
+
+            <h4>۲. دستور `if...else`</h4>
+            <p>
+                این ساختار یک مسیر جایگزین نیز فراهم می‌کند. اگر شرط `if` درست نباشد (`false`)، کدهای داخل بلوک `else`
+                اجرا خواهند شد.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+            $temperature = 15;
+
+            if ($temperature > 25) {
+                echo "هوا گرم است، لباس خنک بپوشید.";
+            } else {
+                echo "هوا خنک است، بهتر است یک ژاکت همراه داشته باشید.";
+            }
+            ?&gt;</code></pre>
+            </div>
+
+            <h4>۳. دستور `if...elseif...else`</h4>
+            <p>
+                برای بررسی چندین شرط متوالی استفاده می‌شود. PHP شرط‌ها را به ترتیب بررسی می‌کند و به محض اینکه یکی از
+                آن‌ها درست باشد، بلوک مربوط به آن را اجرا کرده و از بقیه شرط‌ها صرف‌نظر می‌کند. اگر هیچ‌کدام از شرط‌ها
+                درست نباشند، بلوک `else` (در صورت وجود) اجرا می‌شود.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+            $grade = 85;
+
+            if ($grade >= 90) {
+                echo "نمره شما A است. عالی!";
+            } elseif ($grade >= 80) {
+                echo "نمره شما B است. خیلی خوب!";
+            } elseif ($grade >= 70) {
+                echo "نمره شما C است. خوب.";
+            } else {
+                echo "شما نیاز به تلاش بیشتری دارید.";
+            }
+            ?&gt;</code></pre>
+            </div>
+
+            <h3>حلقه‌ها (Loops)</h3>
+            <p>
+                حلقه‌ها به ما اجازه می‌دهند تا یک بلوک کد را تا زمانی که یک شرط خاص برقرار است، به صورت مکرر اجرا کنیم.
+                این کار برای انجام کارهای تکراری مانند نمایش لیست محصولات یا خواندن ردیف‌های یک جدول از پایگاه داده،
+                بسیار ضروری است.
+            </p>
+
+            <h4>۱. حلقه `while`</h4>
+            <p>
+                این حلقه تا زمانی که شرط آن `true` باشد، به اجرای کدهای داخل بلوک خود ادامه می‌دهد.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+            $counter = 1;
+
+            while ($counter <= 5) {
+                echo "عدد فعلی: " . $counter . "&lt;br&gt;";
+                $counter++; // بسیار مهم: شمارنده را یک واحد افزایش می‌دهیم تا حلقه بی‌نهایت نشود!
+            }
+            ?&gt;</code></pre>
+            </div>
+
+            <h4>۲. حلقه `for`</h4>
+            <p>
+                حلقه `for` زمانی استفاده می‌شود که از قبل می‌دانیم یک قطعه کد را چند بار می‌خواهیم تکرار کنیم. این حلقه
+                سه بخش اصلی دارد که با نقطه-ویرگول (`;`) از هم جدا می‌شوند:
+            </p>
+            <ul>
+                <li><strong>بخش اول (Initialization):</strong> یک شمارنده را مقداردهی اولیه می‌کند (فقط یک بار در ابتدا
+                    اجرا می‌شود).
+                </li>
+                <li><strong>بخش دوم (Condition):</strong> شرط حلقه. تا زمانی که این شرط `true` باشد، حلقه ادامه می‌یابد.
+                </li>
+                <li><strong>بخش سوم (Increment/Decrement):</strong> پس از هر بار اجرای حلقه، مقدار شمارنده را تغییر
+                    می‌دهد.
+                </li>
+            </ul>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+            // چاپ اعداد زوج از ۲ تا ۱۰
+            for ($i = 2; $i <= 10; $i = $i + 2) {
+                echo $i . "&lt;br&gt;";
+            }
+            ?&gt;</code></pre>
+            </div>
+        </section>
+
+        <section id="php_forms" class="content-section">
+            <h2>۳-۴: کار با فرم‌های HTML</h2>
+            <p>
+                یکی از اصلی‌ترین کاربردهای PHP، پردازش اطلاعاتی است که کاربران از طریق فرم‌های وب ارسال می‌کنند. فرم‌ها
+                پل ارتباطی بین کاربر (کلاینت) و سرور هستند. در این بخش یاد می‌گیریم چگونه یک فرم HTML بسازیم و داده‌های
+                آن را به صورت امن در یک اسکریپت PHP دریافت و پردازش کنیم.
+            </p>
+
+            <h3>ایجاد یک فرم HTML ساده</h3>
+            <p>
+                یک فرم HTML با تگ <code>&lt;form&gt;</code> ساخته می‌شود. دو ویژگی (attribute) بسیار مهم در این تگ وجود
+                دارد:
+            </p>
+            <ul>
+                <li><strong><code>action</code></strong>: آدرس فایلی را مشخص می‌کند که داده‌های فرم باید به آن ارسال
+                    شوند تا پردازش شوند.
+                </li>
+                <li><strong><code>method</code></strong>: روش ارسال داده‌ها را تعیین می‌کند که می‌تواند یکی از دو مقدار
+                    `GET` یا `POST` باشد.
+                </li>
+            </ul>
+            <p>
+                هر فیلد ورودی در فرم (مانند <code>&lt;input&gt;</code>) باید یک ویژگی <code>name</code> منحصر به فرد
+                داشته باشد. این نام به عنوان کلید برای دسترسی به مقدار آن فیلد در PHP استفاده می‌شود.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;!-- file: register_form.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="fa" dir="rtl"&gt;
+&lt;head&gt;
+    &lt;title&gt;فرم ثبت نام ساده&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h3&gt;لطفا اطلاعات خود را وارد کنید:&lt;/h3&gt;
+    &lt;form action="process.php" method="post"&gt;
+        &lt;label for="fname"&gt;نام:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="fname" name="user_name"&gt;&lt;br&gt;&lt;br&gt;
+
+        &lt;label for="femail"&gt;ایمیل:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="email" id="femail" name="user_email"&gt;&lt;br&gt;&lt;br&gt;
+
+        &lt;input type="submit" value="ارسال"&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <h3>دریافت و اعتبارسنجی داده‌ها در PHP</h3>
+            <p>
+                هرگز نباید به داده‌های ورودی از سمت کاربر اعتماد کرد! همیشه باید قبل از استفاده از این داده‌ها، آن‌ها را
+                بررسی و اعتبارسنجی (Validate) کنیم. مهم‌ترین بررسی این است که آیا پارامتر مورد نظر ما اصلاً ارسال شده و
+                مقدار آن خالی نیست؟
+            </p>
+
+            <h4>توابع `isset()` و `empty()`</h4>
+            <ul>
+                <li><strong><code>isset($variable)</code></strong>: بررسی می‌کند که آیا یک متغیر (یا یک کلید در آرایه)
+                    **وجود دارد** و مقدار آن `NULL` نیست. اگر وجود داشته باشد، `true` برمی‌گرداند.
+                </li>
+                <li><strong><code>empty($variable)</code></strong>: بررسی می‌کند که آیا یک متغیر **خالی** است یا نه.
+                    مقادیری مانند رشته خالی (`""`)، عدد صفر (`0`)، آرایه خالی (`[]`) و `false` همگی خالی محسوب می‌شوند.
+                    اگر خالی باشد، `true` برمی‌گرداند.
+                </li>
+            </ul>
+            <div class="note">
+                بهترین روش برای بررسی یک پارامتر فرم، استفاده ترکیبی از این دو تابع است: `if (isset($_POST['key']) &&
+                !empty($_POST['key']))` این شرط تضمین می‌کند که پارامتر هم ارسال شده و هم مقدار آن خالی نیست.
+            </div>
+
+            <h4>کد کامل `process.php` با اعتبارسنجی</h4>
+            <p>
+                در کد زیر، ما ابتدا وجود و خالی نبودن پارامترها را بررسی می‌کنیم. همچنین با آرایه سراسری `$_REQUEST`
+                آشنا می‌شویم که گرچه استفاده از آن توصیه نمی‌شود، اما دانستن آن مفید است.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// file: process.php
+
+// $_REQUEST شامل داده‌های $_GET, $_POST و $_COOKIE است.
+// استفاده از آن به دلیل عدم شفافیت منبع داده، توصیه نمی‌شود.
+// print_r($_REQUEST);
+
+// بهترین روش: بررسی متد درخواست
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $name = "";
+    $email = "";
+    $errors = []; // یک آرایه برای ذخیره خطاها
+
+    // ۱. اعتبارسنجی نام کاربری
+    if (isset($_POST['user_name']) && !empty(trim($_POST['user_name']))) {
+        // trim() فاصله‌های خالی ابتدا و انتها را حذف می‌کند
+        $name = htmlspecialchars(trim($_POST['user_name']));
+    } else {
+        $errors[] = "وارد کردن نام الزامی است.";
+    }
+
+    // ۲. اعتبارسنجی ایمیل
+    if (isset($_POST['user_email']) && !empty(trim($_POST['user_email']))) {
+        $email = htmlspecialchars(trim($_POST['user_email']));
+        // بررسی فرمت ایمیل
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "فرمت ایمیل وارد شده صحیح نیست.";
+        }
+    } else {
+        $errors[] = "وارد کردن ایمیل الزامی است.";
+    }
+
+    // ۳. بررسی نهایی و نمایش نتیجه
+    if (empty($errors)) {
+        // اگر هیچ خطایی وجود نداشت، اطلاعات را پردازش کن
+        echo "&lt;h1&gt;اطلاعات با موفقیت دریافت شد&lt;/h1&gt;";
+        echo "سلام " . $name . "!&lt;br&gt;";
+        echo "ایمیل شما: " . $email;
+    } else {
+        // اگر خطایی وجود داشت، آن‌ها را نمایش بده
+        echo "&lt;h3&gt;خطا در اطلاعات ارسالی:&lt;/h3&gt;";
+        echo "&lt;ul&gt;";
+        foreach ($errors as $error) {
+            echo "&lt;li style='color: red;'&gt;" . $error . "&lt;/li&gt;";
+        }
+        echo "&lt;/ul&gt;";
+    }
+
+} else {
+    // اگر کسی مستقیماً به این صفحه بیاید (بدون ارسال فرم)
+    echo "این صفحه فقط برای پردازش فرم است.";
+}
+?&gt;</code></pre>
+            </div>
+        </section>
+
+
+        <section id="php_include_require" class="content-section">
+            <h2>۳-۵: سازماندهی کد با `include` و `require`</h2>
+            <p>
+                وقتی پروژه‌های ما بزرگ‌تر می‌شوند، قرار دادن تمام کدها در یک فایل واحد، باعث شلوغی، عدم خوانایی و دشواری
+                در نگهداری می‌شود. PHP برای حل این مشکل، دستوراتی را برای وارد کردن محتوای یک فایل در فایل دیگر فراهم
+                کرده است. این کار به ما اجازه می‌دهد تا بخش‌های تکراری کد (مانند هدر، فوتر یا تنظیمات اتصال به پایگاه
+                داده) را در فایل‌های جداگانه نوشته و در هر جایی که نیاز داریم، از آن‌ها استفاده کنیم.
+            </p>
+
+            <h3>دستورات `include` و `require`</h3>
+            <p>
+                این دو دستور عملکرد تقریباً یکسانی دارند: محتوای یک فایل مشخص شده را برداشته و دقیقاً در همان نقطه‌ای که
+                فراخوانی شده‌اند، قرار می‌دهند.
+            </p>
+
+            <h4>تفاوت کلیدی بین `include` و `require`</h4>
+            <p>
+                تفاوت اصلی این دو دستور در نحوه مدیریت خطا است:
+            </p>
+            <ul>
+                <li>
+                    <strong><code>include</code></strong>: اگر فایلی که مشخص کرده‌اید وجود نداشته باشد یا در بارگذاری آن
+                    مشکلی پیش بیاید، `include` یک <strong>هشدار (Warning)</strong> تولید می‌کند، اما اجرای اسکریپت
+                    <strong>ادامه می‌یابد</strong>.
+                </li>
+                <li>
+                    <strong><code>require</code></strong>: اگر فایل مورد نظر پیدا نشود، `require` یک <strong>خطای مهلک
+                    (Fatal Error)</strong> تولید کرده و اجرای اسکریپت را به طور کامل <strong>متوقف می‌کند</strong>.
+                </li>
+            </ul>
+            <div class="note">
+                <strong>چه زمانی از کدام استفاده کنیم؟</strong><br>
+                - از <strong>`require`</strong> برای فایل‌های حیاتی و ضروری برنامه استفاده کنید که بدون آن‌ها، ادامه کار
+                برنامه ممکن نیست. (مانند فایل اتصال به پایگاه داده یا فایل‌های اصلی پیکربندی).<br>
+                - از <strong>`include`</strong> برای فایل‌های غیرضروری‌تر استفاده کنید که نبودنشان نباید باعث توقف کامل
+                برنامه شود (مانند یک ویجت جانبی یا یک قطعه HTML اختیاری).
+            </div>
+
+            <h3>مثال عملی: ساخت یک قالب ساده</h3>
+            <p>
+                فرض کنید می‌خواهیم یک وب‌سایت ساده با سه صفحه (خانه، درباره ما، تماس با ما) بسازیم. بخش هدر (منو) و فوتر
+                در تمام این صفحات یکسان است. به جای کپی کردن کد هدر و فوتر در هر سه فایل، آن‌ها را در فایل‌های جداگانه
+                می‌سازیم.
+            </p>
+
+            <h4>۱. فایل `header.php`</h4>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+            &lt;html lang="fa" dir="rtl"&gt;
+            &lt;head&gt;
+                &lt;title&gt;وب‌سایت من&lt;/title&gt;
+                &lt;style&gt;
+                    body { font-family: sans-serif; }
+                    nav { background-color: #f0f0f0; padding: 1rem; }
+                    nav a { margin: 0 15px; text-decoration: none; color: #333; }
+                    footer { background-color: #333; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+                &lt;/style&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;header&gt;
+                    &lt;nav&gt;
+                        &lt;a href="index.php"&gt;خانه&lt;/a&gt;
+                        &lt;a href="about.php"&gt;درباره ما&lt;/a&gt;
+                        &lt;a href="contact.php"&gt;تماس با ما&lt;/a&gt;
+                    &lt;/nav&gt;
+                &lt;/header&gt;
+                &lt;main&gt;</code></pre>
+            </div>
+
+            <h4>۲. فایل `footer.php`</h4>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">    &lt;/main&gt;
+                &lt;footer&gt;
+                    &lt;p&gt;تمام حقوق این وب‌سایت محفوظ است. &copy; &lt;?php echo date("Y"); ?&gt;&lt;/p&gt;
+                &lt;/footer&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;</code></pre>
+            </div>
+
+            <h4>۳. فایل `index.php` (صفحه اصلی)</h4>
+            <p>
+                حالا در صفحه اصلی، به سادگی این دو فایل را فراخوانی می‌کنیم:
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php require 'header.php'; ?&gt;
+
+            &lt;h1&gt;به صفحه اصلی خوش آمدید!&lt;/h1&gt;
+            &lt;p&gt;این محتوای صفحه اصلی است.&lt;/p&gt;
+
+            &lt;?php require 'footer.php'; ?&gt;</code></pre>
+            </div>
+            <p>
+                با این روش، اگر بخواهیم یک آیتم جدید به منو اضافه کنیم، فقط کافی است فایل `header.php` را ویرایش کنیم و
+                این تغییر به صورت خودکار در تمام صفحات اعمال خواهد شد.
+            </p>
+
+            <h3>دستورات `include_once` و `require_once`</h3>
+            <p>
+                این دو دستور، نسخه‌های هوشمندتر `include` و `require` هستند. آن‌ها قبل از وارد کردن یک فایل، بررسی
+                می‌کنند که آیا آن فایل **قبلاً** در طول اجرای اسکریپت وارد شده است یا خیر. اگر فایل قبلاً وارد شده باشد،
+                دیگر آن را دوباره وارد نمی‌کنند.
+            </p>
+            <p>
+                این کار از بروز خطاهای احتمالی (مانند تعریف مجدد یک تابع یا کلاس) جلوگیری می‌کند. به عنوان یک قانون کلی،
+                بهتر است همیشه از نسخه‌های `_once` استفاده کنید، مگر اینکه دلیل خاصی برای وارد کردن چندباره یک فایل
+                داشته باشید.
+            </p>
+        </section>
+
+        <section id="db_libs" class="content-section">
+            <h2>۴-۱: معرفی کتابخانه‌های اتصال</h2>
+            <p>
+                تاکنون یاد گرفتیم که چگونه با زبان PHP کار کنیم و ساختارهای مختلف آن را به کار بگیریم. اکنون زمان آن
+                رسیده است که مهم‌ترین قابلیت PHP در توسعه وب را فعال کنیم: <strong>ارتباط با پایگاه داده</strong>. برای
+                اینکه اسکریپت PHP ما بتواند با سرور MySQL صحبت کند (یعنی دستورات SQL را ارسال و نتایج را دریافت کند)، به
+                یک "مترجم" یا "واسط" نیاز دارد. این واسط‌ها در PHP به صورت افزونه‌ها یا کتابخانه‌های داخلی ارائه
+                می‌شوند.
+            </p>
+            <p>
+                در نسخه‌های مدرن PHP، دو راه اصلی و استاندارد برای اتصال به پایگاه داده MySQL وجود دارد:
+            </p>
+            <ol>
+                <li><strong>MySQLi (MySQL Improved)</strong></li>
+                <li><strong>PDO (PHP Data Objects)</strong></li>
+            </ol>
+
+            <div style="text-align:center; margin: 2rem 0;">
+                <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg"
+                     font-family="Vazirmatn, sans-serif">
+                    <rect x="1" y="1" width="598" height="248" fill="#fffaf0" stroke="#fed7aa" stroke-width="1"
+                          rx="10"/>
+                    <!-- PHP App -->
+                    <rect x="50" y="95" width="150" height="60" fill="#fef3c7" stroke="#f59e0b" rx="5"/>
+                    <text x="125" y="130" text-anchor="middle" font-weight="bold">اپلیکیشن PHP</text>
+
+                    <!-- MySQL DB -->
+                    <rect x="400" y="95" width="150" height="60" fill="#fef3c7" stroke="#f59e0b" rx="5"/>
+                    <text x="475" y="130" text-anchor="middle" font-weight="bold">پایگاه داده MySQL</text>
+
+                    <!-- Bridge/Library -->
+                    <path d="M 200 110 L 250 80 L 350 80 L 400 110 L 350 140 L 250 140 Z" fill="#fed7aa"
+                          stroke="#f59e0b"/>
+                    <text x="300" y="115" text-anchor="middle" font-size="14">کتابخانه اتصال</text>
+                    <text x="300" y="135" text-anchor="middle" font-size="12">(MySQLi یا PDO)</text>
+                </svg>
+            </div>
+
+            <h3>مقایسه MySQLi و PDO</h3>
+            <p>هر دو کتابخانه به شما اجازه می‌دهند تا به پایگاه داده متصل شوید و کوئری‌ها را اجرا کنید، اما تفاوت‌های
+                مهمی با یکدیگر دارند.</p>
+
+            <h4>۱. MySQLi (MySQL Improved)</h4>
+            <ul>
+                <li><strong>مزایا:</strong>
+                    <ul>
+                        <li><strong>اختصاصی برای MySQL:</strong> این کتابخانه به طور خاص برای کار با پایگاه داده MySQL
+                            طراحی شده و از تمام ویژگی‌های جدید و خاص آن پشتیبانی می‌کند.
+                        </li>
+                        <li><strong>سریع و کارآمد:</strong> به دلیل اختصاصی بودن، می‌تواند کمی سریع‌تر از PDO عمل کند.
+                        </li>
+                        <li><strong>دو رابط کاربری:</strong> هم به صورت رویه‌ای (Procedural) و هم به صورت شیءگرا
+                            (Object-oriented) قابل استفاده است که برای مبتدیان انعطاف‌پذیری ایجاد می‌کند.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>معایب:</strong>
+                    <ul>
+                        <li><strong>فقط برای MySQL:</strong> بزرگترین نقطه ضعف آن این است که فقط و فقط با MySQL کار
+                            می‌کند. اگر روزی تصمیم بگیرید پایگاه داده پروژه خود را مثلاً به PostgreSQL تغییر دهید، باید
+                            تمام کدهای مربوط به پایگاه داده را بازنویسی کنید.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>۲. PDO (PHP Data Objects)</h4>
+            <ul>
+                <li><strong>مزایا:</strong>
+                    <ul>
+                        <li><strong>پشتیبانی از چندین پایگاه داده:</strong> این یک لایه انتزاعی (Abstraction Layer) است
+                            که به شما اجازه می‌دهد با سینتکس یکسان به ۱۲ نوع پایگاه داده مختلف (مانند MySQL, PostgreSQL,
+                            SQLite, Oracle) متصل شوید. این ویژگی، کد شما را قابل حمل (Portable) می‌کند.
+                        </li>
+                        <li><strong>امنیت بالاتر در عمل:</strong> گرچه هر دو از Prepared Statements پشتیبانی می‌کنند،
+                            اما نحوه پیاده‌سازی آن در PDO کمی ساده‌تر و خواناتر است که باعث می‌شود برنامه‌نویسان کمتر
+                            دچار اشتباه شوند.
+                        </li>
+                        <li><strong>مدیریت خطای بهتر:</strong> PDO از مکانیزم Exception برای مدیریت خطاها استفاده می‌کند
+                            که روشی مدرن‌تر و قدرتمندتر نسبت به روش‌های سنتی است.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>معایب:</strong>
+                    <ul>
+                        <li><strong>فقط شیءگرا:</strong> PDO فقط به صورت شیءگرا قابل استفاده است که ممکن است برای کسانی
+                            که تازه برنامه‌نویسی را شروع کرده‌اند، کمی پیچیده‌تر به نظر برسد.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="note">
+                <strong>نتیجه‌گیری و توصیه دوره:</strong><br>
+                با توجه به قابلیت حمل، امنیت و روش مدرن مدیریت خطا، <strong>PDO به عنوان روش پیشنهادی و استاندارد
+                صنعتی</strong> برای توسعه برنامه‌های جدید در نظر گرفته می‌شود. در این دوره، ما ابتدا یک آشنایی مختصر با
+                MySQLi خواهیم داشت، اما تمرکز اصلی خود را بر روی یادگیری و استفاده از <strong>PDO</strong> قرار خواهیم
+                داد.
+            </div>
+        </section>
+
+        <section id="mysqli_connect" class="content-section">
+            <h2>۴-۲: اتصال و کار با MySQLi</h2>
+            <p>
+                در این بخش، اولین قدم‌های عملی برای اتصال به پایگاه داده `orderdb` را با استفاده از افزونه MySQLi
+                برمی‌داریم. یاد می‌گیریم چگونه یک فایل مجزا برای اطلاعات اتصال بسازیم، به دیتابیس متصل شویم، یک کوئری
+                ساده اجرا کنیم و نتایج را در صفحه وب نمایش دهیم.
+            </p>
+
+            <h3>مرحله اول: ایجاد فایل پیکربندی (db_config.php)</h3>
+            <p>
+                قرار دادن اطلاعات حساس مانند نام کاربری و رمز عبور پایگاه داده به صورت مستقیم در فایل‌های اصلی برنامه،
+                یک کار غیرحرفه‌ای و ناامن است. بهترین کار این است که این اطلاعات را در یک فایل جداگانه ذخیره کرده و با
+                استفاده از دستور `require_once` که در فصل قبل یاد گرفتیم، آن را در هر جایی که نیاز داریم فراخوانی کنیم.
+            </p>
+            <p>
+                یک فایل جدید به نام `db_config.php` در ریشه پروژه خود بسازید و اطلاعات زیر را در آن قرار دهید.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// db_config.php
+
+// اطلاعات مورد نیاز برای اتصال به پایگاه داده
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'root');      // نام کاربری پیش‌فرض XAMPP
+define('DB_PASSWORD', '');    // رمز عبور پیش‌فرض XAMPP خالی است
+define('DB_NAME', 'orderdb');       // نام پایگاه داده‌ای که ساختیم
+
+/*
+ * با استفاده از define، ما مقادیر ثابت (Constants) تعریف می‌کنیم.
+ * این مقادیر در طول اجرای برنامه قابل تغییر نیستند و امنیت بیشتری دارند.
+*/
+?&gt;</code></pre>
+            </div>
+
+            <h3>مرحله دوم: اتصال به پایگاه داده (روش شیءگرا)</h3>
+            <p>
+                حالا یک فایل جدید به نام `customers.php` می‌سازیم تا لیست مشتریان را از جدول `customer_tbl` بخوانیم و
+                نمایش دهیم.
+            </p>
+            <ol>
+                <li>ابتدا فایل پیکربندی را با `require_once` فراخوانی می‌کنیم.</li>
+                <li>یک شیء جدید از کلاس `mysqli` می‌سازیم و اطلاعات اتصال را به آن پاس می‌دهیم.</li>
+                <li>بلافاصله پس از تلاش برای اتصال، بررسی می‌کنیم که آیا خطایی رخ داده است یا خیر. اگر خطایی وجود داشته
+                    باشد، اسکریپت را متوقف کرده و پیام خطا را نمایش می‌دهیم.
+                </li>
+            </ol>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// customers.php
+
+// ۱. فراخوانی فایل پیکربندی
+require_once 'db_config.php';
+
+// ۲. ایجاد اتصال با استفاده از MySQLi (روش شیءگرا)
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+// ۳. بررسی وضعیت اتصال
+if ($conn->connect_error) {
+    die("اتصال با شکست مواجه شد: " . $conn->connect_error);
+}
+
+echo "اتصال به پایگاه داده با موفقیت برقرار شد.";
+
+// در مراحل بعدی، کوئری‌ها را در اینجا اجرا خواهیم کرد.
+
+// ۴. بستن اتصال در انتهای اسکریپت (عادت خوب)
+$conn->close();
+?&gt;</code></pre>
+            </div>
+
+            <h3>مرحله سوم: اجرای کوئری SELECT و نمایش نتایج</h3>
+            <p>
+                پس از برقراری اتصال موفق، می‌توانیم کوئری SQL خود را اجرا کنیم.
+            </p>
+            <ol>
+                <li>یک رشته حاوی دستور SQL برای انتخاب مشتریان می‌نویسیم.</li>
+                <li>با استفاده از متد `query()`، کوئری را اجرا می‌کنیم. نتیجه در یک متغیر ذخیره می‌شود.</li>
+                <li>بررسی می‌کنیم که آیا کوئری نتیجه‌ای برگردانده است یا خیر (با بررسی `num_rows`).</li>
+                <li>با استفاده از یک حلقه `while` و متد `fetch_assoc()`، ردیف به ردیف نتایج را می‌خوانیم و در صفحه نمایش
+                    می‌دهیم. `fetch_assoc()` هر ردیف را به صورت یک آرایه انجمنی (associative array) برمی‌گرداند که
+                    کلیدهای آن، نام ستون‌های جدول هستند.
+                </li>
+            </ol>
+
+            <h4>کد کامل فایل `customers.php`</h4>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang="fa" dir="rtl"&gt;
+&lt;head&gt;
+    &lt;title&gt;لیست مشتریان&lt;/title&gt;
+    &lt;style&gt;
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+        th { background-color: #f2f2f2; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;لیست مشتریان فروشگاه&lt;/h1&gt;
+
+&lt;?php
+require_once 'db_config.php';
+
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+if ($conn->connect_error) {
+    die("&lt;p&gt;اتصال با شکست مواجه شد: " . $conn->connect_error . "&lt;/p&gt;");
+}
+
+// ۱. نوشتن کوئری SQL
+$sql = "SELECT customerId, customerName, customertel, email FROM customer_tbl";
+
+// ۲. اجرای کوئری
+$result = $conn->query($sql);
+
+// ۳. بررسی وجود نتایج
+if ($result->num_rows > 0) {
+    echo "&lt;table&gt;";
+    echo "&lt;tr&gt;&lt;th&gt;کد&lt;/th&gt;&lt;th&gt;نام مشتری&lt;/th&gt;&lt;th&gt;تلفن&lt;/th&gt;&lt;th&gt;ایمیل&lt;/th&gt;&lt;/tr&gt;";
+
+    // ۴. خواندن و نمایش ردیف به ردیف نتایج
+    while($row = $result->fetch_assoc()) {
+        echo "&lt;tr&gt;";
+        echo "&lt;td&gt;" . $row["customerId"] . "&lt;/td&gt;";
+        echo "&lt;td&gt;" . $row["customerName"] . "&lt;/td&gt;";
+        echo "&lt;td&gt;" . $row["customertel"] . "&lt;/td&gt;";
+        echo "&lt;td&gt;" . $row["email"] . "&lt;/td&gt;";
+        echo "&lt;/tr&gt;";
+    }
+    echo "&lt;/table&gt;";
+} else {
+    echo "هیچ مشتری‌ای یافت نشد.";
+}
+
+$conn->close();
+?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+        </section>
+
+        <section id="pdo_connect" class="content-section">
+            <h2>۴-۳: اتصال با PDO (پیشنهادی)</h2>
+            <p>
+                همانطور که قبلاً اشاره شد، PDO (PHP Data Objects) یک رابط یکپارچه و مدرن برای کار با پایگاه‌های داده در
+                PHP است. بزرگترین مزیت آن، قابل حمل بودن کد شما بین پایگاه‌های داده مختلف است. اما مهم‌تر از آن، PDO شما
+                را تشویق به استفاده از **Prepared Statements** می‌کند که بهترین راه برای جلوگیری از حملات خطرناک **SQL
+                Injection** است.
+            </p>
+            <div class="note">
+                <strong>SQL Injection چیست؟</strong> یک نوع حمله است که در آن، کاربر مخرب قطعه کدهای SQL را از طریق
+                فیلدهای فرم (مانند فیلد جستجو یا نام کاربری) به برنامه شما تزریق می‌کند. اگر ورودی کاربر به درستی
+                پاک‌سازی نشود، این کدها ممکن است روی پایگاه داده شما اجرا شده و منجر به سرقت یا تخریب اطلاعات شوند.
+                Prepared Statements با جدا کردن دستور SQL از داده‌های ورودی، این خطر را به طور کامل از بین می‌برند.
+            </div>
+
+            <h3>مرحله اول: اتصال با PDO و مدیریت خطا</h3>
+            <p>
+                اتصال با PDO کمی متفاوت است و در یک بلوک <code>try...catch</code> انجام می‌شود. این روش مدرن به ما اجازه
+                می‌دهد تا در صورت بروز خطا در اتصال، آن را به شکل زیبایی مدیریت کنیم و از نمایش خطاهای فنی به کاربر
+                جلوگیری کنیم.
+            </p>
+            <p>
+                ما همچنان از فایل `db_config.php` که قبلاً ساختیم، استفاده می‌کنیم.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// products.php
+
+require_once 'db_config.php';
+
+try {
+    // ۱. ایجاد اتصال با PDO
+    $dsn = "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // فعال کردن حالت خطا به صورت Exception
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   // تنظیم حالت پیش‌فرض خواندن نتایج
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+
+    $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
+
+    // اگر کد به اینجا برسد، یعنی اتصال موفق بوده است.
+    // echo "اتصال با PDO موفق بود.";
+
+} catch (PDOException $e) {
+    // ۲. مدیریت خطا در صورت شکست اتصال
+    // die() اجرای اسکریپت را متوقف می‌کند.
+    die("خطا در اتصال به پایگاه داده: " . $e->getMessage());
+}
+
+// کوئری‌ها در ادامه اینجا اجرا می‌شوند...
+?&gt;</code></pre>
+            </div>
+
+            <h3>مرحله دوم: اجرای کوئری SELECT با Prepared Statements</h3>
+            <p>
+                حالا می‌خواهیم لیست محصولات را از جدول `product_tbl` بخوانیم. حتی برای یک کوئری `SELECT` ساده نیز،
+                استفاده از Prepared Statements یک عادت خوب است.
+            </p>
+            <ol>
+                <li><strong>Prepare:</strong> ابتدا کوئری SQL خود را با استفاده از متد `prepare()` آماده می‌کنیم.</li>
+                <li><strong>Execute:</strong> سپس با متد `execute()` آن را اجرا می‌کنیم.</li>
+                <li><strong>Fetch:</strong> در نهایت، با استفاده از متد `fetchAll()` تمام نتایج را به صورت یک آرایه
+                    دریافت می‌کنیم. (چون حالت پیش‌فرض را `FETCH_ASSOC` تنظیم کردیم، خروجی مشابه `fetch_assoc` در MySQLi
+                    خواهد بود).
+                </li>
+            </ol>
+
+            <h4>کد کامل فایل `products.php`</h4>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang="fa" dir="rtl"&gt;
+&lt;head&gt;
+    &lt;title&gt;لیست محصولات&lt;/title&gt;
+    &lt;style&gt;
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+        th { background-color: #fef3c7; } /* Amber 100 */
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;لیست محصولات فروشگاه&lt;/h1&gt;
+
+&lt;?php
+require_once 'db_config.php';
+
+try {
+    $dsn = "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+
+    // ۱. آماده‌سازی کوئری
+    $sql = "SELECT productID, ProductName, minPrice, ProductColor FROM product_tbl";
+    $stmt = $pdo->prepare($sql);
+
+    // ۲. اجرای کوئری
+    $stmt->execute();
+
+    // ۳. دریافت تمام نتایج
+    $products = $stmt->fetchAll();
+
+    if ($products) {
+        echo "&lt;table&gt;";
+        echo "&lt;tr&gt;&lt;th&gt;کد کالا&lt;/th&gt;&lt;th&gt;نام محصول&lt;/th&gt;&lt;th&gt;قیمت پایه&lt;/th&gt;&lt;th&gt;رنگ&lt;/th&gt;&lt;/tr&gt;";
+
+        // پیمایش نتایج با حلقه foreach
+        foreach ($products as $product) {
+            echo "&lt;tr&gt;";
+            echo "&lt;td&gt;" . htmlspecialchars($product['productID']) . "&lt;/td&gt;";
+            echo "&lt;td&gt;" . htmlspecialchars($product['ProductName']) . "&lt;/td&gt;";
+            echo "&lt;td&gt;" . number_format($product['minPrice']) . " تومان&lt;/td&gt;";
+            echo "&lt;td&gt;" . htmlspecialchars($product['ProductColor']) . "&lt;/td&gt;";
+            echo "&lt;/tr&gt;";
+        }
+        echo "&lt;/table&gt;";
+    } else {
+        echo "هیچ محصولی یافت نشد.";
+    }
+
+} catch (PDOException $e) {
+    die("&lt;p&gt;خطا: امکان اجرای کوئری وجود ندارد. " . $e->getMessage() . "&lt;/p&gt;");
+}
+
+// با PDO نیازی به بستن دستی اتصال نیست. اتصال به صورت خودکار بسته می‌شود.
+?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+        </section>
+
+        <section id="project_structure" class="content-section">
+            <h2>۵-۱: ساختار پروژه و صفحه اصلی</h2>
+            <p>
+                به فصل پروژه عملی خوش آمدید! در این فصل، تمام مفاهیمی که تاکنون آموخته‌ایم را در کنار هم قرار می‌دهیم تا
+                یک برنامه کوچک ولی کامل برای مدیریت محصولات فروشگاه بسازیم. اولین قدم برای هر پروژه حرفه‌ای، ایجاد یک
+                ساختار پوشه تمیز و منطقی است.
+            </p>
+
+            <div style="background-color: #f0fdf4; border: 1px solid #22c55e; padding: 1rem 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0; color: #166534;">دانلود پروژه کامل</h3>
+                <p style="margin-bottom: 1rem;">شما می‌توانید کدهای نهایی این فصل را به صورت یک فایل فشرده (Zip) از لینک
+                    زیر دانلود کنید.</p>
+                <a href="examples/MySQL_PHP_Example_OrderProject.zip"
+                   style="background-color: #22c55e; color: white; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 5px; font-weight: bold;">دانلود
+                    فایل Zip پروژه</a>
+            </div>
+
+            <h3>ایجاد ساختار پوشه‌ها</h3>
+            <p>
+                در پوشه پروژه خود (<code>C:\xampp\htdocs\learning_php</code>)، ساختار زیر را ایجاد کنید:
+            </p>
+            <div class="code-block-container" style="direction: ltr; text-align: left;">
+        <pre><code>/learning_php
+|-- /includes
+|   |-- db_config.php
+|   |-- database.php
+|   |-- header.php
+|   |-- footer.php
+|
+|-- /public
+|   |-- index.php
+|   |-- products.php
+|   |-- add_product.php
+|   |-- edit_product.php
+|   |-- delete_product.php
+</code></pre>
+            </div>
+
+            <h3>ایجاد فایل‌های اصلی پروژه</h3>
+            <p>
+                در ادامه فایل‌های اصلی که ساختار برنامه ما را تشکیل می‌دهند، مرور می‌کنیم.
+            </p>
+
+            <h4>۱. فایل اتصال به پایگاه داده (`database.php`)</h4>
+            <p>
+                این مهم‌ترین فایل کمکی ماست. تمام منطق اتصال به پایگاه داده با PDO در این فایل قرار می‌گیرد. با فراخوانی
+                این فایل، یک متغیر به نام <code>$pdo</code> در دسترس ما خواهد بود.
+            </p>
+
+            <h4>۲. فایل هدر (`header.php`) و فوتر (`footer.php`)</h4>
+            <p>این فایل‌ها شامل بخش‌های ابتدایی و انتهایی تمام صفحات HTML ما، از جمله منوی اصلی سایت هستند.</p>
+
+            <h3>ایجاد صفحه اصلی (`index.php`)</h3>
+            <p>
+                این فایل نقطه ورود به بخش مدیریت محصولات ما خواهد بود.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+require_once '../includes/header.php';
+?&gt;
+
+&lt;h1&gt;به پنل مدیریت محصولات خوش آمدید&lt;/h1&gt;
+&lt;p&gt;از طریق منوی بالا می‌توانید به بخش‌های مختلف دسترسی داشته باشید.&lt;/p&gt;
+
+&lt;?php
+require_once '../includes/footer.php';
+?&gt;</code></pre>
+            </div>
+        </section>
+
+
+        <section id="project_read" class="content-section">
+            <h2>۵-۲: نمایش لیست محصولات (Read)</h2>
+            <p>
+                اکنون که ساختار پروژه و فایل اتصال به دیتابیس ما آماده است، می‌توانیم اولین صفحه پویا را بسازیم. این
+                صفحه مسئول خواندن اطلاعات از جدول <code>product_tbl</code> و نمایش آن به کاربر است. این عملیات، بخش
+                <strong>Read</strong> از چرخه CRUD را تشکیل می‌دهد.
+            </p>
+            <p>
+                برای ساخت این صفحه، فایل <code>products.php</code> را در پوشه <code>public</code> ایجاد می‌کنیم و مراحل
+                زیر را گام به گام در آن پیاده‌سازی می‌نماییم.
+            </p>
+
+            <h3>تشریح گام به گام کد</h3>
+            <p>قبل از دیدن کد نهایی، بیایید منطق آن را با هم مرور کنیم:</p>
+            <ol>
+                <li>
+                    <strong>فراخوانی فایل‌های ضروری:</strong> در ابتدای اسکریپت، با استفاده از <code>require_once</code>،
+                    فایل‌های <code>database.php</code> و <code>header.php</code> را فراخوانی می‌کنیم. این کار به ترتیب،
+                    اتصال به پایگاه داده را برقرار کرده (و متغیر <code>$pdo</code> را در دسترس قرار می‌دهد) و بخش هدر
+                    HTML را در صفحه ما قرار می‌دهد.
+                </li>
+                <li>
+                    <strong>اجرای کوئری:</strong> ما می‌خواهیم تمام محصولات را از جدول <code>product_tbl</code> بخوانیم.
+                    برای این کار، یک کوئری <code>SELECT</code> می‌نویسیم و آن را با استفاده از متدهای
+                    <code>prepare()</code> و <code>execute()</code> شیء <code>$pdo</code> اجرا می‌کنیم.
+                </li>
+                <li>
+                    <strong>دریافت نتایج:</strong> پس از اجرای موفقیت‌آمیز کوئری، با استفاده از متد
+                    <code>fetchAll()</code>، تمام ردیف‌های نتیجه را به صورت یک آرایه بزرگ دریافت کرده و در متغیری به نام
+                    <code>$products</code> ذخیره می‌کنیم.
+                </li>
+                <li>
+                    <strong>نمایش داده‌ها در جدول:</strong> ابتدا بررسی می‌کنیم که آیا آرایه <code>$products</code> خالی
+                    است یا نه. اگر خالی نبود، یک جدول HTML ایجاد کرده و با استفاده از یک حلقه <code>foreach</code>، روی
+                    آرایه <code>$products</code> حرکت می‌کنیم. در هر تکرار حلقه، اطلاعات یک محصول را در یک ردیف (<code>&lt;tr&gt;</code>)
+                    از جدول چاپ می‌کنیم.
+                </li>
+                <li>
+                    <strong>ایجاد لینک‌های عملیات:</strong> در ستون آخر جدول، برای هر محصول دو لینک "ویرایش" و "حذف"
+                    قرار می‌دهیم. نکته کلیدی در اینجاست که شناسه (ID) هر محصول را به انتهای آدرس این لینک‌ها اضافه
+                    می‌کنیم (مثلاً <code>edit_product.php?id=5</code>). این کار به صفحات بعدی اجازه می‌دهد تا بفهمند
+                    عملیات ویرایش یا حذف باید روی کدام محصول انجام شود.
+                </li>
+            </ol>
+            <div class="note">
+                تمام این عملیات باید در یک بلوک <code>try...catch</code> قرار بگیرد تا در صورت بروز هرگونه خطا در ارتباط
+                با پایگاه داده، برنامه به صورت کنترل شده متوقف شده و یک پیام خطای مناسب نمایش داده شود.
+            </div>
+
+            <h3>کد کامل فایل `public/products.php`</h3>
+            <p>
+                حالا که با منطق کار آشنا شدیم، کد کامل این صفحه به شکل زیر خواهد بود:
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// ۱. فراخوانی فایل‌های ضروری
+require_once '../includes/database.php';
+require_once '../includes/header.php';
+?&gt;
+
+&lt;h1&gt;لیست محصولات&lt;/h1&gt;
+
+&lt;?php
+try {
+    // ۲. نوشتن و اجرای کوئری SELECT
+    $sql = "SELECT productID, ProductName, minPrice, ProductColor FROM product_tbl ORDER BY productID DESC";
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute();
+
+    // ۳. دریافت تمام نتایج
+    $products = $stmt-&gt;fetchAll();
+
+    // ۴. بررسی وجود نتایج و نمایش آن‌ها
+    if ($products) {
+        echo '&lt;table style="width: 100%; border-collapse: collapse; text-align: right;"&gt;';
+        echo '&lt;tr&gt;
+                &lt;th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;"&gt;کد&lt;/th&gt;
+                &lt;th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;"&gt;نام محصول&lt;/th&gt;
+                &lt;th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;"&gt;قیمت&lt;/th&gt;
+                &lt;th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;"&gt;عملیات&lt;/th&gt;
+              &lt;/tr&gt;';
+
+        foreach ($products as $product) {
+            echo '&lt;tr&gt;';
+            echo '&lt;td style="border: 1px solid #ddd; padding: 8px;"&gt;' . htmlspecialchars($product['productID']) . '&lt;/td&gt;';
+            echo '&lt;td style="border: 1px solid #ddd; padding: 8px;"&gt;' . htmlspecialchars($product['ProductName']) . '&lt;/td&gt;';
+            echo '&lt;td style="border: 1px solid #ddd; padding: 8px;"&gt;' . number_format($product['minPrice']) . ' تومان&lt;/td&gt;';
+            // ۵. ایجاد لینک‌های داینامیک
+            echo '&lt;td style="border: 1px solid #ddd; padding: 8px;"&gt;
+                    &lt;a href="edit_product.php?id=' . htmlspecialchars($product['productID']) . '"&gt;ویرایش&lt;/a&gt; |
+                    &lt;a href="delete_product.php?id=' . htmlspecialchars($product['productID']) . '" style="color: red;"&gt;حذف&lt;/a&gt;
+                  &lt;/td&gt;';
+            echo '&lt;/tr&gt;';
+        }
+
+        echo '&lt;/table&gt;';
+    } else {
+        echo '&lt;p&gt;هیچ محصولی برای نمایش وجود ندارد.&lt;/p&gt;';
+    }
+
+} catch (PDOException $e) {
+    die("خطا: امکان دریافت اطلاعات محصولات وجود ندارد. " . $e-&gt;getMessage());
+}
+
+// فراخوانی فوتر
+require_once '../includes/footer.php';
+?&gt;</code></pre>
+            </div>
+            <p>
+                برای مشاهده نتیجه، مرورگر خود را باز کرده و به آدرس زیر بروید:
+                <code>http://localhost/learning_php/public/products.php</code>
+            </p>
+        </section>
+
+        <section id="project_create" class="content-section">
+            <h2>۵-۳: افزودن محصول جدید (Create)</h2>
+            <p>
+                در این بخش، صفحه‌ای را ایجاد می‌کنیم که به کاربر اجازه می‌دهد اطلاعات یک محصول جدید را وارد کرده و آن را
+                در پایگاه داده ذخیره کند. این فرآیند شامل دو بخش اصلی است: نمایش فرم به کاربر، و پردازش اطلاعات ارسال
+                شده از آن فرم. ما هر دو بخش را در یک فایل واحد به نام <code>add_product.php</code> مدیریت خواهیم کرد.
+            </p>
+
+            <h3>تشریح گام به گام کد</h3>
+            <p>منطق کلی فایل <code>add_product.php</code> به این صورت عمل می‌کند:</p>
+            <ol>
+                <li>
+                    <strong>بررسی متد درخواست:</strong> اسکریپت ابتدا بررسی می‌کند که آیا صفحه با متد `POST` درخواست شده
+                    است یا خیر.
+                    <ul>
+                        <li>اگر **خیر** (یعنی کاربر برای اولین بار صفحه را باز کرده)، فقط فرم خالی HTML به او نمایش داده
+                            می‌شود.
+                        </li>
+                        <li>اگر **بله** (یعنی کاربر فرم را پر کرده و دکمه ارسال را زده)، اسکریپت وارد مرحله پردازش و
+                            اعتبارسنجی می‌شود.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>اعتبارسنجی داده‌ها (Validation):</strong> این مهم‌ترین مرحله است. ما یک آرایه خالی به نام
+                    <code>$errors</code> می‌سازیم. سپس تک تک فیلدهای ارسالی را بررسی می‌کنیم:
+                    <ul>
+                        <li>آیا فیلدهای ضروری (مانند نام و قیمت) ارسال شده و خالی نیستند؟</li>
+                        <li>آیا قیمت وارد شده یک عدد معتبر است؟</li>
+                        <li>اگر هر کدام از این شرایط برقرار نبود، یک پیام خطای مناسب به آرایه <code>$errors</code> اضافه
+                            می‌کنیم.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>تصمیم‌گیری نهایی:</strong> پس از اتمام اعتبارسنجی، آرایه <code>$errors</code> را بررسی
+                    می‌کنیم.
+                    <ul>
+                        <li>اگر آرایه <strong>خالی بود</strong> (یعنی هیچ خطایی وجود نداشت)، یک کوئری
+                            <code>INSERT</code> با استفاده از PDO و Prepared Statements اجرا کرده و محصول جدید را در
+                            دیتابیس ذخیره می‌کنیم.
+                        </li>
+                        <li>اگر آرایه <strong>حاوی خطا بود</strong>، از ذخیره داده در دیتابیس صرف‌نظر کرده و پیام‌های
+                            خطا را در بالای فرم به کاربر نمایش می‌دهیم.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>استفاده از Session برای پیام موفقیت:</strong> اگر محصول با موفقیت در دیتابیس ذخیره شد، یک
+                    پیام موفقیت را در یک `$_SESSION` ذخیره کرده و کاربر را به صفحه لیست محصولات (`products.php`) هدایت
+                    (Redirect) می‌کنیم. این کار از ارسال مجدد فرم در صورت رفرش کردن صفحه جلوگیری می‌کند.
+                </li>
+            </ol>
+
+            <h3>معرفی Session و پیام‌های آنی (Flash Messages)</h3>
+            <p>
+                Session یک راه برای ذخیره اطلاعات کاربر در صفحات مختلف یک وب‌سایت است. ما از آن برای ایجاد "پیام آنی"
+                استفاده می‌کنیم. یعنی پیامی را در یک صفحه تنظیم می‌کنیم (مثلاً "محصول با موفقیت اضافه شد")، کاربر را به
+                صفحه دیگری هدایت می‌کنیم، پیام را در آن صفحه نمایش می‌دهیم و سپس بلافاصله آن را پاک می‌کنیم تا در
+                بازدیدهای بعدی نمایش داده نشود.
+            </p>
+            <p>برای استفاده از Session، باید در ابتدای هر فایلی که با آن کار می‌کند، دستور <code>session_start();</code>
+                را قرار دهیم.</p>
+
+            <h3>کد کامل فایل `public/add_product.php`</h3>
+            <p>فایل جدید <code>add_product.php</code> را در پوشه <code>public</code> ساخته و کد زیر را در آن قرار دهید.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// برای استفاده از سشن، این تابع باید در ابتدای فایل فراخوانی شود
+session_start();
+
+require_once '../includes/database.php';
+require_once '../includes/header.php';
+
+$productName = '';
+$minPrice = '';
+$productColor = '';
+$productGroupID = '';
+$errors = [];
+
+// ۱. بررسی می‌کنیم که آیا فرم ارسال شده است (متد POST)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // ۲. دریافت و پاک‌سازی اولیه داده‌ها
+    $productName = trim($_POST['productName']);
+    $minPrice = trim($_POST['minPrice']);
+    $productColor = trim($_POST['productColor']);
+    $productGroupID = trim($_POST['productGroupID']);
+
+    // ۳. اعتبارسنجی داده‌ها
+    if (empty($productName)) {
+        $errors[] = "نام محصول نمی‌تواند خالی باشد.";
+    }
+    if (empty($minPrice)) {
+        $errors[] = "قیمت محصول نمی‌تواند خالی باشد.";
+    } elseif (!is_numeric($minPrice)) {
+        $errors[] = "قیمت باید یک مقدار عددی باشد.";
+    }
+    if (empty($productGroupID) || !is_numeric($productGroupID)) {
+        $errors[] = "گروه محصول باید انتخاب شود.";
+    }
+
+    // ۴. اگر هیچ خطایی وجود نداشت، داده‌ها را در دیتابیس ذخیره کن
+    if (empty($errors)) {
+        try {
+            $sql = "INSERT INTO product_tbl (ProductName, minPrice, ProductColor, ProductGroupID) VALUES (:productName, :minPrice, :productColor, :productGroupID)";
+            $stmt = $pdo-&gt;prepare($sql);
+
+            $stmt-&gt;bindParam(':productName', $productName);
+            $stmt-&gt;bindParam(':minPrice', $minPrice);
+            $stmt-&gt;bindParam(':productColor', $productColor);
+            $stmt-&gt;bindParam(':productGroupID', $productGroupID);
+
+            $stmt-&gt;execute();
+
+            // ۵. پیام موفقیت را در سشن ذخیره کرده و کاربر را هدایت کن
+            $_SESSION['success_message'] = "محصول '" . htmlspecialchars($productName) . "' با موفقیت اضافه شد.";
+            header("Location: products.php");
+            exit(); // خروج از اسکریپت برای اطمینان از اجرای redirect
+
+        } catch (PDOException $e) {
+            $errors[] = "خطا در ذخیره محصول: " . $e-&gt;getMessage();
+        }
+    }
+}
+?&gt;
+
+&lt;h1&gt;افزودن محصول جدید&lt;/h1&gt;
+
+&lt;?php
+// اگر خطایی در اعتبارسنجی وجود داشت، آن‌ها را نمایش بده
+if (!empty($errors)) {
+    echo '&lt;div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;"&gt;';
+    echo '&lt;ul&gt;';
+    foreach ($errors as $error) {
+        echo '&lt;li&gt;' . $error . '&lt;/li&gt;';
+    }
+    echo '&lt;/ul&gt;';
+    echo '&lt;/div&gt;';
+}
+?&gt;
+
+&lt;!-- فرم HTML برای افزودن محصول --&gt;
+&lt;form action="add_product.php" method="post"&gt;
+    &lt;p&gt;
+        &lt;label for="productName"&gt;نام محصول:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="productName" name="productName" value="&lt;?php echo htmlspecialchars($productName); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for="minPrice"&gt;قیمت:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="minPrice" name="minPrice" value="&lt;?php echo htmlspecialchars($minPrice); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for="productColor"&gt;رنگ:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="productColor" name="productColor" value="&lt;?php echo htmlspecialchars($productColor); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for="productGroupID"&gt;کد گروه محصول:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="productGroupID" name="productGroupID" value="&lt;?php echo htmlspecialchars($productGroupID); ?&gt;" style="width: 50%;"&gt;
+        &lt;!-- در یک برنامه واقعی، این فیلد باید یک لیست کشویی (dropdown) از گروه‌های موجود باشد --&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;input type="submit" value="ذخیره محصول"&gt;
+    &lt;/p&gt;
+&lt;/form&gt;
+
+&lt;?php
+require_once '../includes/footer.php';
+?&gt;
+</code></pre>
+            </div>
+
+            <h3>نمایش پیام موفقیت در `products.php`</h3>
+            <p>
+                برای اینکه پیام موفقیتی که در Session ذخیره کردیم نمایش داده شود، باید چند خط کد به ابتدای فایل <code>products.php</code>
+                اضافه کنیم. این کد بررسی می‌کند که آیا پیامی در سشن وجود دارد یا نه. اگر وجود داشت، آن را نمایش داده و
+                سپس از سشن پاک می‌کند.
+            </p>
+            <p>کد زیر را به ابتدای فایل <code>public/products.php</code> (بعد از `require` ها و قبل از تگ `&lt;h1&gt;`)
+                اضافه کنید:</p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+// ... require_once ها ...
+session_start(); // سشن را برای خواندن پیام فعال می‌کنیم
+
+// ... کد h1 ...
+
+// بررسی وجود پیام موفقیت در سشن
+if (isset($_SESSION['success_message'])) {
+    echo '&lt;div style="color: green; border: 1px solid green; padding: 10px; margin-bottom: 20px;"&gt;';
+    echo htmlspecialchars($_SESSION['success_message']);
+    echo '&lt;/div&gt;';
+
+    // پیام را از سشن پاک می‌کنیم تا دوباره نمایش داده نشود
+    unset($_SESSION['success_message']);
+}
+
+// ... بقیه کد products.php ...
+?&gt;
+</code></pre>
+            </div>
+        </section>
+
+        <section id="project_update" class="content-section">
+            <h2>۵-۴: ویرایش محصول (Update)</h2>
+            <p>
+                در این بخش، صفحه <code>edit_product.php</code> را می‌سازیم. این صفحه به کاربر اجازه می‌دهد تا اطلاعات یک
+                محصول موجود را ویرایش کند. فرآیند کار این صفحه کمی پیچیده‌تر از صفحه افزودن است و شامل سه مرحله اصلی
+                است: دریافت شناسه محصول، خواندن و نمایش اطلاعات فعلی، و در نهایت پردازش و ذخیره تغییرات.
+            </p>
+
+            <h3>تشریح گام به گام کد</h3>
+            <p>منطق کلی فایل <code>edit_product.php</code> به این صورت عمل می‌کند:</p>
+            <ol>
+                <li>
+                    <strong>دریافت شناسه محصول از URL:</strong> صفحه ابتدا بررسی می‌کند که آیا یک پارامتر
+                    <code>id</code> از طریق متد `GET` (یعنی از طریق URL) ارسال شده است یا خیر. این همان شناسه‌ای است که
+                    در صفحه لیست محصولات به لینک "ویرایش" اضافه کردیم. اگر `id` وجود نداشت، کاربر به صفحه لیست محصولات
+                    هدایت می‌شود.
+                </li>
+                <li>
+                    <strong>خواندن اطلاعات محصول از دیتابیس:</strong> با استفاده از `id` دریافت شده، یک کوئری <code>SELECT</code>
+                    اجرا می‌کنیم تا اطلاعات کامل محصول مورد نظر را از جدول <code>product_tbl</code> بخوانیم. اگر محصولی
+                    با آن `id` پیدا نشد، یک پیام خطا نمایش داده و اسکریپت را متوقف می‌کنیم.
+                </li>
+                <li>
+                    <strong>پردازش فرم (در صورت ارسال):</strong> مانند صفحه افزودن، بررسی می‌کنیم که آیا فرم با متد
+                    `POST` ارسال شده است یا نه.
+                    <ul>
+                        <li>اگر **بله**، داده‌های جدید را دریافت کرده، اعتبارسنجی می‌کنیم و در صورت معتبر بودن، یک کوئری
+                            <code>UPDATE</code> اجرا می‌کنیم تا ردیف مربوط به محصول در دیتابیس بروزرسانی شود.
+                        </li>
+                        <li>پس از بروزرسانی موفق، یک پیام موفقیت در Session ذخیره کرده و کاربر را به صفحه لیست محصولات
+                            هدایت می‌کنیم.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>نمایش فرم:</strong> فرم HTML به کاربر نمایش داده می‌شود. نکته مهم این است که فیلدهای این فرم
+                    باید با اطلاعاتی که در مرحله ۲ از دیتابیس خوانده‌ایم، به صورت پیش‌فرض پر شوند.
+                </li>
+            </ol>
+
+            <h3>کد کامل فایل `public/edit_product.php`</h3>
+            <p>فایل جدید <code>edit_product.php</code> را در پوشه <code>public</code> ساخته و کد زیر را در آن قرار دهید.
+            </p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+        <pre><code class="language-php">&lt;?php
+session_start();
+require_once '../includes/database.php';
+require_once '../includes/header.php';
+
+// ۱. بررسی وجود شناسه محصول در URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: products.php");
+    exit();
+}
+
+$product_id = $_GET['id'];
+$errors = [];
+
+// ۲. پردازش فرم در صورت ارسال (متد POST)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $productName = trim($_POST['productName']);
+    $minPrice = trim($_POST['minPrice']);
+    $productColor = trim($_POST['productColor']);
+    $productGroupID = trim($_POST['productGroupID']);
+
+    // اعتبارسنجی مشابه فرم افزودن
+    if (empty($productName)) { $errors[] = "نام محصول نمی‌تواند خالی باشد."; }
+    if (empty($minPrice)) { $errors[] = "قیمت محصول نمی‌تواند خالی باشد."; }
+    elseif (!is_numeric($minPrice)) { $errors[] = "قیمت باید یک مقدار عددی باشد."; }
+    if (empty($productGroupID) || !is_numeric($productGroupID)) { $errors[] = "گروه محصول باید انتخاب شود."; }
+
+    if (empty($errors)) {
+        try {
+            $sql = "UPDATE product_tbl SET ProductName = :productName, minPrice = :minPrice, ProductColor = :productColor, ProductGroupID = :productGroupID WHERE productID = :productID";
+            $stmt = $pdo-&gt;prepare($sql);
+
+            $stmt-&gt;bindParam(':productName', $productName);
+            $stmt-&gt;bindParam(':minPrice', $minPrice);
+            $stmt-&gt;bindParam(':productColor', $productColor);
+            $stmt-&gt;bindParam(':productGroupID', $productGroupID);
+            $stmt-&gt;bindParam(':productID', $product_id);
+
+            $stmt-&gt;execute();
+
+            $_SESSION['success_message'] = "محصول با موفقیت ویرایش شد.";
+            header("Location: products.php");
+            exit();
+        } catch (PDOException $e) {
+            $errors[] = "خطا در بروزرسانی محصول: " . $e-&gt;getMessage();
+        }
+    }
+}
+
+// ۳. خواندن اطلاعات فعلی محصول برای نمایش در فرم
+try {
+    $sql = "SELECT * FROM product_tbl WHERE productID = :productID";
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;bindParam(':productID', $product_id);
+    $stmt-&gt;execute();
+    $product = $stmt-&gt;fetch();
+
+    if (!$product) {
+        die("محصولی با این شناسه یافت نشد.");
+    }
+} catch (PDOException $e) {
+    die("خطا در دریافت اطلاعات محصول: " . $e-&gt;getMessage());
+}
+?&gt;
+
+&lt;h1&gt;ویرایش محصول: &lt;?php echo htmlspecialchars($product['ProductName']); ?&gt;&lt;/h1&gt;
+
+&lt;?php
+if (!empty($errors)) {
+    echo '&lt;div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;"&gt;&lt;ul&gt;';
+    foreach ($errors as $error) {
+        echo '&lt;li&gt;' . $error . '&lt;/li&gt;';
+    }
+    echo '&lt;/ul&gt;&lt;/div&gt;';
+}
+?&gt;
+
+&lt;!-- فرم HTML برای ویرایش محصول --&gt;
+&lt;form action="edit_product.php?id=&lt;?php echo $product_id; ?&gt;" method="post"&gt;
+    &lt;p&gt;
+        &lt;label for="productName"&gt;نام محصول:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="productName" name="productName" value="&lt;?php echo htmlspecialchars($product['ProductName']); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for="minPrice"&gt;قیمت:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="minPrice" name="minPrice" value="&lt;?php echo htmlspecialchars($product['minPrice']); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for="productColor"&gt;رنگ:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="productColor" name="productColor" value="&lt;?php echo htmlspecialchars($product['ProductColor']); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for="productGroupID"&gt;کد گروه محصول:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" id="productGroupID" name="productGroupID" value="&lt;?php echo htmlspecialchars($product['ProductGroupID']); ?&gt;" style="width: 50%;"&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;input type="submit" value="ذخیره تغییرات"&gt;
+        &lt;a href="products.php"&gt;انصراف&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/form&gt;
+
+&lt;?php
+require_once '../includes/footer.php';
+?&gt;
+</code></pre>
+            </div>
+        </section>
+
+        <section id="project_delete" class="content-section">
+            <h2>۵-۵: حذف محصول (Delete)</h2>
+            <p>
+                به آخرین بخش از عملیات اصلی پروژه، یعنی حذف داده‌ها، رسیدیم. در این بخش، صفحه
+                <code>delete_product.php</code> را می‌سازیم. این صفحه مسئول حذف یک محصول مشخص از پایگاه داده است. از
+                آنجایی که این یک عملیات غیرقابل بازگشت است، ما یک مرحله اضافی برای تایید گرفتن از کاربر در نظر می‌گیریم.
+            </p>
+
+            <h3>تشریح گام به گام کد</h3>
+            <p>منطق کلی فایل <code>delete_product.php</code> به این صورت عمل می‌کند:</p>
+            <ol>
+                <li>
+                    <strong>دریافت شناسه محصول:</strong> مانند صفحه ویرایش، ابتدا شناسه محصول را از پارامتر
+                    <code>id</code> در URL دریافت می‌کنیم. اگر این شناسه وجود نداشته باشد، کاربر به صفحه لیست محصولات
+                    هدایت می‌شود.
+                </li>
+                <li>
+                    <strong>خواندن اطلاعات محصول:</strong> اطلاعات محصول مورد نظر را از دیتابیس می‌خوانیم تا بتوانیم نام
+                    آن را در پیام تایید به کاربر نمایش دهیم ("آیا از حذف محصول 'لپ تاپ ایسوس' مطمئن هستید؟").
+                </li>
+                <li>
+                    <strong>بررسی تایید کاربر:</strong> ما یک فرم ساده با یک دکمه "تایید حذف" در این صفحه قرار می‌دهیم.
+                    اسکریپت بررسی می‌کند که آیا این فرم با متد `POST` ارسال شده است یا خیر.
+                    <ul>
+                        <li>اگر **خیر** (یعنی کاربر برای اولین بار صفحه را باز کرده)، فقط پیام تایید و فرم به او نمایش
+                            داده می‌شود.
+                        </li>
+                        <li>اگر **بله** (یعنی کاربر روی دکمه "تایید حذف" کلیک کرده)، اسکریپت وارد مرحله نهایی حذف
+                            می‌شود.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>اجرای کوئری DELETE:</strong> در صورت تایید کاربر، یک کوئری <code>DELETE</code> با استفاده از
+                    PDO و Prepared Statements اجرا کرده و ردیف مربوط به محصول را از جدول <code>product_tbl</code> حذف
+                    می‌کنیم.
+                </li>
+                <li>
+                    <strong>پیام موفقیت و هدایت:</strong> پس از حذف موفق، یک پیام مناسب در Session ذخیره کرده و کاربر را
+                    به صفحه لیست محصولات هدایت می‌کنیم.
+                </li>
+            </ol>
+
+            <h3>کد کامل فایل `public/delete_product.php`</h3>
+            <p>فایل جدید <code>delete_product.php</code> را در پوشه <code>public</code> ساخته و کد زیر را در آن قرار
+                دهید.</p>
+            <div class="code-block-container">
+                <button class="copy-button">کپی</button>
+                <pre><code class="language-php">&lt;?php
+session_start();
+require_once '../includes/database.php';
+require_once '../includes/header.php';
+
+// ۱. بررسی وجود شناسه محصول در URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: products.php");
+    exit();
+}
+$product_id = $_GET['id'];
+
+// ۲. خواندن اطلاعات محصول برای نمایش در پیام تایید
+try {
+    $sql = "SELECT ProductName FROM product_tbl WHERE productID = :productID";
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;bindParam(':productID', $product_id);
+    $stmt-&gt;execute();
+    $product = $stmt-&gt;fetch();
+
+    if (!$product) {
+        die("محصولی با این شناسه یافت نشد.");
+    }
+} catch (PDOException $e) {
+    die("خطا در دریافت اطلاعات محصول: " . $e-&gt;getMessage());
+}
+
+// ۳. بررسی تایید کاربر (ارسال فرم با متد POST)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        // ۴. اجرای کوئری DELETE
+        $sql = "DELETE FROM product_tbl WHERE productID = :productID";
+        $stmt = $pdo-&gt;prepare($sql);
+        $stmt-&gt;bindParam(':productID', $product_id);
+        $stmt-&gt;execute();
+
+        // ۵. پیام موفقیت و هدایت
+        $_SESSION['success_message'] = "محصول '" . htmlspecialchars($product['ProductName']) . "' با موفقیت حذف شد.";
+        header("Location: products.php");
+        exit();
+
+    } catch (PDOException $e) {
+        // توجه: اگر محصول در جدول دیگری (مانند orderdetail_tbl) استفاده شده باشد،
+        // به دلیل وجود قید کلید خارجی (Foreign Key)، دیتابیس اجازه حذف نمی‌دهد و این خطا رخ می‌دهد.
+        die("خطا در حذف محصول: " . $e-&gt;getMessage());
+    }
+}
+?&gt;
+
+&lt;h1&gt;تایید حذف محصول&lt;/h1&gt;
+&lt;p&gt;
+    آیا شما از حذف محصول زیر اطمینان دارید؟
+&lt;/p&gt;
+&lt;p&gt;
+    &lt;strong&gt;نام محصول:&lt;/strong&gt; &lt;?php echo htmlspecialchars($product['ProductName']); ?&gt;
+&lt;/p&gt;
+
+&lt;div style="border: 1px solid red; padding: 1rem; color: #b91c1c; background-color: #fee2e2; border-radius: 8px;"&gt;
+    &lt;strong&gt;هشدار:&lt;/strong&gt; این عملیات غیرقابل بازگشت است!
+&lt;/div&gt;
+
+&lt;form action="delete_product.php?id=&lt;?php echo $product_id; ?&gt;" method="post" style="margin-top: 1.5rem;"&gt;
+    &lt;input type="submit" value="بله، حذف کن" style="background-color: #dc2626; color: white; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer;"&gt;
+    &lt;a href="products.php" style="margin-right: 1rem;"&gt;انصراف&lt;/a&gt;
+&lt;/form&gt;
+
+&lt;?php
+require_once '../includes/footer.php';
+?&gt;
+</code></pre>
+            </div>
+        </section>
+
+
+    </main>
+
+    <nav id="sidebar">
+        <div style="padding: 1rem; text-align: center; border-bottom: 1px solid #5e4a4a;">
+            <img src="images/university_logo.png" alt="لوگوی دانشگاه"
+                 style="width: 60px; height: 60px; margin: 0 auto 0.5rem auto; border-radius: 50%;"
+                 onerror="this.src='https://placehold.co/60x60/4a2c2a/fde68a?text=Logo'">
+            <p style="font-weight: 600; font-size: 1rem; color: #fff;">دانشگاه آزاد تبریز</p>
+            <p style="font-size: 0.9rem; color: #fde68a;">مدرس: سجاد پیراهش</p>
+        </div>
+        <header>آموزش PHP و MySQL</header>
+
+        <div class="nav-header" onclick="toggleMenu(this)">فصل اول: مقدمه‌ای بر PHP و معماری وب</div>
+        <div class="sub-menu">
+            <a href="#intro_php" class="nav-link">۱-۱: PHP چیست؟</a>
+            <a href="#client_server_arch" class="nav-link">۱-۲: معماری کلاینت-سرور</a>
+            <a href="#xampp_stack" class="nav-link">۱-۳: معرفی پشته XAMPP</a>
+        </div>
+
+        <div class="nav-header" onclick="toggleMenu(this)">فصل دوم: راه‌اندازی محیط توسعه</div>
+        <div class="sub-menu">
+            <a href="#setup_php_standalone" class="nav-link">۲-۱: نصب PHP به صورت مستقل</a>
+            <a href="#setup_xampp" class="nav-link">۲-۲: نصب XAMPP (روش پیشنهادی)</a>
+            <a href="#setup_phpstorm" class="nav-link">۲-۳: معرفی و نصب PHPStorm</a>
+            <a href="#first_project" class="nav-link">۲-۴: ایجاد و اجرای اولین پروژه</a>
+        </div>
+
+        <div class="nav-header" onclick="toggleMenu(this)">فصل سوم: مبانی زبان PHP</div>
+        <div class="sub-menu">
+            <a href="#php_syntax" class="nav-link">۳-۱: سینتکس پایه</a>
+            <a href="#php_data_types" class="nav-link">۳-۲: متغیرها و انواع داده</a>
+            <a href="#php_control_structures" class="nav-link">۳-۳: ساختارهای کنترلی</a>
+            <a href="#php_forms" class="nav-link">۳-۴: کار با فرم‌های HTML</a>
+            <a href="#php_include_require" class="nav-link">۳-۵: سازماندهی کد</a>
+        </div>
+
+        <div class="nav-header" onclick="toggleMenu(this)">فصل چهارم: اتصال به پایگاه داده</div>
+        <div class="sub-menu">
+            <a href="#db_libs" class="nav-link">۴-۱: معرفی کتابخانه‌های اتصال</a>
+            <a href="#mysqli_connect" class="nav-link">۴-۲: اتصال با MySQLi</a>
+            <a href="#pdo_connect" class="nav-link">۴-۳: اتصال با PDO (پیشنهادی)</a>
+        </div>
+
+        <div class="nav-header" onclick="toggleMenu(this)">فصل پنجم: پروژه عملی - مدیریت محصولات</div>
+        <div class="sub-menu">
+            <a href="#project_structure" class="nav-link">۵-۱: ساختار پروژه و صفحه اصلی</a>
+            <a href="#project_read" class="nav-link">۵-۲: نمایش لیست محصولات (Read)</a>
+            <a href="#project_create" class="nav-link">۵-۳: افزودن محصول جدید (Create)</a>
+            <a href="#project_update" class="nav-link">۵-۴: ویرایش محصول (Update)</a>
+            <a href="#project_delete" class="nav-link">۵-۵: حذف محصول (Delete)</a>
+        </div>
+    </nav>
+
+
+</div>
+
+<script>
+    /* ---------- نمایش بخش‌ها و مدیریت URL ---------- */
+    function showSection(id, updateHistory = true) {
+        document.querySelectorAll('.content-section').forEach(sec => {
+            sec.classList.remove('active');
+            sec.style.display = 'none';
+        });
+
+        const target = document.getElementById(id);
+        if (target) {
+            target.classList.add('active');
+            target.style.display = 'block';
+        }
+
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (link) {
+            link.classList.add('active');
+        }
+
+        if (updateHistory && window.history.pushState) {
+            window.history.pushState({path: `#${id}`}, '', `#${id}`);
+        }
+    }
+
+    /* ---------- باز و بسته کردن منوهای سایدبار ---------- */
+    function toggleMenu(header) {
+        const subMenu = header.nextElementSibling;
+        if (!subMenu || !subMenu.classList.contains('sub-menu')) return;
+
+        const isOpen = subMenu.classList.contains('open');
+
+        // بستن سایر منوهای باز
+        document.querySelectorAll('.sub-menu.open').forEach(sm => {
+            if (sm !== subMenu) {
+                sm.classList.remove('open');
+                sm.style.maxHeight = null;
+                const prevHeader = sm.previousElementSibling;
+                if (prevHeader) prevHeader.classList.add('collapsed');
+            }
+        });
+
+        // باز یا بسته کردن منوی فعلی
+        if (isOpen) {
+            subMenu.classList.remove('open');
+            header.classList.add('collapsed');
+            subMenu.style.maxHeight = null;
+        } else {
+            subMenu.classList.add('open');
+            header.classList.remove('collapsed');
+            subMenu.style.maxHeight = subMenu.scrollHeight + "px";
+        }
+    }
+
+    /* ---------- رویدادهای اولیه در زمان بارگذاری صفحه ---------- */
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('#sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                showSection(id);
+            });
+        });
+
+        const currentHash = window.location.hash.substring(1);
+        const targetSectionId = currentHash || 'intro_php'; // بخش پیش‌فرض
+        showSection(targetSectionId, false);
+
+        const activeLink = document.querySelector(`.nav-link[href="#${targetSectionId}"]`);
+        if (activeLink) {
+            const parentSubMenu = activeLink.closest('.sub-menu');
+            if (parentSubMenu) {
+                const header = parentSubMenu.previousElementSibling;
+                toggleMenu(header); // این تابع هم باز می‌کند و هم ارتفاع را تنظیم می‌کند
+            }
+        } else {
+            // باز کردن اولین منو به صورت پیش‌فرض
+            const firstHeader = document.querySelector('.nav-header');
+            if (firstHeader) {
+                toggleMenu(firstHeader);
+            }
+        }
+
+        // This part handles the copy buttons
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const preElement = this.parentElement.querySelector('pre');
+                if (preElement) {
+                    // Using a temporary textarea to handle copy command
+                    const textarea = document.createElement('textarea');
+                    textarea.value = preElement.textContent;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        const originalText = this.innerText;
+                        this.innerText = 'کپی شد!';
+                        this.disabled = true;
+                        setTimeout(() => {
+                            this.innerText = originalText;
+                            this.disabled = false;
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                    document.body.removeChild(textarea);
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>
