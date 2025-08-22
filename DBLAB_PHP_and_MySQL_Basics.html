@@ -2609,6 +2609,8 @@ require_once '../includes/footer.php';
     }
 
     function showSection(id, updateHistory = true) {
+        window.scrollTo(0, 0);
+
         document.querySelectorAll('.content-section').forEach(sec => {
             sec.classList.remove('active');
         });

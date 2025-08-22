@@ -3954,6 +3954,8 @@ REVOKE ALL PRIVILEGES ON orderdb.* FROM 'order_app_user'@'localhost';</code></pr
     }
 
     function showSection(id, updateHistory = true) {
+        window.scrollTo(0, 0);
+
         document.querySelectorAll('.content-section').forEach(sec => {
             sec.style.display = 'none';
             sec.classList.remove('active');
