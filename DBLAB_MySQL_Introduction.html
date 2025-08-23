@@ -5,309 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>راهنمای جامع آزمایشگاه پایگاه داده</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 1. CSS Theme for Prism -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>
-
-    <!-- 2. Prism JS Core -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
-
-        body {
-            font-family: "Vazirmatn", sans-serif;
-            line-height: 1.8;
-            background-color: #f1f5f9;
-            color: #334155;
-        }
-
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .content-section h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #1e3a8a;
-            margin-top: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 3px solid #93c5fd;
-        }
-
-        .content-section h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #1d4ed8;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .code-block-container {
-            position: relative;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #0f172a;
-            direction: ltr;
-        }
-
-        .code-block-container pre {
-            color: #e2e8f0;
-            padding: 1.5rem;
-            padding-top: 3.5rem;
-            overflow-x: auto;
-            font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
-            font-size: 1rem;
-        }
-
-        .copy-button {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            background-color: #2563eb;
-            color: white;
-            padding: 0.4rem 0.9rem;
-            font-size: 0.8rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .note {
-            background-color: #fefce8;
-            border-right: 5px solid #facc15;
-            padding: 15px 20px;
-            margin: 1.5em 0;
-            border-radius: 4px;
-        }
-
-        /* --- Sidebar Styles --- */
-        #sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            color: #e2e8f0;
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100vh;
-            overflow-y: auto;
-            transition: transform .3s ease-in-out;
-            z-index: 100;
-        }
-
-        #sidebar header {
-            padding: 1.25rem 1rem;
-            font-weight: 700;
-            font-size: 1.25rem;
-            border-bottom: 1px solid #334155;
-            background: #0f172a;
-        }
-
-        .nav-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: .75rem 1rem;
-            font-weight: 600;
-            transition: background .2s;
-        }
-
-        .nav-header:hover {
-            background: #334155;
-        }
-
-        .nav-header::after {
-            content: '▾';
-            transition: transform .2s;
-        }
-
-        .nav-header.collapsed::after {
-            transform: rotate(-90deg);
-        }
-
-        .sub-menu {
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.35s ease-in-out;
-        }
-
-        .sub-menu.open {
-            max-height: 800px;
-        }
-
-        .nav-link {
-            display: block;
-            padding: .5rem 1.75rem;
-            font-size: .9rem;
-            color: #94a3b8;
-            transition: background .2s, color .2s;
-            text-decoration: none;
-        }
-
-        .nav-link.active, .nav-link:hover {
-            background: #3b82f6;
-            color: #fff;
-            border-radius: 0 20px 20px 0;
-            margin-right: .25rem;
-        }
-
-        /* --- Main Content Styles --- */
-        #main-content {
-            transition: margin-right .3s ease-in-out;
-            padding: 2rem;
-        }
-
-        /* --- Mobile Header --- */
-        #mobile-header {
-            display: none; /* Hidden on desktop */
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            background-color: #1e293b;
-            color: white;
-            padding: 1rem;
-            z-index: 50;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        #menu-toggle {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        /* --- Overlay for Mobile --- */
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 99;
-        }
-
-        /* --- Responsive Styles --- */
-        @media (min-width: 1024px) {
-            #main-content {
-                margin-right: 280px;
-            }
-        }
-
-        @media (max-width: 1023px) {
-            #sidebar {
-                transform: translateX(280px); /* Hide sidebar off-screen */
-            }
-
-            #sidebar.open {
-                transform: translateX(0); /* Show sidebar */
-            }
-
-            #mobile-header {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-            }
-
-            #main-content {
-                margin-right: 0;
-                padding-top: 5rem; /* Space for fixed header */
-            }
-
-            #overlay.open {
-                display: block;
-            }
-        }
-    </style>
-
-    <style>
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-
-        .styled-table th, .styled-table td {
-            border: 1px solid #e2e8f0;
-            padding: 12px;
-            text-align: right;
-        }
-
-        .styled-table th {
-            background-color: #f1f5f9;
-            font-weight: 600;
-        }
-
-        .styled-table tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        .assignment-box {
-            background-color: #f0fdf4;
-            border-right: 5px solid #22c55e;
-            padding: 20px;
-            margin-top: 2rem;
-            border-radius: 4px;
-        }
-
-        .data-tree {
-            list-style-type: none;
-            padding-right: 0;
-        }
-
-        .data-tree ul {
-            padding-right: 20px;
-            border-right: 1px solid #cbd5e1;
-        }
-
-        .data-tree li {
-            position: relative;
-            padding-right: 20px;
-            margin-bottom: 5px;
-        }
-
-        .data-tree li::before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            right: 0;
-            width: 15px;
-            height: 1px;
-            background-color: #cbd5e1;
-        }
-
-        @media print {
-            #sidebar, #mobile-header {
-                display: none !important;
-            }
-
-            #main-content {
-                margin-right: 0 !important;
-                width: 100% !important;
-                padding-top: 2rem !important;
-            }
-
-            .content-section {
-                display: block !important;
-            }
-
-            .nav-header {
-                display: none;
-            }
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet">
 </head>
-<body>
+<body class="theme-mysql">
+
 <div id="mobile-header">
     <button id="menu-toggle">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -321,6 +23,7 @@
 </div>
 
 <div id="overlay"></div>
+
 <nav id="sidebar">
     <div style="padding: 1rem; text-align: center; border-bottom: 1px solid #334155;">
         <img src="images/university_logo.png" alt="دانشگاه آزاد واحد تبريز"
@@ -398,7 +101,7 @@
         <a href="#assignment_final" class="nav-link">تکلیف نهایی</a>
     </div>
 </nav>
-<!--<div class="flex-container">-->
+
 <main id="main-content">
 
     <section id="intro" class="content-section">
@@ -421,8 +124,7 @@
                 سرور، نام پایگاه داده، نام کاربری و رمز عبور است.
             </p>
             <div class="mt-6 bg-gray-100 p-4 rounded shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" width="600" height="200"
-                     viewBox="0 0 600 200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" viewBox="0 0 600 200">
                     <rect x="20" y="60" width="150" height="80" fill="#38bdf8" rx="10"/>
                     <text x="95" y="105" font-size="14" text-anchor="middle" fill="white" font-family="Vazirmatn">
                         اپلیکیشن (App)
@@ -453,7 +155,7 @@
         </div>
     </section>
 
-    <section id="design" class="content-section" style="display: none;">
+    <section id="design" class="content-section">
         <h2>طراحی پایگاه داده</h2>
         <h3>نمودار ER (Entity-Relationship)</h3>
         <p>نمودار ER نقشه مفهومی پایگاه داده ما است که موجودیت‌ها و ارتباطات بین آن‌ها را به صورت بصری نمایش
@@ -486,7 +188,7 @@
             Key) هستند.</p>
     </section>
 
-    <section id="installation" class="content-section" style="display: none;">
+    <section id="installation" class="content-section" >
         <h2>نصب و راه‌اندازی MySQL</h2>
         <h3 id="install-steps">مراحل نصب و پیکربندی</h3>
         <p>برای شروع کار با MySQL، نرم‌افزار MySQL Installer for Windows را از <a
@@ -531,7 +233,7 @@
         </div>
     </section>
 
-    <section id="cli" class="content-section" style="display: none;">
+    <section id="cli" class="content-section" >
         <h2>کار با خط فرمان MySQL</h2>
         <h3>اتصال به سرور</h3>
         <p>پس از نصب، یک CMD جدید باز کرده و دستور زیر را برای اتصال به سرور وارد کنید.</p>
@@ -556,7 +258,7 @@
         <p>برای خروج از محیط MySQL، از دستور `exit` یا `quit` استفاده کنید.</p>
     </section>
 
-    <section id="db_ddl" class="content-section" style="display: none;">
+    <section id="db_ddl" class="content-section">
         <h2>دستورات DDL: پایگاه داده</h2>
         <h3>دستور CREATE DATABASE</h3>
         <p>برای ساختن یک پایگاه داده جدید استفاده می‌شود.</p>
@@ -582,7 +284,7 @@
         </div>
     </section>
 
-    <section id="table_ddl" class="content-section" style="display: none;">
+    <section id="table_ddl" class="content-section">
         <h2>دستورات DDL: جداول (CREATE)</h2>
         <h3>دستور CREATE TABLE</h3>
         <p>این دستور برای ساختن یک جدول جدید با ستون‌ها، انواع داده و قیدهای مشخص به کار می‌رود.</p>
@@ -831,7 +533,8 @@
             <li><strong>LONGBLOB</strong>: حداکثر 4,294,967,295 (1 - 2<sup>32</sup>) بایت (حدود 4 گیگابایت)</li>
         </ul>
     </section>
-    <section id="alter_table" class="content-section" style="display: none;">
+
+    <section id="alter_table" class="content-section">
         <h2>دستور جامع ALTER TABLE</h2>
         <p>این دستور بسیار قدرتمند برای انواع تغییرات روی ساختار یک جدول موجود پس از ایجاد آن استفاده می‌شود.</p>
 
@@ -876,7 +579,7 @@ CHANGE COLUMN old_column_name new_column_name new_data_type [new_column_options]
         </div>
     </section>
 
-    <section id="assignment" class="content-section" style="display: none;">
+    <section id="assignment" class="content-section">
         <h2>تکلیف جلسه</h2>
         <div class="assignment-box">
             <h3 class="!mt-0">تکلیف دانشجو</h3>
@@ -1012,7 +715,7 @@ CREATE TABLE Courses (
 
     </section>
 
-    <section id="indexes" class="content-section" style="display: none;">
+    <section id="indexes" class="content-section">
         <h2>ایندکس‌ها (Indexes)</h2>
         <h3>مفهوم ایندکس</h3>
         <p>ایندکس یک ساختار داده جداگانه و مرتب‌شده است که به یک یا چند ستون از جدول اشاره می‌کند. همانطور که فهرست
@@ -1057,7 +760,7 @@ CREATE TABLE Courses (
         </div>
     </section>
 
-    <section id="show_commands" class="content-section" style="display: none;">
+    <section id="show_commands" class="content-section">
         <h2>دستورات SHOW</h2>
         <p>دستورات `SHOW` ابزارهای اطلاعاتی قدرتمندی هستند که به شما اجازه می‌دهند متادیتا (اطلاعات توصیفی) مربوط به
             پایگاه‌های داده، جداول، ستون‌ها و سایر اجزای سرور را مشاهده کنید.</p>
@@ -1234,7 +937,7 @@ CREATE TABLE IF NOT EXISTS orderdetail_tbl (
         </div>
     </section>
 
-    <section id="dml_intro" class="content-section" style="display: none;">
+    <section id="dml_intro" class="content-section">
         <h2>مقدمه‌ای بر دستورات DML</h2>
         <p>
             پس از آنکه با دستورات DDL ساختار پایگاه داده و جداول خود را ایجاد کردیم، نوبت به کار با داده‌های واقعی
@@ -1258,7 +961,7 @@ CREATE TABLE IF NOT EXISTS orderdetail_tbl (
         </ul>
     </section>
 
-    <section id="select_statement" class="content-section" style="display: none;">
+    <section id="select_statement" class="content-section">
         <h2>معرفی جامع دستور SELECT</h2>
         <p>
             دستور <code>SELECT</code> مهم‌ترین و پرکاربردترین دستور برای بازیابی و خواندن داده‌ها از پایگاه داده
@@ -1299,7 +1002,7 @@ FROM table_name
         </ul>
     </section>
 
-    <section id="where_clause" class="content-section" style="display: none;">
+    <section id="where_clause" class="content-section">
         <h2>کار با شرط (WHERE Clause)</h2>
         <p>
             بخش <code>WHERE</code> قلب فیلتر کردن داده‌ها در SQL است. شرط‌هایی که در این بخش استفاده می‌شوند، نه
@@ -1743,7 +1446,7 @@ FROM customer_tbl AS C;</code></pre>
             استفاده است.</p>
     </section>
 
-    <section id="from_clause" class="content-section" style="display: none;">
+    <section id="from_clause" class="content-section">
         <h2>بررسی کامل بخش FROM</h2>
         <p>بخش `FROM` مشخص می‌کند که داده‌ها باید از کدام منبع یا منابعی خوانده شوند. این منبع می‌تواند یک جدول
             ساده، حاصل اتصال چند جدول یا حتی یک جدول مجازی باشد.</p>
@@ -1931,6 +1634,7 @@ LIMIT 30;
 SELECT * FROM product_tbl LIMIT 10, 5;</code></pre>
         </div>
     </section>
+
     <section id="inner_join" class="content-section">
         <h2>پیوند داخلی (INNER JOIN)</h2>
         <p>
@@ -2113,7 +1817,6 @@ FROM customer_tbl AS C
             استفاده نمی‌کردیم، به دلیل اولویت عملگر `AND` بر `OR`، کوئری به اشتباه تفسیر می‌شد.</p>
 
     </section>
-
 
     <section id="outer_join" class="content-section">
         <h2>پیوندهای خارجی (OUTER JOIN)</h2>
@@ -2468,8 +2171,7 @@ EXCEPT
         </div>
     </section>
 
-
-    <section id="grouping_aggregation" class="content-section" style="display: none;">
+    <section id="grouping_aggregation" class="content-section">
         <h2>گروه‌بندی و تجمیع داده‌ها (GROUP BY & HAVING)</h2>
         <p>
             تاکنون یاد گرفتیم چگونه سطرها را با <code>WHERE</code> فیلتر کنیم. اما قدرت واقعی <code>SELECT</code>
@@ -2785,10 +2487,6 @@ ORDER BY
         </div>
     </section>
 
-
-    </section>
-
-
     <section id="cte_non_recursive" class="content-section">
         <h2>عبارات جدولی مشترک (CTE)</h2>
         <p>
@@ -2890,7 +2588,7 @@ WHERE customerId IN (SELECT customerId FROM TehranCustomers);</code></pre>
         </div>
     </section>
 
-    <section id="cte_recursive" class="content-section" style="display:none;">
+    <section id="cte_recursive" class="content-section">
         <h2>CTE‌های بازگشتی (Recursive CTEs)</h2>
         <p>
             یک CTE بازگشتی به خودش ارجاع می‌دهد و برای پیمایش داده‌های سلسله‌مراتبی (مانند ساختار سازمانی یا
@@ -2990,7 +2688,7 @@ SELECT * FROM EmployeeHierarchy;</code></pre>
         </div>
     </section>
 
-    <section id="insert_statement" class="content-section" style="display: none;">
+    <section id="insert_statement" class="content-section">
         <h2>دستور INSERT (درج داده‌ها)</h2>
         <p>
             دستور <code>INSERT</code> اولین دستور از مجموعه DML (زبان مدیریت داده) است که برای افزودن یک یا چند سطر
@@ -3107,7 +2805,7 @@ FROM OldDB.OldCast;</code></pre>
         </div>
     </section>
 
-    <section id="update_statement" class="content-section" style="display: none;">
+    <section id="update_statement" class="content-section">
         <h2>دستور UPDATE (به‌روزرسانی داده‌ها)</h2>
         <p>
             دستور <code>UPDATE</code> برای ویرایش و تغییر مقادیر سطرهای موجود در یک جدول استفاده می‌شود. این دستور
@@ -3212,7 +2910,7 @@ LIMIT 10;</code></pre>
         </div>
     </section>
 
-    <section id="delete_statement" class="content-section" style="display: none;">
+    <section id="delete_statement" class="content-section">
         <h2>دستور DELETE (حذف داده‌ها)</h2>
         <p>
             دستور <code>DELETE</code> برای پاک کردن یک یا چند سطر از یک جدول استفاده می‌شود. این دستور، مانند <code>UPDATE</code>،
@@ -3454,7 +3152,7 @@ mysql -u root -p orderdb < D:\backups\orderdb_backup.sql</code></pre>
         </div>
     </section>
 
-    <section id="assignment_final" class="content-section" style="display: none;">
+    <section id="assignment_final" class="content-section">
         <h2>تکلیف جلسات</h2>
         <div class="assignment-box">
             <h3 class="!mt-0">تکلیف عملی</h3>
@@ -3467,8 +3165,7 @@ mysql -u root -p orderdb < D:\backups\orderdb_backup.sql</code></pre>
         </div>
     </section>
 
-
-    <section id="views" class="content-section" style="display: none;">
+    <section id="views" class="content-section">
         <h2>ديدها (Views)</h2>
         <p>
             یک ديد یا <strong>View</strong>، یک جدول مجازی است که بر اساس نتیجه یک دستور <code>SELECT</code> ساخته
@@ -3569,8 +3266,7 @@ WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران');</cod
         </div>
     </section>
 
-
-    <section id="advanced_functions" class="content-section" style="display: none;">
+    <section id="advanced_functions" class="content-section">
         <h2>توابع پیشرفته در MySQL</h2>
         <p>
             علاوه بر توابع تجمعی و پایه‌ای، MySQL مجموعه‌ای بسیار غنی از توابع داخلی را برای کار با انواع داده‌ها
@@ -3692,7 +3388,7 @@ SELECT CAST('2025-08-20' AS DATE) AS ConvertedDate;</code></pre>
         </div>
     </section>
 
-    <section id="dcl_concepts" class="content-section" style="display: none;">
+    <section id="dcl_concepts" class="content-section">
         <h2>مفاهیم کاربران و سطوح دسترسی (DCL)</h2>
         <p>
             زبان کنترل داده یا <strong>DCL (Data Control Language)</strong> به مجموعه‌ای از دستورات گفته می‌شود که
@@ -3753,7 +3449,7 @@ SELECT CAST('2025-08-20' AS DATE) AS ConvertedDate;</code></pre>
         </ol>
     </section>
 
-    <section id="user_management" class="content-section" style="display: none;">
+    <section id="user_management" class="content-section">
         <h2>ایجاد و مدیریت کاربران</h2>
         <p>
             قبل از اعطای دسترسی، ابتدا باید کاربران مورد نظر را در پایگاه داده ایجاد کنیم.
@@ -3812,7 +3508,7 @@ ALTER USER 'app_user'@'localhost' IDENTIFIED BY 'a_newer_stronger_password';</co
         </div>
     </section>
 
-    <section id="grant_statement" class="content-section" style="display: none;">
+    <section id="grant_statement" class="content-section">
         <h2>اعطای دسترسی‌ها (دستور GRANT)</h2>
         <p>
             دستور <code>GRANT</code> برای اعطای یک یا چند مجوز به یک یا چند کاربر استفاده می‌شود. در MySQL، کاربران
@@ -3892,7 +3588,7 @@ GRANT UPDATE (customerAddress) ON orderdb.customer_tbl TO 'data_entry'@'localhos
         </div>
     </section>
 
-    <section id="revoke_statement" class="content-section" style="display: none;">
+    <section id="revoke_statement" class="content-section">
         <h2>لغو دسترسی‌ها (دستور REVOKE)</h2>
         <p>
             دستور <code>REVOKE</code> برعکس <code>GRANT</code> عمل کرده و برای پس گرفتن یک یا چند مجوز از یک یا چند
@@ -3932,130 +3628,131 @@ REVOKE ALL PRIVILEGES ON orderdb.* FROM 'order_app_user'@'localhost';</code></pr
         </div>
     </section>
 
-
     <footer style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; color: #9ca3af; font-size: 0.9rem;">
         <p>&copy; تمام حقوق این محتوای آموزشی متعلق به سید سجاد پیراهش و دانشگاه آزاد واحد تبریز است. هرگونه کپی‌برداری
             بدون ذکر منبع مجاز نمی‌باشد. (1404)</p>
-        <!--            <p style="margin-top: 0.5rem;">© 1404</p>-->
     </footer>
+
 </main>
 
-<!--</div>-->
 
-<script>
-    const sidebar = document.getElementById('sidebar');
-    const menuToggle = document.getElementById('menu-toggle');
-    const overlay = document.getElementById('overlay');
-    const navLinks = document.querySelectorAll('.nav-link');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="js/main.js"></script>
+<!--<script>-->
+<!--    const sidebar = document.getElementById('sidebar');-->
+<!--    const menuToggle = document.getElementById('menu-toggle');-->
+<!--    const overlay = document.getElementById('overlay');-->
+<!--    const navLinks = document.querySelectorAll('.nav-link');-->
 
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
-    }
+<!--    function closeSidebar() {-->
+<!--        sidebar.classList.remove('open');-->
+<!--        overlay.classList.remove('open');-->
+<!--    }-->
 
-    function showSection(id, updateHistory = true) {
-        window.scrollTo(0, 0);
+<!--    function showSection(id, updateHistory = true) {-->
+<!--        window.scrollTo(0, 0);-->
 
-        document.querySelectorAll('.content-section').forEach(sec => {
-            sec.style.display = 'none';
-            sec.classList.remove('active');
-        });
+<!--        document.querySelectorAll('.content-section').forEach(sec => {-->
+<!--            sec.style.display = 'none';-->
+<!--            sec.classList.remove('active');-->
+<!--        });-->
 
-        const target = document.getElementById(id);
-        if (target) {
-            target.style.display = 'block';
-            target.classList.add('active');
-        }
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        const link = document.querySelector(`.nav-link[href="#${id}"]`);
-        if (link) {
-            link.classList.add('active');
-        }
-        if (updateHistory && window.history.pushState) {
-            window.history.pushState({path: `#${id}`}, '', `#${id}`);
-        }
-    }
+<!--        const target = document.getElementById(id);-->
+<!--        if (target) {-->
+<!--            target.style.display = 'block';-->
+<!--            target.classList.add('active');-->
+<!--        }-->
+<!--        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));-->
+<!--        const link = document.querySelector(`.nav-link[href="#${id}"]`);-->
+<!--        if (link) {-->
+<!--            link.classList.add('active');-->
+<!--        }-->
+<!--        if (updateHistory && window.history.pushState) {-->
+<!--            window.history.pushState({path: `#${id}`}, '', `#${id}`);-->
+<!--        }-->
+<!--    }-->
 
-    function toggleMenu(header) {
-        const sub = header.nextElementSibling;
-        if (!sub || !sub.classList.contains('sub-menu')) return;
-        const isOpen = sub.classList.contains('open');
+<!--    function toggleMenu(header) {-->
+<!--        const sub = header.nextElementSibling;-->
+<!--        if (!sub || !sub.classList.contains('sub-menu')) return;-->
+<!--        const isOpen = sub.classList.contains('open');-->
 
-        if (!isOpen) {
-            document.querySelectorAll('.sub-menu.open').forEach(sm => {
-                sm.classList.remove('open');
-                sm.style.maxHeight = null;
-                sm.previousElementSibling.classList.add('collapsed');
-            });
-            sub.classList.add('open');
-            header.classList.remove('collapsed');
-            sub.style.maxHeight = sub.scrollHeight + "px";
-        } else {
-            sub.classList.remove('open');
-            header.classList.add('collapsed');
-            sub.style.maxHeight = null;
-        }
-    }
+<!--        if (!isOpen) {-->
+<!--            document.querySelectorAll('.sub-menu.open').forEach(sm => {-->
+<!--                sm.classList.remove('open');-->
+<!--                sm.style.maxHeight = null;-->
+<!--                sm.previousElementSibling.classList.add('collapsed');-->
+<!--            });-->
+<!--            sub.classList.add('open');-->
+<!--            header.classList.remove('collapsed');-->
+<!--            sub.style.maxHeight = sub.scrollHeight + "px";-->
+<!--        } else {-->
+<!--            sub.classList.remove('open');-->
+<!--            header.classList.add('collapsed');-->
+<!--            sub.style.maxHeight = null;-->
+<!--        }-->
+<!--    }-->
 
-    document.addEventListener('DOMContentLoaded', () => {
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('open');
-        });
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        menuToggle.addEventListener('click', () => {-->
+<!--            sidebar.classList.toggle('open');-->
+<!--            overlay.classList.toggle('open');-->
+<!--        });-->
 
-        overlay.addEventListener('click', closeSidebar);
+<!--        overlay.addEventListener('click', closeSidebar);-->
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const id = link.getAttribute('href').substring(1);
-                showSection(id);
-                if (window.innerWidth < 1024) {
-                    closeSidebar();
-                }
-            });
-        });
+<!--        navLinks.forEach(link => {-->
+<!--            link.addEventListener('click', (e) => {-->
+<!--                e.preventDefault();-->
+<!--                const id = link.getAttribute('href').substring(1);-->
+<!--                showSection(id);-->
+<!--                if (window.innerWidth < 1024) {-->
+<!--                    closeSidebar();-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
 
-        const currentHash = window.location.hash.substring(1);
-        const targetSectionId = currentHash || 'intro';
-        showSection(targetSectionId, false);
+<!--        const currentHash = window.location.hash.substring(1);-->
+<!--        const targetSectionId = currentHash || 'intro';-->
+<!--        showSection(targetSectionId, false);-->
 
-        const activeLink = document.querySelector(`.nav-link[href="#${targetSectionId}"]`);
-        if (activeLink) {
-            const parentSubMenu = activeLink.closest('.sub-menu');
-            if (parentSubMenu) {
-                const header = parentSubMenu.previousElementSibling;
-                if (header) {
-                    toggleMenu(header);
-                }
-            }
-        } else {
-            const firstHeader = document.querySelector('.nav-header');
-            if (firstHeader) {
-                toggleMenu(firstHeader);
-            }
-        }
+<!--        const activeLink = document.querySelector(`.nav-link[href="#${targetSectionId}"]`);-->
+<!--        if (activeLink) {-->
+<!--            const parentSubMenu = activeLink.closest('.sub-menu');-->
+<!--            if (parentSubMenu) {-->
+<!--                const header = parentSubMenu.previousElementSibling;-->
+<!--                if (header) {-->
+<!--                    toggleMenu(header);-->
+<!--                }-->
+<!--            }-->
+<!--        } else {-->
+<!--            const firstHeader = document.querySelector('.nav-header');-->
+<!--            if (firstHeader) {-->
+<!--                toggleMenu(firstHeader);-->
+<!--            }-->
+<!--        }-->
 
-        document.querySelectorAll('.copy-button').forEach(button => {
-            button.addEventListener('click', function () {
-                const preElement = this.closest('.code-block-container').querySelector('pre');
-                if (preElement) {
-                    navigator.clipboard.writeText(preElement.innerText).then(() => {
-                        const originalText = this.innerText;
-                        this.innerText = 'کپی شد!';
-                        this.disabled = true;
-                        setTimeout(() => {
-                            this.innerText = originalText;
-                            this.disabled = false;
-                        }, 2000);
-                    }).catch(err => {
-                        console.error('Failed to copy text: ', err);
-                    });
-                }
-            });
-        });
-    });
-</script>
+<!--        document.querySelectorAll('.copy-button').forEach(button => {-->
+<!--            button.addEventListener('click', function () {-->
+<!--                const preElement = this.closest('.code-block-container').querySelector('pre');-->
+<!--                if (preElement) {-->
+<!--                    navigator.clipboard.writeText(preElement.innerText).then(() => {-->
+<!--                        const originalText = this.innerText;-->
+<!--                        this.innerText = 'کپی شد!';-->
+<!--                        this.disabled = true;-->
+<!--                        setTimeout(() => {-->
+<!--                            this.innerText = originalText;-->
+<!--                            this.disabled = false;-->
+<!--                        }, 2000);-->
+<!--                    }).catch(err => {-->
+<!--                        console.error('Failed to copy text: ', err);-->
+<!--                    });-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>

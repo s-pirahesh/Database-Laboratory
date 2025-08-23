@@ -1,0 +1,319 @@
+/* Import Google Font - Vazirmatn */
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+/* =================================== */
+/* تعریف متغیرهای رنگی برای تم‌ها      */
+/* =================================== */
+
+/* تم درس MySQL (آبی) */
+body.theme-mysql {
+    --primary-color: #1e3a8a;
+    --secondary-color: #1d4ed8;
+    --border-color: #93c5fd;
+    --background-color: #f1f5f9;
+    --text-color: #334155;
+    --note-bg-color: #fefce8;
+    --note-border-color: #facc15;
+    --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    --sidebar-text: #e2e8f0;
+    --sidebar-link-text: #94a3b8;
+    --sidebar-link-active-bg: #3b82f6;
+    --sidebar-link-active-text: #fff;
+    --sidebar-header-border: #334155;
+    --assignment-bg-color: #f0fdf4;
+    --assignment-border-color: #22c55e;
+    --code-block-bg: #0f172a;
+    --code-block-text: #e2e8f0;
+    --copy-button-bg: #2563eb;
+    --table-header-bg: #f1f5f9;
+    --table-border-color: #e2e8f0;
+    --table-even-row-bg: #f8fafc;
+    --mobile-header-bg: #1e293b;
+}
+
+/* تم درس PHP (نارنجی) */
+body.theme-php {
+    --primary-color: #c2410c;
+    --secondary-color: #d97706;
+    --border-color: #fdba74;
+    --background-color: #fffaf0;
+    --text-color: #44403c;
+    --note-bg-color: #fef3c7;
+    --note-border-color: #f59e0b;
+    --sidebar-bg: linear-gradient(180deg, #4a2c2a 0%, #2c1d1c 100%);
+    --sidebar-text: #fde68a;
+    --sidebar-link-text: #eab308;
+    --sidebar-link-active-bg: #fb923c;
+    --sidebar-link-active-text: #fff;
+    --sidebar-header-border: #5e4a4a;
+    --code-block-bg: #292524;
+    --code-block-text: #f5f5f4;
+    --copy-button-bg: #fb923c;
+    /* برای تم PHP، استایل‌های جدول و تمرین تعریف نشده بود، از مقادیر پیش‌فرض استفاده می‌کنیم */
+    --table-header-bg: #fef3c7;
+    --table-border-color: #fed7aa;
+    --table-even-row-bg: #fffbeb;
+    --assignment-bg-color: #f0fdf4;
+    --assignment-border-color: #22c55e;
+    --mobile-header-bg: #2c1d1c;
+}
+
+
+/* =================================== */
+/* استایل‌های مشترک                     */
+/* =================================== */
+
+body {
+    font-family: "Vazirmatn", sans-serif;
+    line-height: 1.8;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* --- ساختار اصلی و محتوا --- */
+#main-content {
+    transition: margin-right .3s ease-in-out;
+    padding: 2rem;
+    background-color: #ffffff; /* پس‌زمینه سفید برای محتوای اصلی در هر دو تم */
+}
+
+.content-section { display: none; }
+.content-section.active { display: block; }
+
+.content-section h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--border-color);
+}
+
+.content-section h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.note {
+    background-color: var(--note-bg-color);
+    border-right: 5px solid var(--note-border-color);
+    padding: 15px 20px;
+    margin: 1.5em 0;
+    border-radius: 4px;
+}
+
+/* --- استایل بلوک کد --- */
+.code-block-container {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--code-block-bg);
+    direction: ltr;
+}
+
+.code-block-container pre {
+    color: var(--code-block-text);
+    padding: 1.5rem;
+    padding-top: 3.5rem !important; /* برای ایجاد فضا برای دکمه کپی */
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+.copy-button {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background-color: var(--copy-button-bg);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s;
+    font-family: "Vazirmatn", sans-serif;
+}
+
+.code-block-container:hover .copy-button { opacity: 1; }
+.copy-button:disabled { background-color: #22c55e; cursor: default; }
+
+/* --- استایل سایدبار --- */
+#sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    overflow-y: auto;
+    transition: transform .3s ease-in-out;
+    z-index: 100;
+}
+
+#sidebar header {
+    padding: 1.25rem 1rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border-bottom: 1px solid var(--sidebar-header-border);
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: .75rem 1rem;
+    font-weight: 600;
+    transition: background .2s;
+}
+
+.nav-header:hover { background: #334155; }
+.nav-header::after { content: '▾'; transition: transform .2s; }
+.nav-header.collapsed::after { transform: rotate(-90deg); }
+
+.sub-menu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s ease-in-out;
+}
+
+.sub-menu.open { max-height: 800px; }
+
+.nav-link {
+    display: block;
+    padding: .5rem 1.75rem;
+    font-size: .9rem;
+    color: var(--sidebar-link-text);
+    transition: background .2s, color .2s;
+    text-decoration: none;
+}
+
+.nav-link.active, .nav-link:hover {
+    background: var(--sidebar-link-active-bg);
+    color: var(--sidebar-link-active-text);
+    border-radius: 0 20px 20px 0;
+    margin-right: .25rem;
+}
+
+/* --- استایل‌های موبایل --- */
+#mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background-color: var(--mobile-header-bg);
+    color: white;
+    padding: 1rem;
+    z-index: 50;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#menu-toggle {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+/* --- استایل‌های خاص (جدول، تمرین و ...) --- */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+.styled-table th, .styled-table td {
+    border: 1px solid var(--table-border-color);
+    padding: 12px;
+    text-align: right;
+}
+
+.styled-table th {
+    background-color: var(--table-header-bg);
+    font-weight: 600;
+}
+
+.styled-table tr:nth-child(even) { background-color: var(--table-even-row-bg); }
+
+.assignment-box {
+    background-color: var(--assignment-bg-color);
+    border-right: 5px solid var(--assignment-border-color);
+    padding: 20px;
+    margin-top: 2rem;
+    border-radius: 4px;
+}
+
+.data-tree {
+    list-style-type: none;
+    padding-right: 0;
+}
+.data-tree ul {
+    padding-right: 20px;
+    border-right: 1px solid #cbd5e1;
+}
+.data-tree li {
+    position: relative;
+    padding-right: 20px;
+    margin-bottom: 5px;
+}
+.data-tree li::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 0;
+    width: 15px;
+    height: 1px;
+    background-color: #cbd5e1;
+}
+
+
+/* --- مدیا کوئری‌ها برای واکنشگرایی --- */
+@media (min-width: 1024px) {
+    #main-content { margin-right: 280px; }
+}
+
+@media (max-width: 1023px) {
+    #sidebar { transform: translateX(280px); }
+    #sidebar.open { transform: translateX(0); }
+    #mobile-header { display: flex; align-items: center; gap: 1rem; }
+    #main-content { margin-right: 0; padding-top: 5rem; }
+    #overlay.open { display: block; }
+    .copy-button {
+        opacity: 1; /* دکمه کپی را همیشه قابل مشاهده کن */
+    }
+}
+
+@media print {
+    #sidebar, #mobile-header { display: none !important; }
+    #main-content { margin-right: 0 !important; width: 100% !important; padding: 2rem !important; background-color: #fff !important; }
+    .content-section { display: block !important; }
+    .nav-header { display: none; }
+}
+
+/* کد جدید برای واکنشگرا کردن SVG ها */
+svg {
+    width: 100%;  /* عرض SVG را برابر با عرض والد خود قرار بده */
+    height: auto; /* ارتفاع را به صورت خودکار تنظیم کن تا نسبت ابعاد حفظ شود */
+    max-width: 100%; /* اطمینان از اینکه SVG از والد خود بزرگتر نمی‌شود */
+}
