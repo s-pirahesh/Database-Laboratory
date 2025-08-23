@@ -238,7 +238,7 @@
         <h3>اتصال به سرور</h3>
         <p>پس از نصب، یک CMD جدید باز کرده و دستور زیر را برای اتصال به سرور وارد کنید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code>mysql -u root -p</code></pre>
         </div>
         <p>پس از وارد کردن این دستور، از شما رمز عبور کاربر root پرسیده می‌شود. با وارد کردن رمز صحیح، به محیط MySQL
@@ -263,7 +263,7 @@
         <h3>دستور CREATE DATABASE</h3>
         <p>برای ساختن یک پایگاه داده جدید استفاده می‌شود.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE DATABASE [IF NOT EXISTS] db_name
 [DEFAULT CHARACTER SET charset_name]
 [DEFAULT COLLATE collation_name];</code></pre>
@@ -271,7 +271,7 @@
         <h3>دستور ALTER DATABASE</h3>
         <p>برای تغییر مشخصات یک پایگاه داده موجود به کار می‌رود.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER DATABASE db_name
 [DEFAULT CHARACTER SET charset_name];</code></pre>
         </div>
@@ -279,7 +279,7 @@
         <p>این دستور یک پایگاه داده و <strong class="important">تمام محتویات آن</strong> را برای همیشه حذف می‌کند.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DROP DATABASE [IF EXISTS] db_name;</code></pre>
         </div>
     </section>
@@ -289,7 +289,7 @@
         <h3>دستور CREATE TABLE</h3>
         <p>این دستور برای ساختن یک جدول جدید با ستون‌ها، انواع داده و قیدهای مشخص به کار می‌رود.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE [TEMPORARY] TABLE [IF NOT EXISTS] table_name (
     column_definition_1,
     column_definition_2,
@@ -541,7 +541,7 @@
         <h3>۱. افزودن ستون (ADD COLUMN)</h3>
         <p>برای اضافه کردن یک ستون جدید به جدول.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE table_name
 ADD COLUMN column_name data_type [column_options] [FIRST | AFTER another_column];</code></pre>
         </div>
@@ -552,7 +552,7 @@ ADD COLUMN column_name data_type [column_options] [FIRST | AFTER another_column]
         <p>برای تغییر نوع داده یا قیدهای یک ستون موجود. <strong class="important">باید تمام مشخصات جدید ستون (نوع
             داده و تمام قیدها) را دوباره بنویسید، در غیر این صورت قیدهای قبلی حذف می‌شوند.</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE Products
 MODIFY COLUMN Pprice DECIMAL(10, 2) NOT NULL;</code></pre>
         </div>
@@ -561,20 +561,20 @@ MODIFY COLUMN Pprice DECIMAL(10, 2) NOT NULL;</code></pre>
         <p>این دستور هم نام ستون و هم تمام مشخصات آن را تغییر می‌دهد. این دستور نیز نیازمند بازنویسی تمام مشخصات
             ستون است.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE table_name
 CHANGE COLUMN old_column_name new_column_name new_data_type [new_column_options];</code></pre>
         </div>
 
         <h3>۴. حذف ستون (DROP COLUMN)</h3>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE Tbl_F DROP COLUMN customer;</code></pre>
         </div>
 
         <h3>۵. تغییر نام جدول (RENAME TABLE)</h3>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE moshtari RENAME TO Customer;</code></pre>
         </div>
     </section>
@@ -605,7 +605,7 @@ CHANGE COLUMN old_column_name new_column_name new_data_type [new_column_options]
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE TABLE Customer (
     CID INT PRIMARY KEY,
     CName VARCHAR(50) NOT NULL
@@ -617,7 +617,7 @@ CHANGE COLUMN old_column_name new_column_name new_data_type [new_column_options]
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE TABLE OrderDetail (
     OID INT,
     PID INT,
@@ -633,7 +633,7 @@ CHANGE COLUMN old_column_name new_column_name new_data_type [new_column_options]
 
         <h4>افزودن و حذف کلید اصلی با `ALTER TABLE`</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- افزودن کلید اصلی به جدول موجود
 ALTER TABLE Customer ADD PRIMARY KEY (CID);
 
@@ -649,7 +649,7 @@ ALTER TABLE Customer DROP PRIMARY KEY;</code></pre>
             <code>InnoDB</code> پشتیبانی می‌شود.</p>
 
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE Orders
     ADD CONSTRAINT FK_Orders_Customer FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
     ON UPDATE CASCADE
@@ -672,7 +672,7 @@ ALTER TABLE Customer DROP PRIMARY KEY;</code></pre>
 
         <h4>تعریف و حذف کلید خارجی</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- افزودن کلید خارجی با ALTER TABLE
 ALTER TABLE Orders
 ADD CONSTRAINT FK_Orders_Customer FOREIGN KEY (CID) REFERENCES Customer(CID)
@@ -698,7 +698,7 @@ ALTER TABLE Orders DROP FOREIGN KEY FK_Orders_Customer;</code></pre>
         </ul>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- تعریف به عنوان قید ستونی
 CREATE TABLE Users (
     UserID INT PRIMARY KEY,
@@ -734,7 +734,7 @@ CREATE TABLE Courses (
             <li><strong>۱. در زمان ساخت جدول (`CREATE TABLE`):</strong></li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code
                     class="language-sql">CREATE TABLE Customer (..., INDEX idx_CNameCity (CName, CCity));</code></pre>
         </div>
@@ -742,20 +742,20 @@ CREATE TABLE Courses (
             <li><strong>۲. افزودن به جدول موجود (`ALTER TABLE`):</strong></li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER TABLE Customer ADD INDEX idx_CCity (CCity);</code></pre>
         </div>
         <ul>
             <li><strong>۳. با دستور مستقیم `CREATE INDEX`:</strong></li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE INDEX idx_CName ON Customer (CName);</code></pre>
         </div>
 
         <h4>حذف ایندکس</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DROP INDEX idx_CName ON Customer;</code></pre>
         </div>
     </section>
@@ -772,7 +772,7 @@ CREATE TABLE Courses (
             <li>`_` (آندرلاین): به معنای دقیقاً یک کاراکتر.</li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش پایگاه‌های داده‌ای که با 'test' شروع می‌شوند
 SHOW DATABASES LIKE 'test%';
 
@@ -785,7 +785,7 @@ SHOW DATABASES LIKE '_akila';</code></pre>
 
         <h3>مشاهده ساختار و جزئیات جداول</h3>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش جداول در پایگاه داده فعلی
 SHOW TABLES;
 
@@ -874,7 +874,7 @@ SHOW INDEXES FROM Customer;</code></pre>
 
         <h3>اسکریپت کامل برای اجرا</h3>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE DATABASE IF NOT EXISTS orderdb DEFAULT CHARSET utf8 DEFAULT COLLATE utf8_general_ci;
 
 USE orderdb;
@@ -973,7 +973,7 @@ CREATE TABLE IF NOT EXISTS orderdetail_tbl (
             گروه‌بندی و مرتب کنید. بخش‌هایی که داخل `[]` قرار دارند، اختیاری هستند.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT [DISTINCT] column_list
 FROM table_name
 [WHERE condition]
@@ -1022,7 +1022,7 @@ FROM table_name
             <li><code><=</code> (کوچک‌تر یا مساوی)</li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- کالاهایی را بیابید که رنگ آن‌ها آبی است
 SELECT * FROM product_tbl WHERE PColor = 'blue';
 
@@ -1044,7 +1044,7 @@ SELECT * FROM product_tbl WHERE PColor <> 'red';</code></pre>
             برای تغییر این اولویت و جلوگیری از ابهام، همیشه از پرانتز <code>()</code> استفاده کنید.
         </div>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی که اهل تهران یا تبریز هستند
 SELECT * FROM Customer_tbl WHERE city = 'Tabriz' OR city = 'Tehran';
 
@@ -1058,7 +1058,7 @@ WHERE (CAccount >= 1000 AND CAccount <= 4000) AND (City = 'Tehran');</code></pre
         <p><code>Var BETWEEN Value1 AND Value2</code> معادل است با <code>(Var >= Value1) AND (Var <= Value2)</code>.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی که حسابشان بین 1000 و 4000 است
 SELECT * FROM Customer_tbl WHERE CAccount BETWEEN 1000 AND 4000;</code></pre>
         </div>
@@ -1070,7 +1070,7 @@ SELECT * FROM Customer_tbl WHERE CAccount BETWEEN 1000 AND 4000;</code></pre>
             <li><code>_</code> (آندرلاین): به معنای دقیقاً یک کاراکتر.</li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی که در نام آن‌ها 'Ali' وجود دارد
 SELECT * FROM Customer_tbl WHERE CName LIKE '%Ali%';
 
@@ -1095,7 +1095,7 @@ SELECT * FROM Customer_tbl WHERE CName LIKE '_l%';</code></pre>
         <h4>الف) مجموعه ثابت (Static Set)</h4>
         <p>در این حالت، شما مقادیر مورد نظر را به صورت یک لیست ثابت و جدا شده با کاما داخل پرانتز می‌نویسید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی را بیابید که اهل تهران یا تبریز هستند
 SELECT * FROM Customer_tbl WHERE City IN ('Tehran', 'Tabriz');
 
@@ -1115,7 +1115,7 @@ SELECT * FROM Customer_tbl WHERE City NOT IN ('Tehran', 'Tabriz');</code></pre>
         </div>
 
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مثال ۱: سفارشاتی را بیابید که متعلق به مشتریان اهل تبریز هستند
 SELECT *
 FROM Order_tbl
@@ -1138,7 +1138,7 @@ WHERE CID NOT IN (
         <p>برای بررسی اینکه آیا یک ستون مقدار `NULL` (پوچ یا نامشخص) دارد یا خیر. <strong class="important">هرگز از
             `=` برای مقایسه با `NULL` استفاده نکنید.</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی که شماره تلفن آن‌ها ثبت نشده است
 SELECT * FROM Customer_tbl WHERE CTel IS NULL;
 
@@ -1208,7 +1208,7 @@ SELECT * FROM Customer_tbl WHERE CTel IS NOT NULL;</code></pre>
         </ol>
 
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT *
 FROM customer_tbl
 WHERE customerId IN (
@@ -1240,7 +1240,7 @@ WHERE customerId IN (
             `DISTINCT` باعث می‌شود که از بین تمام سطرهای تکراری، فقط یکی نمایش داده شود.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش لیست تمام رنگ‌های موجود برای محصولات، بدون تکرار
 SELECT DISTINCT ProductColor FROM product_tbl;</code></pre>
         </div>
@@ -1254,7 +1254,7 @@ SELECT DISTINCT ProductColor FROM product_tbl;</code></pre>
         <h4>۲. عبارات و مقادیر ثابت (Expressions)</h4>
         <p>می‌توانید مقادیر ثابت یا عبارات محاسباتی را مستقیماً در لیست ستون‌ها قرار دهید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش قیمت هر محصول با ۱۰ درصد افزایش
 SELECT
     ProductName,
@@ -1284,7 +1284,7 @@ FROM product_tbl;</code></pre>
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- ایجاد نام کامل مشتری از دو ستون مجزا
 SELECT CONCAT(FirstName, ' ', LastName) AS FullName FROM customer_tbl;
 
@@ -1311,7 +1311,7 @@ SELECT REPLACE(customerAddress, 'خیابان', 'بلوار') FROM customer_tbl;
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش سال ثبت سفارش برای هر سفارش
 SELECT orderID, YEAR(orderDate) AS OrderYear FROM Order_tbl;
 
@@ -1334,7 +1334,7 @@ SELECT orderID, DATEDIFF(CURDATE(), orderDate) AS DaysPassed FROM Order_tbl;</co
             <li><strong><code>MIN()</code></strong>: کوچک‌ترین مقدار در یک ستون را پیدا می‌کند.</li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- محاسبه تعداد کل مشتریان
 SELECT COUNT(customerId) FROM customer_tbl;
 
@@ -1347,7 +1347,7 @@ SELECT MAX(minPrice) FROM product_tbl;</code></pre>
         <h4>تابع `IF()`</h4>
         <p>این تابع مانند یک دستور `if-else` ساده عمل می‌کند و بر اساس یک شرط، یکی از دو مقدار را برمی‌گرداند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- شکل کلی
 IF(condition, value_if_true, value_if_false)
 
@@ -1363,7 +1363,7 @@ FROM product_tbl;</code></pre>
         <p>این تابع لیستی از مقادیر را به عنوان ورودی می‌گیرد و اولین مقدار غیر `NULL` را از سمت چپ برمی‌گرداند. این
             تابع برای جایگزین کردن مقادیر `NULL` با یک مقدار جایگزین بسیار مفید است.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- شکل کلی
 COALESCE(value1, value2, value3, ...)
 
@@ -1378,7 +1378,7 @@ FROM customer_tbl;</code></pre>
         <p>این تابع بررسی می‌کند که آیا یک عبارت `NULL` است یا خیر. اگر `NULL` باشد، مقدار `1` (true) و در غیر این
             صورت `0` (false) را برمی‌گرداند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- بررسی وجود آدرس برای مشتریان
 SELECT
     customerName,
@@ -1390,7 +1390,7 @@ FROM customer_tbl;</code></pre>
         <p>این تابع یک زیررشته را از یک رشته، قبل یا بعد از تعداد مشخصی از یک جداکننده (delimiter) استخراج
             می‌کند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- شکل کلی
 SUBSTRING_INDEX(str, delimiter, count)
 
@@ -1408,7 +1408,7 @@ SELECT SUBSTRING_INDEX('user@example.com', '@', -1) AS Domain;</code></pre>
             این تابع برای رمزنگاری مناسب نیست، اما برای بررسی اینکه آیا داده‌ها در حین انتقال تغییر کرده‌اند یا خیر،
             کاربرد دارد.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- محاسبه CRC32 برای نام محصول
 SELECT ProductName, CRC32(ProductName) AS DataCheckValue FROM product_tbl;</code></pre>
         </div>
@@ -1421,7 +1421,7 @@ SELECT ProductName, CRC32(ProductName) AS DataCheckValue FROM product_tbl;</code
             برگرداند.
         </div>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- به ازای هر مشتری، کد، نام، و تاریخ آخرین سفارش او را نمایش بده
 SELECT
     customerId,
@@ -1434,7 +1434,7 @@ FROM customer_tbl AS C;</code></pre>
         <p>نام مستعار (`AS`) به شما اجازه می‌دهد تا نام ستون‌ها یا جداول را در خروجی یا در طول اجرای کوئری به صورت
             موقت تغییر دهید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     C.customerName AS `نام مشتری`,
     C.credit AS `اعتبار`
@@ -1460,7 +1460,7 @@ FROM customer_tbl AS C;</code></pre>
             این عمل معمولاً بسیار بزرگ و بی‌معناست، مگر اینکه با یک شرط `WHERE` برای اتصال منطقی آن‌ها فیلتر شود.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- به ازای هر سفارش، کد سفارش و نام مشتری مربوط به آن را نمایش بده
 SELECT O.orderID, C.customerName
 FROM Order_tbl AS O, customer_tbl AS C
@@ -1476,7 +1476,7 @@ WHERE O.customerId = C.customerId; -- شرط اتصال</code></pre>
         <p class="important"><strong>قانون جدول مشتق‌شده:</strong> جدولی که از یک زیرکوئری در بخش `FROM` ایجاد
             می‌شود، باید <strong>حتماً</strong> یک نام مستعار (Alias) داشته باشد.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- از بین مشتریانی که بیش از ۵ سفارش دارند، آن‌هایی را پیدا کن که در تهران هستند
 SELECT *
 FROM (
@@ -1506,7 +1506,7 @@ WHERE OrderCount > 5 AND cityId = 1; -- با فرض اینکه CityID تهران
             لیست ستون‌ها، به ازای هر سفارش، نام مشتری متناظر را از جدول `customer_tbl` استعلام بگیریم.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     orderID,
     orderDate,
@@ -1529,7 +1529,7 @@ FROM Order_tbl AS O;</code></pre>
             با `MAX`) برای هر مشتری استفاده می‌کنیم.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     customerId,
     customerName,
@@ -1547,7 +1547,7 @@ FROM customer_tbl AS C;</code></pre>
         <h6>روش اول: استفاده از زیرکوئری در WHERE (اغلب ناکارآمد)</h6>
         <p>در این روش، ما همان محاسبه تعداد سفارشات را دوباره در بخش `WHERE` تکرار می‌کنیم.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     customerId,
     customerName,
@@ -1561,7 +1561,7 @@ WHERE (SELECT COUNT(*) FROM Order_tbl WHERE customerId = C.customerId) > 20;</co
         <p>در این روش، ابتدا با یک زیرکوئری در بخش `FROM`، یک جدول مجازی می‌سازیم که شامل اطلاعات مشتری و تعداد
             سفارشات هر کدام است. سپس، کوئری اصلی را روی این جدول مجازی اجرا کرده و به راحتی آن را فیلتر می‌کنیم.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT *
 FROM (
     -- این زیرکوئری ابتدا یک جدول مجازی با آمار مشتریان می‌سازد
@@ -1598,7 +1598,7 @@ WHERE OrderCount > 20;</code></pre>
             در ستون اول یکسان باشند، سطرها بر اساس ستون دوم مرتب می‌شوند و الی آخر.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش مشتریان، مرتب‌شده بر اساس شهر (صعودی) و سپس اعتبار (نزولی)
 SELECT customerName, cityId, credit
 FROM customer_tbl
@@ -1622,7 +1622,7 @@ ORDER BY cityId ASC, credit DESC;</code></pre>
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش ۳۰ مشتری که بیشترین اعتبار را دارند
 SELECT customerName, credit
 FROM customer_tbl
@@ -1671,7 +1671,7 @@ SELECT * FROM product_tbl LIMIT 10, 5;</code></pre>
             خواناتر و استاندارد برای اتصال جداول است.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- شکل کلی دستور پیوند داخلی
 SELECT *
 FROM table1 AS T1
@@ -1694,7 +1694,7 @@ INNER JOIN table2 AS T2 ON T1.column = T2.column;</code></pre>
         <p>می‌توانیم چندین جدول را به صورت زنجیروار به یکدیگر متصل کنیم. پیوندها معمولاً به صورت چپ به راست اجرا
             می‌شوند و نیازی به پرانتزگذاری ندارند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- شکل کلی پیوند چندگانه (چپ به راست)
 FROM table1
 INNER JOIN table2 ON condition1
@@ -1703,7 +1703,7 @@ INNER JOIN table3 ON condition2
         </div>
         <p>در موارد پیچیده، می‌توان با استفاده از پرانتز، ترتیب اجرای پیوندها را به صورت راست به چپ تغییر داد.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- شکل کلی پیوند چندگانه (راست به چپ)
 FROM table1
 INNER JOIN (table2 INNER JOIN table3 ON condition2) ON condition1;</code></pre>
@@ -1715,7 +1715,7 @@ INNER JOIN (table2 INNER JOIN table3 ON condition2) ON condition1;</code></pre>
             ممکن است چندین سفارش داشته باشد و نام او چندین بار تکرار شود، از <strong><code>DISTINCT</code></strong>
             برای حذف موارد تکراری استفاده می‌کنیم.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT DISTINCT C.customerId, C.customerName
 FROM customer_tbl AS C
 INNER JOIN Order_tbl AS O ON C.customerId = O.customerId;</code></pre>
@@ -1725,7 +1725,7 @@ INNER JOIN Order_tbl AS O ON C.customerId = O.customerId;</code></pre>
         <p><strong>سوال:</strong> به ازای هر سفارش، اطلاعات کامل آن را به همراه نام و شهر مشتری، برای مشتریانی که
             اهل تبریز هستند و تاریخ سفارششان در بازه مشخصی است، بیابید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT O.orderID, O.orderDate, C.customerId, C.customerName, CT.cityName
 FROM Order_tbl AS O
 INNER JOIN customer_tbl AS C ON O.customerId = C.customerId
@@ -1772,7 +1772,7 @@ WHERE
             </svg>
         </div>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT DISTINCT C.customerName
 FROM customer_tbl AS C
 INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
@@ -1797,7 +1797,7 @@ WHERE P.ProductColor = 'blue';
         <p>می‌توان شرط را در بخش `WHERE` یا مستقیماً در `ON` قرار داد. نکته مهم استفاده از پرانتز برای حفظ اولویت
             عملگرها است.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- روش اول: شرط در WHERE
 SELECT DISTINCT C.customerName
 FROM customer_tbl AS C
@@ -1927,14 +1927,14 @@ FROM customer_tbl AS C
 
         <h4>شکل کلی دستور و مثال عملی</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column_list
 FROM table1
 LEFT JOIN table2 ON table1.column = table2.column;</code></pre>
         </div>
         <p><strong>سوال:</strong> مشتریانی را بیابید که هیچ سفارشی ندارند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT C.customerName
 FROM customer_tbl AS C
 LEFT JOIN Order_tbl AS O ON C.customerId = O.customerId
@@ -2058,7 +2058,7 @@ WHERE O.orderID IS NULL;</code></pre>
             (E1) و دیگری برای مدیر (E2). سپس این دو نسخه را به هم متصل می‌کنیم. استفاده از <code>LEFT JOIN</code>
             ضروری است تا کارمندی که مدیر ندارد (مانند مدیرعامل) نیز در خروجی نمایش داده شود.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     E1.EName AS `نام کارمند`,
     E2.EName AS `نام مدیر`
@@ -2093,7 +2093,7 @@ LEFT JOIN
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column_list FROM table1
 UNION [ALL | DISTINCT]
 SELECT column_list FROM table2;</code></pre>
@@ -2114,7 +2114,7 @@ SELECT column_list FROM table2;</code></pre>
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column_list FROM table1
 INTERSECT [ALL | DISTINCT]
 SELECT column_list FROM table2;</code></pre>
@@ -2131,7 +2131,7 @@ SELECT column_list FROM table2;</code></pre>
         <p><strong>سوال:</strong> شناسه‌های محصولاتی را پیدا کنید که هم در سال ۲۰۲۳ و هم در سال ۲۰۲۴ فروخته شده‌اند.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- محصولاتی که در سال 2023 فروخته شده‌اند
 (SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2023)
 INTERSECT
@@ -2147,7 +2147,7 @@ INTERSECT
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column_list FROM table1
 EXCEPT [ALL | DISTINCT]
 SELECT column_list FROM table2;</code></pre>
@@ -2162,7 +2162,7 @@ SELECT column_list FROM table2;</code></pre>
         <p><strong>سوال:</strong> مشتریانی را پیدا کنید که در سال ۲۰۲۳ سفارش داشته‌اند اما در سال ۲۰۲۴ هیچ سفارشی
             ثبت نکرده‌اند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی که در سال 2023 سفارش داشته‌اند
 (SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2023)
 EXCEPT
@@ -2216,7 +2216,7 @@ EXCEPT
             مشتری، باید از یک زیرکوئری استفاده کنیم:
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT *
 FROM customer_tbl
 WHERE credit = (SELECT MAX(credit) FROM customer_tbl);</code></pre>
@@ -2229,7 +2229,7 @@ WHERE credit = (SELECT MAX(credit) FROM customer_tbl);</code></pre>
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column1, aggregate_function(column2)
 FROM table_name
 GROUP BY column1;</code></pre>
@@ -2241,7 +2241,7 @@ GROUP BY column1;</code></pre>
         <p>این یک مثال کلاسیک از کاربرد <code>GROUP BY</code> است. ما مشتریان را بر اساس شهرشان گروه‌بندی کرده و سپس
             تعداد اعضای هر گروه را می‌شماریم.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT cityId, COUNT(*) AS NumberOfCustomers
 FROM customer_tbl
 GROUP BY cityId;</code></pre>
@@ -2253,7 +2253,7 @@ GROUP BY cityId;</code></pre>
         <p>در این مثال، از <code>LEFT JOIN</code> برای اطمینان از نمایش مشتریانی که هیچ سفارشی ندارند نیز استفاده
             می‌کنیم.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     C.customerId,
     C.customerName,
@@ -2285,7 +2285,7 @@ GROUP BY
         </div>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column1, aggregate_function(column2)
 FROM table_name
 WHERE row_condition
@@ -2296,7 +2296,7 @@ HAVING aggregate_condition;</code></pre>
         <h4>مثال</h4>
         <p><strong>سوال:</strong> شهرهایی را پیدا کنید که مجموع اعتبار مشتریان آن‌ها بیشتر از ۵۰ میلیون است.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT cityId, SUM(credit) AS TotalCredit
 FROM customer_tbl
 GROUP BY cityId
@@ -2308,7 +2308,7 @@ HAVING SUM(credit) > 50000000;</code></pre>
             '2023-01-01' ثبت شده‌اند، محاسبه کرده و فقط گروه‌هایی را نمایش دهید که تعداد فروششان بیشتر از ۱۰۰ عدد
             بوده است.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     P.ProductName,
     CT.cityName,
@@ -2341,7 +2341,7 @@ HAVING SUM(OD.qty) > 100; -- فیلتر کردن گروه‌ها بعد از ت�
             شهر گروه‌بندی کرده و محاسبات تجمعی را روی هر گروه انجام می‌دهیم.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     PG.ProductGroupTitle,
     CT.cityName,
@@ -2434,7 +2434,7 @@ ORDER BY
             </svg>
         </div>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     C.customerId,
     C.customerName,
@@ -2466,7 +2466,7 @@ GROUP BY
             خیر. این روش هر سطر را فقط یک بار پردازش کرده و مقادیر را در ستون صحیح (سبز یا آبی) جمع می‌زند.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     C.customerId,
     C.customerName,
@@ -2502,7 +2502,7 @@ ORDER BY
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- تعریف یک CTE
 WITH CteName AS (
     SELECT ... FROM ...
@@ -2520,7 +2520,7 @@ SELECT * FROM Cte2;</code></pre>
         <h4>مثال‌ها</h4>
         <p><strong>مثال ۱: ساده‌سازی کوئری با `JOIN`</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH EnrichedOrders AS (
     SELECT
         O.orderID,
@@ -2537,7 +2537,7 @@ SELECT * FROM EnrichedOrders WHERE cityName = 'تهران';</code></pre>
 
         <p><strong>مثال ۲: CTE‌های زنجیره‌ای</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH TopCustomers AS (
     SELECT customerId, customerName, credit
     FROM customer_tbl
@@ -2558,7 +2558,7 @@ LEFT JOIN LastOrders AS LO ON TC.customerId = LO.customerId;</code></pre>
 
         <p><strong>مثال ۳: استفاده از CTE برای محاسبات تجمعی</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH ProductSalesStats AS (
     SELECT
         P.productID,
@@ -2576,7 +2576,7 @@ WHERE TotalQuantity > 100;</code></pre>
 
         <p><strong>مثال ۴: استفاده از CTE با دستور `UPDATE`</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH TehranCustomers AS (
     SELECT customerId
     FROM customer_tbl
@@ -2607,7 +2607,7 @@ WHERE customerId IN (SELECT customerId FROM TehranCustomers);</code></pre>
         </ol>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH RECURSIVE CteName (column_list) AS (
     -- Anchor Member
     SELECT ...
@@ -2621,7 +2621,7 @@ SELECT * FROM CteName;</code></pre>
         <h4>مثال‌ها</h4>
         <p><strong>مثال ۱: تولید یک سری اعداد</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH RECURSIVE NumberSeries (n) AS (
     SELECT 1 -- Anchor: نقطه شروع
     UNION ALL
@@ -2632,7 +2632,7 @@ SELECT * FROM NumberSeries;</code></pre>
 
         <p><strong>مثال ۲: نمایش ساختار سلسله‌مراتبی گروه‌های محصول</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH RECURSIVE CategoryHierarchy (GroupID, Title, ParentID, Level) AS (
     -- Anchor: گروه اصلی را انتخاب کن (فرض کنیم ID آن 1 است)
     SELECT ProductGroupID, ProductGroupTitle, ParentProductGroupID, 0
@@ -2655,7 +2655,7 @@ SELECT * FROM CategoryHierarchy;</code></pre>
 
         <p><strong>مثال ۳: تولید یک سری تاریخ</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH RECURSIVE DateSeries (dt) AS (
     SELECT CURDATE() -- Anchor: تاریخ امروز
     UNION ALL
@@ -2666,7 +2666,7 @@ SELECT * FROM DateSeries;</code></pre>
 
         <p><strong>مثال ۴: پیمایش ساختار سازمانی (کارمند و مدیر)</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">WITH RECURSIVE EmployeeHierarchy (EmployeeID, EmployeeName, ManagerID, Level) AS (
     -- Anchor: مدیری که می‌خواهیم از او شروع کنیم (مثلاً با EID = 10)
     SELECT EID, EName, BossID, 0
@@ -2702,7 +2702,7 @@ SELECT * FROM EmployeeHierarchy;</code></pre>
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">INSERT [INTO] table_name [(column_list)]
 VALUES (value_list_1), (value_list_2), ...;</code></pre>
         </div>
@@ -2727,7 +2727,7 @@ VALUES (value_list_1), (value_list_2), ...;</code></pre>
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مثال ۱: درج دو شهر جدید در جدول شهرها
 -- لیست ستون‌ها ذکر نشده، پس باید برای تمام ستون‌ها (به جز auto_increment) مقدار دهیم
 INSERT INTO city_tbl (cityName) VALUES ('شیراز'), ('اصفهان');
@@ -2750,13 +2750,13 @@ VALUES ('مانیتور ۲۴ اینچ', 'مشکی', 7500000, 3);</code></pre>
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">INSERT [INTO] table_name
 SET column1 = value1, column2 = value2, ...;</code></pre>
         </div>
         <h4>مثال</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">INSERT INTO product_tbl
 SET
     ProductName = 'کیبورد مکانیکی',
@@ -2773,7 +2773,7 @@ SET
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">INSERT [INTO] table_name [(column_list)]
 SELECT ... FROM ...;</code></pre>
         </div>
@@ -2793,7 +2793,7 @@ SELECT ... FROM ...;</code></pre>
             پردازش کنیم:
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">INSERT INTO customer_tbl (customerId, customerName, customertel, cityName, customerAddress)
 SELECT
     CAST(SUBSTRING(Code, 2) AS UNSIGNED), -- جدا کردن و تبدیل بخش عددی کد
@@ -2815,7 +2815,7 @@ FROM OldDB.OldCast;</code></pre>
 
         <h3>شکل کلی دستور</h3>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">UPDATE table_name
 SET
     column1 = {value1 | expr1},
@@ -2856,7 +2856,7 @@ SET
         <h4>مثال ۱: به‌روزرسانی یک سطر خاص</h4>
         <p><strong>سوال:</strong> رنگ و قیمت محصولی با شناسه (productID) برابر با ۱۰ را تغییر دهید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">UPDATE product_tbl
 SET
     ProductColor = 'قرمز',
@@ -2870,7 +2870,7 @@ WHERE
         <p><strong>سوال:</strong> قیمت تمام محصولات متعلق به گروه کالای شماره ۳ (<code>ProductGroupID = 3</code>) را
             ۱۰ درصد افزایش دهید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">UPDATE product_tbl
 SET minPrice = minPrice * 1.1
 WHERE ProductGroupID = 3;</code></pre>
@@ -2884,7 +2884,7 @@ WHERE ProductGroupID = 3;</code></pre>
             پیدا کردن طول رشته استفاده می‌کنیم.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">UPDATE customer_tbl
 SET customertel = CONCAT('3', customertel)
 WHERE
@@ -2901,7 +2901,7 @@ WHERE
             به ۱۰ نفر اول اعمال می‌کنیم.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">UPDATE customer_tbl
 SET credit = credit - 1000000
 WHERE credit >= 30000000
@@ -2919,7 +2919,7 @@ LIMIT 10;</code></pre>
 
         <h3>شکل کلی دستور</h3>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DELETE FROM table_name
 [WHERE condition]
 [ORDER BY ...]
@@ -2961,7 +2961,7 @@ LIMIT 10;</code></pre>
             سفارشات را.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مرحله اول: حذف جزئیات سفارشات مربوطه
 DELETE FROM orderdetail_tbl
 WHERE OrderId IN (SELECT orderID FROM Order_tbl WHERE orderDate = '2024-05-11');
@@ -2974,7 +2974,7 @@ WHERE orderDate = '2024-05-11';</code></pre>
         <h4>مثال ۲: حذف با استفاده از زیرکوئری</h4>
         <p><strong>سوال:</strong> مشتریانی که هیچ سفارشی ندارند را حذف کنید.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DELETE FROM customer_tbl
 WHERE customerId NOT IN (SELECT DISTINCT customerId FROM Order_tbl);</code></pre>
         </div>
@@ -2983,7 +2983,7 @@ WHERE customerId NOT IN (SELECT DISTINCT customerId FROM Order_tbl);</code></pre
         <p><strong>سوال:</strong> ۵۰ مشتری را که هیچ سفارشی ندارند و بر اساس نام خانوادگی مرتب شده‌اند، حذف کنید.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DELETE FROM customer_tbl
 WHERE customerId NOT IN (SELECT DISTINCT customerId FROM Order_tbl)
 ORDER BY customerName
@@ -2994,7 +2994,7 @@ LIMIT 50;</code></pre>
         <p>دستور <code>TRUNCATE TABLE</code> نیز تمام سطرها را از یک جدول حذف می‌کند، اما تفاوت‌های اساسی و مهمی با
             `DELETE` دارد.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">TRUNCATE TABLE table_name;</code></pre>
         </div>
 
@@ -3058,7 +3058,7 @@ LIMIT 50;</code></pre>
         <ol>
             <li><strong>پشتیبان‌گیری از یک پایگاه داده واحد (و یا جداول خاصی از آن):</strong></li>
             <div class="code-block-container">
-                <button class="copy-button">Copy</button>
+                <button class="copy-button">کپی</button>
                 <pre><code>mysqldump [options] database_name [table_name1 table_name2 ...]</code></pre>
             </div>
             <p>این شکل از دستور، فقط از یک پایگاه داده و یا جداول مشخصی از آن پشتیبان تهیه می‌کند. <strong
@@ -3067,7 +3067,7 @@ LIMIT 50;</code></pre>
 
             <li><strong>پشتیبان‌گیری از چند پایگاه داده مشخص (با ساختار کامل):</strong></li>
             <div class="code-block-container">
-                <button class="copy-button">Copy</button>
+                <button class="copy-button">کپی</button>
                 <pre><code>mysqldump [options] --databases db_name1 db_name2 ...</code></pre>
             </div>
             <p>استفاده از سوئیچ <code>--databases</code> باعث می‌شود که در فایل خروجی، دستورات <code>CREATE DATABASE
@@ -3076,7 +3076,7 @@ LIMIT 50;</code></pre>
 
             <li><strong>پشتیبان‌گیری از کل سرور (تمام پایگاه‌های داده):</strong></li>
             <div class="code-block-container">
-                <button class="copy-button">Copy</button>
+                <button class="copy-button">کپی</button>
                 <pre><code>mysqldump [options] --all-databases</code></pre>
             </div>
             <p>این دستور از تمام پایگاه‌های داده موجود بر روی سرور (شامل پایگاه‌های داده سیستمی مانند `mysql`) یک
@@ -3089,7 +3089,7 @@ LIMIT 50;</code></pre>
             آن در یک فایل، از عملگر ریدایرکت (<code>></code>) استفاده می‌کنیم.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code>mysqldump [options] ... > path\to\your\file.sql</code></pre>
         </div>
         <p>عملگر <code>></code> فایل موجود را بازنویسی (Overwrite) می‌کند. اگر بخواهید خروجی را به انتهای یک فایل
@@ -3126,7 +3126,7 @@ LIMIT 50;</code></pre>
             داده خالی ایجاد کرده و با دستور <code>USE</code> آن را انتخاب کنید.
         </div>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- 1. به MySQL متصل شوید
 mysql -u root -p
 
@@ -3145,7 +3145,7 @@ source D:/backups/orderdb_backup.sql;
         <p>این روش برای فایل‌های حجیم مناسب‌تر است و به صورت غیرتعاملی اجرا می‌شود. در این روش، از عملگر
             <code><</code> برای هدایت محتوای فایل به عنوان ورودی دستور `mysql` استفاده می‌کنیم.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code>-- فایل پشتیبان را به پایگاه داده مورد نظر وارد کنید
 -- در اینجا نیز اگر فایل پشتیبان دستور ساخت دیتابیس را نداشته باشد، باید ابتدا آن را ایجاد کنید
 mysql -u root -p orderdb < D:\backups\orderdb_backup.sql</code></pre>
@@ -3197,7 +3197,7 @@ mysql -u root -p orderdb < D:\backups\orderdb_backup.sql</code></pre>
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE [OR REPLACE] VIEW view_name [(column_list)]
 AS
 SELECT ... ;</code></pre>
@@ -3213,7 +3213,7 @@ SELECT ... ;</code></pre>
 
         <h4>مثال ۱: ایجاد یک View ساده برای مشتریان تهران</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE OR REPLACE VIEW V_TehranCustomers AS
 SELECT customerId, customerName, customertel, customerAddress
 FROM customer_tbl
@@ -3226,7 +3226,7 @@ SELECT * FROM V_TehranCustomers;</code></pre>
         <h4>مثال ۲: ایجاد یک View پیچیده با `JOIN` و نام ستون سفارشی</h4>
         <p><strong>سوال:</strong> یک View بسازید که اطلاعات کامل سفارشات شامل نام مشتری و نام شهر را نمایش دهد.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE OR REPLACE VIEW V_FullOrderDetails (OrderID, OrderDate, Price, Customer, City)
 AS
 SELECT
@@ -3248,7 +3248,7 @@ SELECT * FROM V_FullOrderDetails WHERE Price > 500000;</code></pre>
             این دستور برای تغییر تعریف یک View موجود (تغییر دستور <code>SELECT</code> آن) استفاده می‌شود.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">ALTER VIEW V_TehranCustomers AS
 SELECT customerId, customerName, customertel, customerAddress, status
 FROM customer_tbl
@@ -3261,7 +3261,7 @@ WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران');</cod
             ندارد.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DROP VIEW [IF EXISTS] view_name1, view_name2, ...;</code></pre>
         </div>
     </section>
@@ -3291,7 +3291,7 @@ WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران');</cod
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT
     CEILING(15.2) AS CeilVal,   -- Result: 16
     FLOOR(15.7) AS FloorVal,     -- Result: 15
@@ -3317,7 +3317,7 @@ WHERE cityId = (SELECT cityId FROM city_tbl WHERE cityName = 'تهران');</cod
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- محاسبه تاریخ ۳ ماه بعد از سفارش
 SELECT orderDate, DATE_ADD(orderDate, INTERVAL 3 MONTH) AS FutureDate
 FROM Order_tbl
@@ -3352,7 +3352,7 @@ SELECT orderDate, DAYNAME(orderDate) AS DayName FROM Order_tbl LIMIT 1;</code></
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- تبدیل عدد ۱۰ از مبنای ۱۰ به مبنای ۲
 SELECT CONV(10, 10, 2); -- Result: '1010'
 
@@ -3379,7 +3379,7 @@ FROM customer_tbl LIMIT 1;</code></pre>
             </li>
         </ul>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- نمایش اطلاعات سیستم
 SELECT DATABASE(), VERSION(), CONNECTION_ID(), USER();
 
@@ -3462,12 +3462,12 @@ SELECT CAST('2025-08-20' AS DATE) AS ConvertedDate;</code></pre>
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE USER 'username'@'hostname' IDENTIFIED BY 'password';</code></pre>
         </div>
         <h4>مثال‌ها</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- ایجاد یک کاربر برای اپلیکیشن که فقط از همین سرور متصل می‌شود
 CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'a_strong_password_123!';
 
@@ -3480,7 +3480,7 @@ CREATE USER 'remote_admin'@'%' IDENTIFIED BY 'another_secure_pass_456#';</code><
             این دستور یک یا چند کاربر را به طور کامل از سیستم حذف می‌کند.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">DROP USER 'app_user'@'localhost', 'remote_admin'@'%';</code></pre>
         </div>
 
@@ -3489,7 +3489,7 @@ CREATE USER 'remote_admin'@'%' IDENTIFIED BY 'another_secure_pass_456#';</code><
             این دستور برای تغییر رمز عبور یک کاربر موجود استفاده می‌شود.
         </p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- تغییر رمز عبور کاربر فعلی که با آن لاگین کرده‌اید
 SET PASSWORD = PASSWORD('new_password');
 
@@ -3502,7 +3502,7 @@ SET PASSWORD FOR 'app_user'@'localhost' = PASSWORD('a_newer_stronger_password');
             USER</code> روش پیشنهادی و مدرن‌تری برای تغییر رمز عبور است.
         </div>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- روش مدرن و پیشنهادی برای تغییر رمز عبور
 ALTER USER 'app_user'@'localhost' IDENTIFIED BY 'a_newer_stronger_password';</code></pre>
         </div>
@@ -3516,7 +3516,7 @@ ALTER USER 'app_user'@'localhost' IDENTIFIED BY 'a_newer_stronger_password';</co
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">GRANT privilege_type [(column_list)] [, privilege_type ...]
 ON object_type
 TO 'user'@'host' [IDENTIFIED BY 'password'] [, 'user'@'host' ...]
@@ -3553,13 +3553,13 @@ TO 'user'@'host' [IDENTIFIED BY 'password'] [, 'user'@'host' ...]
         <h4>مثال‌های کاربردی</h4>
         <p><strong>مثال ۱: ایجاد یک مدیر با دسترسی کامل (مانند root)</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">GRANT ALL PRIVILEGES ON *.* TO 'superadmin'@'localhost' IDENTIFIED BY 'complex_password' WITH GRANT OPTION;</code></pre>
         </div>
 
         <p><strong>مثال ۲: ایجاد یک کاربر برای اپلیکیشن با دسترسی کامل به یک پایگاه داده</strong></p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- ابتدا کاربر را ایجاد می‌کنیم
 CREATE USER 'order_app_user'@'localhost' IDENTIFIED BY 'app_pass_123';
 
@@ -3570,7 +3570,7 @@ GRANT ALL PRIVILEGES ON orderdb.* TO 'order_app_user'@'localhost';</code></pre>
         <p><strong>مثال ۳: ایجاد یک کاربر فقط خواندنی (Read-Only)</strong></p>
         <p>این کاربر فقط می‌تواند داده‌ها را از تمام جداول پایگاه داده <code>orderdb</code> بخواند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE USER 'reporter'@'%' IDENTIFIED BY 'report_pass';
 
 GRANT SELECT ON orderdb.* TO 'reporter'@'%';</code></pre>
@@ -3580,7 +3580,7 @@ GRANT SELECT ON orderdb.* TO 'reporter'@'%';</code></pre>
         <p>فرض کنید می‌خواهیم کاربری ایجاد کنیم که فقط بتواند نام و تلفن مشتریان را ببیند و فقط آدرس آن‌ها را ویرایش
             کند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">CREATE USER 'data_entry'@'localhost' IDENTIFIED BY 'entry_pass';
 
 GRANT SELECT (customerId, customerName, customertel) ON orderdb.customer_tbl TO 'data_entry'@'localhost';
@@ -3596,7 +3596,7 @@ GRANT UPDATE (customerAddress) ON orderdb.customer_tbl TO 'data_entry'@'localhos
         </p>
         <h4>شکل کلی دستور</h4>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">REVOKE privilege_type [(column_list)] [, privilege_type ...]
 ON object_type
 FROM 'user'@'host' [, 'user'@'host' ...];</code></pre>
@@ -3607,14 +3607,14 @@ FROM 'user'@'host' [, 'user'@'host' ...];</code></pre>
         <p>می‌خواهیم کاربر <code>order_app_user</code> دیگر نتواند از هیچ جدولی در پایگاه داده <code>orderdb</code>
             داده‌ای را حذف کند.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">REVOKE DELETE ON orderdb.* FROM 'order_app_user'@'localhost';</code></pre>
         </div>
 
         <p><strong>مثال ۲: لغو تمام دسترسی‌های یک کاربر</strong></p>
         <p>برای لغو تمام دسترسی‌ها، باید از همان عبارتی استفاده کنیم که با آن دسترسی داده شده است.</p>
         <div class="code-block-container">
-            <button class="copy-button">Copy</button>
+            <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- لغو تمام دسترسی‌ها در سطح سراسری
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'superadmin'@'localhost';
 
