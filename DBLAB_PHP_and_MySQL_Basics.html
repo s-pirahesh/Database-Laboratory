@@ -4,284 +4,284 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دوره آموزشی PHP و MySQL</title>
-<!--    &lt;!&ndash; 1. CSS Theme for Prism &ndash;&gt;-->
-<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>-->
+    <!--    &lt;!&ndash; 1. CSS Theme for Prism &ndash;&gt;-->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>-->
 
-<!--    &lt;!&ndash; 2. Prism JS Core &ndash;&gt;-->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>-->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>-->
-<!--    <style>-->
-<!--        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');-->
+    <!--    &lt;!&ndash; 2. Prism JS Core &ndash;&gt;-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>-->
+    <!--    <style>-->
+    <!--        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');-->
 
-<!--        body {-->
-<!--            font-family: "Vazirmatn", sans-serif;-->
-<!--            line-height: 1.8;-->
-<!--            background-color: #fffaf0;-->
-<!--            color: #44403c;-->
-<!--        }-->
+    <!--        body {-->
+    <!--            font-family: "Vazirmatn", sans-serif;-->
+    <!--            line-height: 1.8;-->
+    <!--            background-color: #fffaf0;-->
+    <!--            color: #44403c;-->
+    <!--        }-->
 
-<!--        .content-section {-->
-<!--            display: none;-->
-<!--        }-->
+    <!--        .content-section {-->
+    <!--            display: none;-->
+    <!--        }-->
 
-<!--        .content-section.active {-->
-<!--            display: block;-->
-<!--        }-->
+    <!--        .content-section.active {-->
+    <!--            display: block;-->
+    <!--        }-->
 
-<!--        .content-section h2 {-->
-<!--            font-size: 2.2rem;-->
-<!--            font-weight: 700;-->
-<!--            color: #c2410c;-->
-<!--            margin-top: 1rem;-->
-<!--            margin-bottom: 1.5rem;-->
-<!--            padding-bottom: 0.75rem;-->
-<!--            border-bottom: 3px solid #fdba74;-->
-<!--        }-->
+    <!--        .content-section h2 {-->
+    <!--            font-size: 2.2rem;-->
+    <!--            font-weight: 700;-->
+    <!--            color: #c2410c;-->
+    <!--            margin-top: 1rem;-->
+    <!--            margin-bottom: 1.5rem;-->
+    <!--            padding-bottom: 0.75rem;-->
+    <!--            border-bottom: 3px solid #fdba74;-->
+    <!--        }-->
 
-<!--        .content-section h3 {-->
-<!--            font-size: 1.6rem;-->
-<!--            font-weight: 600;-->
-<!--            color: #d97706;-->
-<!--            margin-top: 2.5rem;-->
-<!--            margin-bottom: 1rem;-->
-<!--        }-->
+    <!--        .content-section h3 {-->
+    <!--            font-size: 1.6rem;-->
+    <!--            font-weight: 600;-->
+    <!--            color: #d97706;-->
+    <!--            margin-top: 2.5rem;-->
+    <!--            margin-bottom: 1rem;-->
+    <!--        }-->
 
-<!--        .note {-->
-<!--            background-color: #fef3c7;-->
-<!--            border-right: 5px solid #f59e0b;-->
-<!--            padding: 15px 20px;-->
-<!--            margin: 1.5em 0;-->
-<!--            border-radius: 4px;-->
-<!--        }-->
+    <!--        .note {-->
+    <!--            background-color: #fef3c7;-->
+    <!--            border-right: 5px solid #f59e0b;-->
+    <!--            padding: 15px 20px;-->
+    <!--            margin: 1.5em 0;-->
+    <!--            border-radius: 4px;-->
+    <!--        }-->
 
-<!--        .code-block-container {-->
-<!--            position: relative;-->
-<!--            margin: 1.5rem 0;-->
-<!--            border-radius: 8px;-->
-<!--            overflow: hidden;-->
-<!--            background-color: #292524; /* Stone 800 */-->
-<!--            direction: ltr;-->
-<!--        }-->
+    <!--        .code-block-container {-->
+    <!--            position: relative;-->
+    <!--            margin: 1.5rem 0;-->
+    <!--            border-radius: 8px;-->
+    <!--            overflow: hidden;-->
+    <!--            background-color: #292524; /* Stone 800 */-->
+    <!--            direction: ltr;-->
+    <!--        }-->
 
-<!--        .code-block-container pre {-->
-<!--            color: #f5f5f4; /* Stone 100 */-->
-<!--            padding: 1.5rem;-->
-<!--            overflow-x: auto;-->
-<!--            font-family: 'SFMono-Regular', Consolas, Menlo, monospace;-->
-<!--            font-size: 1rem;-->
-<!--        }-->
+    <!--        .code-block-container pre {-->
+    <!--            color: #f5f5f4; /* Stone 100 */-->
+    <!--            padding: 1.5rem;-->
+    <!--            overflow-x: auto;-->
+    <!--            font-family: 'SFMono-Regular', Consolas, Menlo, monospace;-->
+    <!--            font-size: 1rem;-->
+    <!--        }-->
 
-<!--        /* -&#45;&#45; Code Block and Copy Button -&#45;&#45; */-->
-<!--        .code-block-container {-->
-<!--            position: relative;-->
-<!--            margin: 1.5rem 0;-->
-<!--        }-->
+    <!--        /* -&#45;&#45; Code Block and Copy Button -&#45;&#45; */-->
+    <!--        .code-block-container {-->
+    <!--            position: relative;-->
+    <!--            margin: 1.5rem 0;-->
+    <!--        }-->
 
-<!--        pre[class*="language-"] {-->
-<!--            /* Make space for the button */-->
-<!--            padding-top: 3rem !important;-->
-<!--            border-radius: 8px;-->
-<!--        }-->
+    <!--        pre[class*="language-"] {-->
+    <!--            /* Make space for the button */-->
+    <!--            padding-top: 3rem !important;-->
+    <!--            border-radius: 8px;-->
+    <!--        }-->
 
-<!--        .copy-button {-->
-<!--            position: absolute;-->
-<!--            top: 0.75rem;-->
-<!--            left: 0.75rem; /* Positioned top-left for LTR code */-->
-<!--            background-color: #fb923c; /* Orange 400 */-->
-<!--            color: white;-->
-<!--            padding: 0.4rem 0.9rem;-->
-<!--            font-size: 0.8rem;-->
-<!--            border: none;-->
-<!--            border-radius: 6px;-->
-<!--            cursor: pointer;-->
-<!--            opacity: 0; /* Hidden by default */-->
-<!--            transition: all 0.2s;-->
-<!--            font-family: "Vazirmatn", sans-serif;-->
-<!--        }-->
+    <!--        .copy-button {-->
+    <!--            position: absolute;-->
+    <!--            top: 0.75rem;-->
+    <!--            left: 0.75rem; /* Positioned top-left for LTR code */-->
+    <!--            background-color: #fb923c; /* Orange 400 */-->
+    <!--            color: white;-->
+    <!--            padding: 0.4rem 0.9rem;-->
+    <!--            font-size: 0.8rem;-->
+    <!--            border: none;-->
+    <!--            border-radius: 6px;-->
+    <!--            cursor: pointer;-->
+    <!--            opacity: 0; /* Hidden by default */-->
+    <!--            transition: all 0.2s;-->
+    <!--            font-family: "Vazirmatn", sans-serif;-->
+    <!--        }-->
 
-<!--        .code-block-container:hover .copy-button {-->
-<!--            opacity: 1; /* Show on hover */-->
-<!--        }-->
+    <!--        .code-block-container:hover .copy-button {-->
+    <!--            opacity: 1; /* Show on hover */-->
+    <!--        }-->
 
-<!--        .copy-button:disabled {-->
-<!--            background-color: #22c55e; /* Green for success */-->
-<!--            cursor: default;-->
-<!--        }-->
+    <!--        .copy-button:disabled {-->
+    <!--            background-color: #22c55e; /* Green for success */-->
+    <!--            cursor: default;-->
+    <!--        }-->
 
-<!--        .note {-->
-<!--            background-color: #fefce8;-->
-<!--            border-right: 5px solid #facc15;-->
-<!--            padding: 15px 20px;-->
-<!--            margin: 1.5em 0;-->
-<!--            border-radius: 4px;-->
-<!--        }-->
+    <!--        .note {-->
+    <!--            background-color: #fefce8;-->
+    <!--            border-right: 5px solid #facc15;-->
+    <!--            padding: 15px 20px;-->
+    <!--            margin: 1.5em 0;-->
+    <!--            border-radius: 4px;-->
+    <!--        }-->
 
-<!--        /* -&#45;&#45; Sidebar Styles -&#45;&#45; */-->
-<!--        #sidebar {-->
-<!--            width: 280px;-->
-<!--            background: linear-gradient(180deg, #4a2c2a 0%, #2c1d1c 100%);-->
-<!--            color: #fde68a;-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            right: 0;-->
-<!--            height: 100vh;-->
-<!--            overflow-y: auto;-->
-<!--            transition: transform .3s ease-in-out;-->
-<!--            z-index: 100;-->
-<!--        }-->
+    <!--        /* -&#45;&#45; Sidebar Styles -&#45;&#45; */-->
+    <!--        #sidebar {-->
+    <!--            width: 280px;-->
+    <!--            background: linear-gradient(180deg, #4a2c2a 0%, #2c1d1c 100%);-->
+    <!--            color: #fde68a;-->
+    <!--            position: fixed;-->
+    <!--            top: 0;-->
+    <!--            right: 0;-->
+    <!--            height: 100vh;-->
+    <!--            overflow-y: auto;-->
+    <!--            transition: transform .3s ease-in-out;-->
+    <!--            z-index: 100;-->
+    <!--        }-->
 
-<!--        #sidebar header {-->
-<!--            padding: 1.25rem 1rem;-->
-<!--            font-weight: 700;-->
-<!--            font-size: 1.25rem;-->
-<!--            border-bottom: 1px solid #5e4a4a;-->
-<!--            background: #2c1d1c;-->
-<!--            color: #fff;-->
-<!--        }-->
+    <!--        #sidebar header {-->
+    <!--            padding: 1.25rem 1rem;-->
+    <!--            font-weight: 700;-->
+    <!--            font-size: 1.25rem;-->
+    <!--            border-bottom: 1px solid #5e4a4a;-->
+    <!--            background: #2c1d1c;-->
+    <!--            color: #fff;-->
+    <!--        }-->
 
-<!--        .nav-header {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            justify-content: space-between;-->
-<!--            cursor: pointer;-->
-<!--            padding: .75rem 1rem;-->
-<!--            font-weight: 600;-->
-<!--            transition: background .2s;-->
-<!--        }-->
+    <!--        .nav-header {-->
+    <!--            display: flex;-->
+    <!--            align-items: center;-->
+    <!--            justify-content: space-between;-->
+    <!--            cursor: pointer;-->
+    <!--            padding: .75rem 1rem;-->
+    <!--            font-weight: 600;-->
+    <!--            transition: background .2s;-->
+    <!--        }-->
 
-<!--        .nav-header:hover {-->
-<!--            background: #5e4a4a;-->
-<!--        }-->
+    <!--        .nav-header:hover {-->
+    <!--            background: #5e4a4a;-->
+    <!--        }-->
 
-<!--        .nav-header::after {-->
-<!--            content: '▾';-->
-<!--            transition: transform .2s;-->
-<!--        }-->
+    <!--        .nav-header::after {-->
+    <!--            content: '▾';-->
+    <!--            transition: transform .2s;-->
+    <!--        }-->
 
-<!--        .nav-header.collapsed::after {-->
-<!--            transform: rotate(-90deg);-->
-<!--        }-->
+    <!--        .nav-header.collapsed::after {-->
+    <!--            transform: rotate(-90deg);-->
+    <!--        }-->
 
-<!--        .sub-menu {-->
-<!--            overflow: hidden;-->
-<!--            max-height: 0;-->
-<!--            transition: max-height 0.35s ease-in-out;-->
-<!--        }-->
+    <!--        .sub-menu {-->
+    <!--            overflow: hidden;-->
+    <!--            max-height: 0;-->
+    <!--            transition: max-height 0.35s ease-in-out;-->
+    <!--        }-->
 
-<!--        .sub-menu.open {-->
-<!--            max-height: 800px;-->
-<!--        }-->
+    <!--        .sub-menu.open {-->
+    <!--            max-height: 800px;-->
+    <!--        }-->
 
-<!--        .nav-link {-->
-<!--            display: block;-->
-<!--            padding: .5rem 1.75rem;-->
-<!--            font-size: .9rem;-->
-<!--            color: #eab308;-->
-<!--            transition: background .2s, color .2s;-->
-<!--            text-decoration: none;-->
-<!--        }-->
+    <!--        .nav-link {-->
+    <!--            display: block;-->
+    <!--            padding: .5rem 1.75rem;-->
+    <!--            font-size: .9rem;-->
+    <!--            color: #eab308;-->
+    <!--            transition: background .2s, color .2s;-->
+    <!--            text-decoration: none;-->
+    <!--        }-->
 
-<!--        .nav-link.active, .nav-link:hover {-->
-<!--            background: #fb923c;-->
-<!--            color: #fff;-->
-<!--            border-radius: 0 20px 20px 0;-->
-<!--            margin-right: .25rem;-->
-<!--        }-->
+    <!--        .nav-link.active, .nav-link:hover {-->
+    <!--            background: #fb923c;-->
+    <!--            color: #fff;-->
+    <!--            border-radius: 0 20px 20px 0;-->
+    <!--            margin-right: .25rem;-->
+    <!--        }-->
 
-<!--        /* -&#45;&#45; Main Content Styles -&#45;&#45; */-->
-<!--        #main-content {-->
-<!--            transition: margin-right .3s ease-in-out;-->
-<!--            padding: 2rem;-->
-<!--            background-color: #ffffff;-->
-<!--        }-->
+    <!--        /* -&#45;&#45; Main Content Styles -&#45;&#45; */-->
+    <!--        #main-content {-->
+    <!--            transition: margin-right .3s ease-in-out;-->
+    <!--            padding: 2rem;-->
+    <!--            background-color: #ffffff;-->
+    <!--        }-->
 
-<!--        /* -&#45;&#45; Mobile Header -&#45;&#45; */-->
-<!--        #mobile-header {-->
-<!--            display: none; /* Hidden on desktop */-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            right: 0;-->
-<!--            width: 100%;-->
-<!--            background-color: #2c1d1c;-->
-<!--            color: white;-->
-<!--            /*padding: 1rem;*/-->
-<!--            z-index: 50;-->
-<!--            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);-->
-<!--        }-->
+    <!--        /* -&#45;&#45; Mobile Header -&#45;&#45; */-->
+    <!--        #mobile-header {-->
+    <!--            display: none; /* Hidden on desktop */-->
+    <!--            position: fixed;-->
+    <!--            top: 0;-->
+    <!--            right: 0;-->
+    <!--            width: 100%;-->
+    <!--            background-color: #2c1d1c;-->
+    <!--            color: white;-->
+    <!--            /*padding: 1rem;*/-->
+    <!--            z-index: 50;-->
+    <!--            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);-->
+    <!--        }-->
 
-<!--        #menu-toggle {-->
-<!--            background: none;-->
-<!--            border: none;-->
-<!--            color: white;-->
-<!--            cursor: pointer;-->
-<!--        }-->
+    <!--        #menu-toggle {-->
+    <!--            background: none;-->
+    <!--            border: none;-->
+    <!--            color: white;-->
+    <!--            cursor: pointer;-->
+    <!--        }-->
 
-<!--        /* -&#45;&#45; Overlay for Mobile -&#45;&#45; */-->
-<!--        #overlay {-->
-<!--            display: none;-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            left: 0;-->
-<!--            width: 100%;-->
-<!--            height: 100%;-->
-<!--            background-color: rgba(0, 0, 0, 0.5);-->
-<!--            z-index: 99;-->
-<!--        }-->
+    <!--        /* -&#45;&#45; Overlay for Mobile -&#45;&#45; */-->
+    <!--        #overlay {-->
+    <!--            display: none;-->
+    <!--            position: fixed;-->
+    <!--            top: 0;-->
+    <!--            left: 0;-->
+    <!--            width: 100%;-->
+    <!--            height: 100%;-->
+    <!--            background-color: rgba(0, 0, 0, 0.5);-->
+    <!--            z-index: 99;-->
+    <!--        }-->
 
-<!--        /* -&#45;&#45; Responsive Styles -&#45;&#45; */-->
-<!--        @media (min-width: 1024px) {-->
-<!--            #main-content {-->
-<!--                margin-right: 280px;-->
-<!--            }-->
-<!--        }-->
+    <!--        /* -&#45;&#45; Responsive Styles -&#45;&#45; */-->
+    <!--        @media (min-width: 1024px) {-->
+    <!--            #main-content {-->
+    <!--                margin-right: 280px;-->
+    <!--            }-->
+    <!--        }-->
 
-<!--        @media (max-width: 1023px) {-->
-<!--            #sidebar {-->
-<!--                transform: translateX(280px);-->
-<!--            }-->
+    <!--        @media (max-width: 1023px) {-->
+    <!--            #sidebar {-->
+    <!--                transform: translateX(280px);-->
+    <!--            }-->
 
-<!--            #sidebar.open {-->
-<!--                transform: translateX(0);-->
-<!--            }-->
+    <!--            #sidebar.open {-->
+    <!--                transform: translateX(0);-->
+    <!--            }-->
 
-<!--            #mobile-header {-->
-<!--                display: flex;-->
-<!--                align-items: center;-->
-<!--                gap: 1rem;-->
-<!--            }-->
+    <!--            #mobile-header {-->
+    <!--                display: flex;-->
+    <!--                align-items: center;-->
+    <!--                gap: 1rem;-->
+    <!--            }-->
 
-<!--            #main-content {-->
-<!--                margin-right: 0;-->
-<!--                padding-top: 5rem;-->
-<!--            }-->
+    <!--            #main-content {-->
+    <!--                margin-right: 0;-->
+    <!--                padding-top: 5rem;-->
+    <!--            }-->
 
-<!--            #overlay.open {-->
-<!--                display: block;-->
-<!--            }-->
-<!--        }-->
-<!--    </style>-->
+    <!--            #overlay.open {-->
+    <!--                display: block;-->
+    <!--            }-->
+    <!--        }-->
+    <!--    </style>-->
 
-<!--    <style>-->
-<!--        @media print {-->
-<!--            #sidebar {-->
-<!--                display: none !important;-->
-<!--            }-->
+    <!--    <style>-->
+    <!--        @media print {-->
+    <!--            #sidebar {-->
+    <!--                display: none !important;-->
+    <!--            }-->
 
-<!--            #main-content {-->
-<!--                margin-right: 0 !important;-->
-<!--                width: 100% !important;-->
-<!--            }-->
+    <!--            #main-content {-->
+    <!--                margin-right: 0 !important;-->
+    <!--                width: 100% !important;-->
+    <!--            }-->
 
-<!--            .content-section {-->
-<!--                display: block !important;-->
-<!--            }-->
+    <!--            .content-section {-->
+    <!--                display: block !important;-->
+    <!--            }-->
 
-<!--            .nav-header {-->
-<!--                display: none;-->
-<!--            }-->
-<!--        }-->
+    <!--            .nav-header {-->
+    <!--                display: none;-->
+    <!--            }-->
+    <!--        }-->
 
-<!--    </style>-->
+    <!--    </style>-->
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>
@@ -594,42 +594,8 @@ extension=pdo_mysql</code></pre>
             کنترل پنل XAMPP ابزار اصلی شما برای مدیریت سرویس‌های مختلف است.
         </p>
         <div style="text-align:center; margin: 2rem 0;">
-            <svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"
-                 font-family="Vazirmatn, sans-serif">
-                <rect x="1" y="1" width="598" height="298" fill="#f5f5f5" stroke="#ccc" stroke-width="2" rx="10"/>
-                <rect x="10" y="10" width="580" height="40" fill="#d97706" rx="5"/>
-                <text x="300" y="35" font-size="18" fill="white" text-anchor="middle">XAMPP Control Panel v3.3.0
-                </text>
-                <rect x="20" y="70" width="560" height="50" fill="#fff" stroke="#ddd" rx="5"/>
-                <text x="40" y="90" font-size="16" fill="#333">Module</text>
-                <text x="130" y="90" font-size="16" fill="#333">PID(s)</text>
-                <text x="220" y="90" font-size="16" fill="#333">Port(s)</text>
-                <text x="350" y="90" font-size="16" fill="#333" text-anchor="middle">Actions</text>
-                <text x="520" y="90" font-size="16" fill="#333" text-anchor="middle">Service</text>
-                <rect x="20" y="125" width="560" height="40" fill="#f0fdf4" stroke="#ddd" rx="5"/>
-                <rect x="22" y="127" width="10" height="36" fill="#22c55e"/>
-                <text x="40" y="150" font-size="16" font-weight="bold">Apache</text>
-                <text x="130" y="150" font-size="14">1234, 5678</text>
-                <text x="220" y="150" font-size="14">80, 443</text>
-                <rect x="300" y="132" width="100" height="26" fill="#ef4444" rx="5"/>
-                <text x="350" y="150" fill="white" text-anchor="middle">Stop</text>
-                <rect x="410" y="132" width="60" height="26" fill="#e5e5e5" stroke="#ccc" rx="5"/>
-                <text x="440" y="150" fill="#555" text-anchor="middle">Admin</text>
-                <rect x="20" y="170" width="560" height="40" fill="#f0fdf4" stroke="#ddd" rx="5"/>
-                <rect x="22" y="172" width="10" height="36" fill="#22c55e"/>
-                <text x="40" y="195" font-size="16" font-weight="bold">MySQL</text>
-                <text x="130" y="195" font-size="14">9101</text>
-                <text x="220" y="195" font-size="14">3306</text>
-                <rect x="300" y="177" width="100" height="26" fill="#ef4444" rx="5"/>
-                <text x="350" y="195" fill="white" text-anchor="middle">Stop</text>
-                <rect x="410" y="177" width="60" height="26" fill="#e5e5e5" stroke="#ccc" rx="5"/>
-                <text x="440" y="195" fill="#555" text-anchor="middle">Admin</text>
-                <text x="300" y="230" font-size="14" fill="#888" text-anchor="middle">...</text>
-                <rect x="20" y="250" width="560" height="40" fill="#fafafa" stroke="#ddd" rx="5"/>
-                <text x="30" y="275" font-size="12" fill="#333" font-family="monospace">[Apache] Status change
-                    detected: running
-                </text>
-            </svg>
+            <img src="images/xampp_panel.png" alt="نمای کنترل پنل XAMPP"
+                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         </div>
         <ul>
             <li><strong>Modules:</strong> لیست سرویس‌های نصب شده مانند Apache و MySQL.</li>
