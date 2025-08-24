@@ -1776,7 +1776,7 @@ WHERE
             <pre><code class="language-sql">SELECT DISTINCT C.customerName
 FROM customer_tbl AS C
 INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
-INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+INNER JOIN orderdetail_tbl AS OD ON O.orderId = OD.orderId
 INNER JOIN product_tbl AS P ON OD.productID = P.productID
 WHERE P.ProductColor = 'blue';
 
@@ -1784,7 +1784,7 @@ WHERE P.ProductColor = 'blue';
 SELECT DISTINCT C.customerName
 FROM customer_tbl AS C
 INNER JOIN Order_tbl AS O USING (customerId)
-INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+INNER JOIN orderdetail_tbl AS OD USING (orderId)
 INNER JOIN product_tbl AS P USING (productID)
 WHERE P.ProductColor = 'blue';
 
@@ -1802,7 +1802,7 @@ WHERE P.ProductColor = 'blue';
 SELECT DISTINCT C.customerName
 FROM customer_tbl AS C
     INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
-    INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+    INNER JOIN orderdetail_tbl AS OD ON O.orderId = OD.orderId
     INNER JOIN product_tbl AS P ON OD.productID = P.productID
 WHERE P.ProductColor IN ('blue', 'red');
 
@@ -1810,7 +1810,7 @@ WHERE P.ProductColor IN ('blue', 'red');
 SELECT DISTINCT C.customerName
 FROM customer_tbl AS C
     INNER JOIN Order_tbl AS O ON C.customerId = O.customerId
-    INNER JOIN orderdetail_tbl AS OD ON O.orderID = OD.OrderId
+    INNER JOIN orderdetail_tbl AS OD ON O.orderId = OD.orderId
     INNER JOIN product_tbl AS P ON OD.productID = P.productID AND (P.ProductColor = 'blue' OR P.ProductColor = 'red');</code></pre>
         </div>
         <p class="important">اگر در روش دوم از پرانتز در شرط `(P.ProductColor = 'blue' OR P.ProductColor = 'red')`
@@ -1930,14 +1930,14 @@ FROM customer_tbl AS C
             <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT column_list
 FROM table1
-LEFT JOIN table2 ON table1.column = table2.column;</code></pre>
+LEFT [OUTER] JOIN table2 ON table1.column = table2.column;</code></pre>
         </div>
         <p><strong>سوال:</strong> مشتریانی را بیابید که هیچ سفارشی ندارند.</p>
         <div class="code-block-container">
             <button class="copy-button">کپی</button>
             <pre><code class="language-sql">SELECT C.customerName
 FROM customer_tbl AS C
-LEFT JOIN Order_tbl AS O ON C.customerId = O.customerId
+LEFT OUTER JOIN Order_tbl AS O ON C.customerId = O.customerId
 WHERE O.orderID IS NULL;</code></pre>
         </div>
 
@@ -2133,10 +2133,10 @@ SELECT column_list FROM table2;</code></pre>
         <div class="code-block-container">
             <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- محصولاتی که در سال 2023 فروخته شده‌اند
-(SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2023)
+SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2023
 INTERSECT
 -- محصولاتی که در سال 2024 فروخته شده‌اند
-(SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2024);</code></pre>
+SELECT productID FROM orderdetail_tbl od JOIN Order_tbl o ON od.OrderId = o.orderID WHERE YEAR(o.orderDate) = 2024;</code></pre>
         </div>
 
         <h3>۳. تفاضل نتایج (EXCEPT)</h3>
@@ -2164,10 +2164,10 @@ SELECT column_list FROM table2;</code></pre>
         <div class="code-block-container">
             <button class="copy-button">کپی</button>
             <pre><code class="language-sql">-- مشتریانی که در سال 2023 سفارش داشته‌اند
-(SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2023)
+SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2023
 EXCEPT
 -- مشتریانی که در سال 2024 سفارش داشته‌اند
-(SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2024);</code></pre>
+SELECT customerId FROM Order_tbl WHERE YEAR(orderDate) = 2024;</code></pre>
         </div>
     </section>
 
