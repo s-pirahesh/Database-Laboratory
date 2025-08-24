@@ -98,6 +98,14 @@ body {
     margin-bottom: 1rem;
 }
 
+.content-section h4 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+}
+
 .note {
     background-color: var(--note-bg-color);
     border-right: 5px solid var(--note-border-color);
